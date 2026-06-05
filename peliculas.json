@@ -1,1 +1,30 @@
-
+[
+  {
+    "id": 1,
+    "titulo": "El Secuestro - Capítulo 1 (Piloto)",
+    "descripcion": "",
+    "portada": "LINK_DE_IMGUR_AQUI.jpg",
+    "video": "https://archive.org/download/el-secuestro-capitulo-1-piloto_202606/El%20%20Secuestro%20%20%20%20%20Capitulo%201%20%20%20%20Piloto.mp4"
+  },
+  {
+    "id": 2,
+    "titulo": "Borracho - Capítulo 2",
+    "descripcion": "",
+    "portada": "LINK_DE_IMGUR_AQUI.jpg",
+    "video": "https://archive.org/download/borracho-capitulo-2_202606/Borracho%20%20%20%20Capitulo%202.mp4"
+  },
+  {
+    "id": 3,
+    "titulo": "Supermercado - Corto 1",
+    "descripcion": "",
+    "portada": "LINK_DE_IMGUR_AQUI.jpg",
+    "video": "https://archive.org/download/supermecado-corto-1_202606/Supermecado%20%20%20%20%20Corto%201.mp4"
+  },
+  {
+    "id": 4,
+    "titulo": "Cartulina - Corto 2",
+    "descripcion": "",
+    "portada": "LINK_DE_IMGUR_AQUI.jpg",
+    "video": "https://archive.org/download/cartulina-corto-2_202606/Cartulina%20%20%20%20Corto%202.mp4"
+  }
+]
