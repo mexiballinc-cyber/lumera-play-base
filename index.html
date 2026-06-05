@@ -359,7 +359,7 @@
         const v = document.getElementById('v'), ctrls = document.getElementById('ctrls'), pIcon = document.getElementById('p-icon'), player = document.getElementById('lumeraPlayer');
         let hideTimer, currentItemGlobal = null, currentAudioUrl = "", currentPlayKey = "";
 
-       /* ================= BASE DE DATOS EXACTA ================= */
+      /* ================= BASE DE DATOS EXACTA ================= */
         const contentDB = [
             { 
                 id: "lumera_intro_01",
@@ -387,27 +387,22 @@
                     {
                         name: "Temporada 1",
                         episodes: [
-            {
-              id: 'cap-1',
-              title: '1. Secuestro',
-              url: 'https://archive.org/download/el-secuestro-capitulo-1-piloto/EL%20SECUESTRO%20_%20CAPITULO%201%20_%20PILOTO.mp4',
-              tracks: [
-                { label: 'Español', srclang: 'es', src: 'https://www.dropbox.com/scl/fi/1nr6pvo8mge9f3zr13f1l/EL-SECUESTRO-CAPITULO-1-PILOTO.vtt?rlkey=5377pxatgbe3c082kt6pu4rwy&st=l9rpmrl6&raw=1' },
-                { label: 'English', srclang: 'en', src: 'https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=wdum4bnd&raw=1' }
-              ]
-            },
-            {
-              id: 'cap-2',
-              title: '2. Borracho',
-              url: 'https://archive.org/download/borracho-capitulo-2/BORRACHO%20_%20CAPITULO%202.mp4',
-              tracks: [
-                { label: 'Español', srclang: 'es', src: 'https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=47w3u7ut&raw=1' },
-                { label: 'English', srclang: 'en', src: 'https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=27dfxy06&raw=1' }
-              ]
-            }
-          ] [
-                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=7ek1iyfk&raw=1" },
-                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=835zr0ot&raw=1" }
+                            { 
+                                id: "cap-1", 
+                                title: "1. Secuestro", 
+                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto_202606/El%20%20Secuestro%20%20%20%20%20Capitulo%201%20%20%20%20Piloto.mp4",
+                                tracks: [
+                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/1nr6pvo8mge9f3zr13f1l/EL-SECUESTRO-CAPITULO-1-PILOTO.vtt?rlkey=5377pxatgbe3c082kt6pu4rwy&st=l9rpmrl6&raw=1" },
+                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=wdum4bnd&raw=1" }
+                                ]
+                            },
+                            { 
+                                id: "cap-2", 
+                                title: "2. Borracho", 
+                                url: "https://archive.org/download/borracho-capitulo-2_202606/Borracho%20%20%20%20Capitulo%202.mp4",
+                                tracks: [
+                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=47w3u7ut&raw=1" },
+                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=27dfxy06&raw=1" }
                                 ]
                             }
                         ]
