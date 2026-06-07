@@ -480,17 +480,15 @@
             align-items: center; 
             gap: 40px; 
         }
-        .p-btn { 
-            background: rgba(255,255,255,0.15); 
-            border: none; 
-            color: white; 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+<div class="ep-btn" onclick="openPlayer('https://archive.org/download/el-secuestro-capitulo-1-piloto_202606/El%20%20Secuestro%20%20%20%20%20Capitulo%201%20%20%20%20Piloto.mp4', 'https://www.dropbox.com/scl/fi/1nr6pvo8mge9f3zr13f1l/EL-SECUESTRO-CAPITULO-1-PILOTO.vtt?rlkey=5377pxatgbe3c082kt6pu4rwy&st=4hjqodpz&raw=1', 'https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=avon0op1&raw=1')">
+<span>1. El Secuestro (Piloto)</span>
+<div class="ep-btn-play">▶</adiv>
+</div>
+
+<div class="ep-btn" onclick="openPlayer('https://archive.org/download/borracho-capitulo-2_202606/Borracho%20%20%20%20Capitulo%202.mp4', 'https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=xn80oy37&raw=1', 'https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=3lq5cmbs&raw=1')">
+<span>2. Borracho</span>
+<div class="ep-btn-play">▶</div>
+</div>
         }
         .p-play { 
             width: 70px; 
@@ -865,17 +863,34 @@
     </div>
 
     <div id="lumeraPlayer" onmousemove="resetTimer()" onclick="resetTimer()">
-        <video id="v" playsinline style="width:100%; height:100%; object-fit:contain;"></video>
-        
-        <div id="ccMenu" class="cc-menu" onclick="event.stopPropagation()">
-            <div id="audioSection" style="display:none;">
-                <div class="cc-section-title" data-i18n="audio_dub">AUDIO / DOBLAJE</div>
-                <div class="cc-options" id="audioOptions"></div>
-            </div>
-            <div id="subsSection" style="display:none;">
-                <div class="cc-section-title" data-i18n="subtitles">SUBTÍTULOS</div>
-                <div class="cc-options" id="subsOptions">
-                    <div class="cc-opt-btn active" id="sub-off" onclick="setSubtitle(-1)" data-i18n="sub_off">Desactivados</div>
+                <video id="mainVideo" playsinline style="width: 100%; height: 100%; object-fit: contain;" crossorigin="anonymous"></video>
+                
+                <div class="p-controls" id="pControls">
+                    <div>
+                        <div class="p-btn" onclick="closePlayer()" style="display:inline-flex;">✕</div>
+                        <div class="p-btn" onclick="toggleCC()" style="display:inline-flex; float:right;">CC</div>
+                    </div>
+                    
+                    <div class="p-center">
+                        <button class="p-btn" onclick="document.getElementById('mainVideo').currentTime -= 10">↺</button>
+                        <button class="p-btn p-play" id="playBtn" onclick="togglePlay()">▶</button>
+                        <button class="p-btn" onclick="document.getElementById('mainVideo').currentTime += 10">↻</button>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <span id="currentTime" style="font-size:12px;">00:00</span>
+                        <input type="range" id="progressSlider" value="0" max="100">
+                        <span id="durationTime" style="font-size:12px;">00:00</span>
+                    </div>
+                </div>
+
+                <div class="cc-menu" id="ccMenu">
+                    <div class="cc-section-title">Subtítulos</div>
+                    <div class="cc-options">
+                        <div class="cc-opt-btn active" onclick="changeSubtitle(-1, this)">Apagado</div>
+                        <div class="cc-opt-btn" onclick="changeSubtitle(0, this)">Español</div>
+                        <div class="cc-opt-btn" onclick="changeSubtitle(1, this)">Inglés</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1633,6 +1648,63 @@
         if(initSearchBtn) initSearchBtn.style.display = 'none';
         
         renderProfiles();
+function openPlayer(videoSrc, subEs, subEn) {
+const video = document.getElementById('mainVideo');
+
+// Carga el video y las pistas de subtítulos correspondientes al episodio
+if (videoSrc) video.src = videoSrc;
+if (subEs && subEn) {
+video.innerHTML = `
+<track label="Español" kind="subtitles" srclang="es" src="${subEs}">
+<track label="Inglés" kind="subtitles" srclang="en" src="${subEn}">
+`;
+}
+
+document.getElementById('lumeraPlayer').style.display = 'block';
+video.play();
+playBtn.innerText = '⏸';
+showControls();
+
+// Reinicia los botones de subtítulos a "Apagado" al abrir un video nuevo
+document.querySelectorAll('.cc-opt-btn').forEach(btn => btn.classList.remove('active'));
+document.querySelector('.cc-options .cc-opt-btn').classList.add('active');
+}
+
+function changeSubtitle(trackIndex, btnElement) {
+const video = document.getElementById('mainVideo');
+
+// Ilumina únicamente el botón que acabas de presionar
+document.querySelectorAll('.cc-opt-btn').forEach(btn => btn.classList.remove('active'));
+btnElement.classList.add('active');
+
+// Cambia el estado de las pistas (-1 apaga, 0 español, 1 inglés)
+const tracks = video.textTracks;
+for (let i = 0; i < tracks.length; i++) {
+if (trackIndex === i) {
+tracks[i].mode = 'showing';
+} else {
+tracks[i].mode = 'hidden';
+}
+}
+
+// Oculta el menú CC tras elegir el idioma
+document.getElementById('ccMenu').classList.remove('active');
+}
+
+
+
+        
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
