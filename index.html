@@ -163,7 +163,7 @@
         }
         
         /* =========================================
-           5. DISEÑO DE BANNERS (HERO SECTIONS)
+           5. DISEÑO DE BANNERS (HERO ÚNICO DINÁMICO)
         ========================================= */
         .banner { 
             position: relative; 
@@ -179,7 +179,7 @@
             height: 100%; 
             object-fit: cover; 
             opacity: 0.45; 
-            transition: src 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
         
         .banner-gradient {
@@ -565,6 +565,10 @@
             text-transform: uppercase;
         }
 
+        .spark-btn:hover {
+            opacity: 0.9;
+        }
+
         .spark-feed {
             display: flex;
             flex-direction: column;
@@ -684,16 +688,6 @@
             box-sizing: border-box;
             outline: none;
             margin-bottom: 15px;
-        }
-        
-        .modal-label {
-            font-size: 10px;
-            color: #666;
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: block;
-            letter-spacing: 0.5px;
         }
         
         .modal-options-grid {
@@ -895,61 +889,32 @@
     <div class="page active" id="profiles">
         <div class="profile-select-screen">
             <h2 class="profile-select-title">¿Quién está viendo ahora?</h2>
-            <div class="profiles-layout" id="profilesLayout">
-                </div>
+            <div class="profiles-layout" id="profilesLayout"></div>
         </div>
     </div>
 
     <div class="page" id="home">
-        <div class="banner" id="heroBannerHome">
-            <img id="heroImgHome" src="" alt="Destacado">
+        <div class="banner" id="heroBannerGlobal">
+            <img id="heroImgGlobal" src="" alt="Destacado">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitleHome">Lumera Play</h2>
-                <p class="banner-desc" id="heroDescHome">Tu espacio definitivo de entretenimiento digital independiente.</p>
-                <button class="banner-btn" id="heroBtnHome">Ver Contenido</button>
+                <h2 class="banner-logo" id="heroTitleGlobal">Cargando...</h2>
+                <p class="banner-desc" id="heroDescGlobal">Explora el contenido exclusivo de Lumera Play.</p>
+                <button class="banner-btn" id="heroBtnGlobal">Ver Ahora</button>
             </div>
         </div>
-        <div class="row-container" id="homeRows">
-            </div>
+        <div class="row-container" id="homeRows"></div>
     </div>
 
     <div class="page" id="series">
-        <div class="banner" id="heroBannerSeries">
-            <img id="heroImgSeries" src="" alt="Series Destacadas">
-            <div class="banner-gradient"></div>
-            <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitleSeries">Series</h2>
-                <p class="banner-desc" id="heroDescSeries">Producciones episódicas y narrativas extendidas.</p>
-                <button class="banner-btn" id="heroBtnSeries">Explorar</button>
-            </div>
-        </div>
         <div class="row-container" id="seriesRows"></div>
     </div>
 
     <div class="page" id="peliculas">
-        <div class="banner" id="heroBannerPeliculas">
-            <img id="heroImgPeliculas" src="" alt="Películas Destacadas">
-            <div class="banner-gradient"></div>
-            <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitlePeliculas">Películas</h2>
-                <p class="banner-desc" id="heroDescPeliculas">Largometrajes, cortometrajes y piezas unitarias.</p>
-                <button class="banner-btn" id="heroBtnPeliculas">Explorar</button>
-            </div>
-        </div>
         <div class="row-container" id="peliculasRows"></div>
     </div>
 
     <div class="page" id="kids">
-        <div class="banner" id="heroBannerKids">
-            <img id="heroImgKids" src="" alt="Kids Destacado">
-            <div class="banner-gradient"></div>
-            <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitleKids">Kids</h2>
-                <p class="banner-desc" id="heroDescKids">Contenido apto para todo público y diversión familiar.</p>
-                <button class="banner-btn" id="heroBtnKids">Ver</button>
-            </div>
-        </div>
         <div class="row-container" id="kidsRows"></div>
     </div>
 
@@ -965,8 +930,7 @@
                     <button class="spark-btn" onclick="postSpark()">Publicar</button>
                 </div>
             </div>
-            <div class="spark-feed" id="sparkFeed">
-                </div>
+            <div class="spark-feed" id="sparkFeed"></div>
         </div>
     </div>
 
@@ -976,14 +940,12 @@
                 <input type="text" class="search-input" id="searchInput" placeholder="Buscar por título, género o año..." oninput="executeSearch()">
             </div>
             <div class="row-title" id="searchMetaTitle">Escribe algo para buscar</div>
-            <div class="search-results-grid" id="searchResultsGrid">
-                </div>
+            <div class="search-results-grid" id="searchResultsGrid"></div>
         </div>
     </div>
 
     <div class="page" id="detailsPage">
-        <div class="details-view" id="detailsViewContainer">
-            </div>
+        <div class="details-view" id="detailsViewContainer"></div>
     </div>
 
     <div class="modal" id="modal">
@@ -1005,8 +967,7 @@
             
             <label class="modal-label" id="avatarGridLabel">Selecciona tu design</label>
             <div class="avatar-grid-wrapper">
-                <div class="avatar-grid" id="avatarGrid">
-                    </div>
+                <div class="avatar-grid" id="avatarGrid"></div>
             </div>
             
             <div class="modal-footer-btns">
@@ -1018,20 +979,14 @@
     </div>
 
     <script>
-        // --- CONSTANTES AVATARES ---
         const AVATAR_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
         const AVATAR_IMAGES = [
             "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
             "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
             "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1628157582853-a796fa650a6a?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop"
+            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
         ];
 
-        // --- SISTEMA DE CONTROL DE ESTADOS ---
         let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
         let sparks = JSON.parse(localStorage.getItem("lumera_sparks")) || [];
         let activeProfile = JSON.parse(localStorage.getItem("lumera_active_profile")) || null;
@@ -1041,54 +996,51 @@
         let selectedAvatar = "LETTER";
         let selectedAvatarVal = "A";
 
-        // BASE DE DATOS DINÁMICA
         let contentDB = [];
         let heroDB = [];
         let currentHeroIndex = 0;
         let heroInterval = null;
 
         async function initLumera() {
-            // 1. Cargar el catálogo general desde peliculas.json
+            // 1. Cargar catálogo general
             try {
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
-            } catch(e) {
-                console.error("Error al cargar peliculas.json.", e);
-            }
+            } catch(e) { console.error("Error cargando peliculas.json", e); }
 
-            // 2. Cargar y configurar el HERO Dinámico desde hero.json
+            // 2. Cargar Banners del Hero de forma segura
             try {
-                const hRes = await fetch('hero.json');
-                heroDB = await hRes.json();
-                
-                // Iniciar la rotación automática cada 10 segundos
-                startHeroRotation();
+                const resHero = await fetch('hero.json');
+                heroDB = await resHero.json();
+                startHeroRotation(); // ENCENDEMOS EL MOTOR
             } catch(e) {
-                console.error("Error al cargar hero.json.", e);
+                console.error("Error leyendo hero.json, usando respaldo local", e);
+                // Respaldo de emergencia por si falla la lectura externa
+                heroDB = [
+                    { "titulo": "Look at!", "desc": "Un secuestro que sale terriblemente mal.", "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg", "target_id": "look-at-2026" },
+                    { "titulo": "Lumera Play", "desc": "Contenido exclusivo.", "imagen_banner": "https://i.imgur.com/O22zpTd.png", "target_id": null },
+                    { "titulo": "Lumera Kids", "desc": "Sección familiar.", "imagen_banner": "https://i.imgur.com/albi71Z.jpeg", "target_id": null }
+                ];
+                startHeroRotation();
             }
-
-            // Ocultar botones provisionales si es necesario
-            const initMenuBtn = document.querySelector('.menuBtn');
-            const initSearchBtn = document.querySelector('.search-nav-btn');
-            if(initMenuBtn) initMenuBtn.style.display = 'none';
-            if(initSearchBtn) initSearchBtn.style.display = 'none';
             
             setupAppView();
         }
 
-        // --- MOTOR DE ROTACIÓN AUTOMÁTICA DEL HERO (10 SEGUNDOS) ---
+        // ========================================================
+        // MOTOR DEL CARRUSEL: SIN BARRERAS Y SEGURO
+        // ========================================================
         function startHeroRotation() {
             if (!heroDB || heroDB.length === 0) return;
             
-            // Renderiza el primer banner de inmediato
+            // Forzar primer render inmediato
             updateHeroUI();
 
-            // Limpia cualquier intervalo viejo para evitar aceleraciones locas
             if (heroInterval) clearInterval(heroInterval);
 
-            // Cada 10000 milisegundos (10 segundos) cambia al siguiente banner de forma aleatoria
+            // Rotación estricta y limpia cada 10 segundos
             heroInterval = setInterval(() => {
-                currentHeroIndex = Math.floor(Math.random() * heroDB.length);
+                currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
                 updateHeroUI();
             }, 10000);
         }
@@ -1096,37 +1048,36 @@
         function updateHeroUI() {
             if (!heroDB || heroDB.length === 0) return;
             const currentHero = heroDB[currentHeroIndex];
-            const tabs = ['Home', 'Series', 'Peliculas', 'Kids'];
 
-            tabs.forEach(tab => {
-                const imgEl = document.getElementById(`heroImg${tab}`);
-                const titleEl = document.getElementById(`heroTitle${tab}`);
-                const descEl = document.getElementById(`heroDesc${tab}`);
-                const btnEl = document.getElementById(`heroBtn${tab}`);
-                const bannerContainer = document.getElementById(`heroBanner${tab}`);
+            const imgEl = document.getElementById("heroImgGlobal");
+            const titleEl = document.getElementById("heroTitleGlobal");
+            const descEl = document.getElementById("heroDescGlobal");
+            const btnEl = document.getElementById("heroBtnGlobal");
+            const bannerContainer = document.getElementById("heroBannerGlobal");
 
-                if (imgEl) imgEl.src = currentHero.imagen_banner;
-                if (titleEl && currentHero.titulo) titleEl.textContent = currentHero.titulo;
-                if (descEl && currentHero.desc) descEl.textContent = currentHero.desc;
+            if (imgEl) imgEl.src = currentHero.imagen_banner;
+            if (titleEl) titleEl.textContent = currentHero.titulo || "Lumera Play";
+            if (descEl) descEl.textContent = currentHero.desc || "";
 
-                // Definimos la acción del clic
-                const actionClick = () => {
-                    if (currentHero.target_id) {
-                        showDetails(currentHero.target_id);
-                    } else if (currentHero.url && currentHero.url !== "#") {
-                        window.location.href = currentHero.url;
-                    }
-                };
-
-                // Asignar el clic a todo el banner gigante y al botón
+            // Configurar interactividad según el "target_id"
+            if (currentHero.target_id) {
                 if (bannerContainer) {
                     bannerContainer.style.cursor = 'pointer';
                     bannerContainer.onclick = (e) => {
-                        if(e.target.tagName !== 'BUTTON') actionClick();
+                        if(e.target.tagName !== 'BUTTON') showDetails(currentHero.target_id);
                     };
                 }
-                if (btnEl) btnEl.onclick = actionClick;
-            });
+                if (btnEl) {
+                    btnEl.style.display = 'inline-block';
+                    btnEl.onclick = () => showDetails(currentHero.target_id);
+                }
+            } else {
+                if (bannerContainer) {
+                    bannerContainer.style.cursor = 'default';
+                    bannerContainer.onclick = null;
+                }
+                if (btnEl) btnEl.style.display = 'none';
+            }
         }
 
         function setupAppView() {
@@ -1139,27 +1090,48 @@
             renderSparks();
         }
 
-        // --- SISTEMA DE ENRUTADO DE NAVEGACIÓN ---
         function switchPage(pageId) {
             if (!activeProfile && pageId !== 'profiles') {
                 goToProfilesScreen();
                 return;
             }
 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Sistema de pestañas: El Hero se mantiene fijo arriba del Inicio
+            const homeContainer = document.getElementById('home');
+            const heroBox = document.getElementById('heroBannerGlobal');
+
+            if (pageId === 'home' || pageId === 'series' || pageId === 'peliculas' || pageId === 'kids') {
+                homeContainer.classList.add('active');
+                // Movemos el bloque del Hero al principio del contenedor para mantenerlo visible
+                homeContainer.insertBefore(heroBox, homeContainer.firstChild);
+                
+                // Apagar todas las sub-vistas internas de cuadrículas
+                document.getElementById('homeRows').style.display = pageId === 'home' ? 'block' : 'none';
+                document.getElementById('seriesRows').style.display = pageId === 'series' ? 'block' : 'none';
+                document.getElementById('peliculasRows').style.display = pageId === 'peliculas' ? 'block' : 'none';
+                document.getElementById('kidsRows').style.display = pageId === 'kids' ? 'block' : 'none';
+                
+                // Apagar vistas especiales ajenas
+                document.getElementById('spark').classList.remove('active');
+                document.getElementById('searchPage').classList.remove('active');
+                document.getElementById('detailsPage').classList.remove('active');
+                document.getElementById('profiles').classList.remove('active');
+                
+                renderContent(pageId);
+            } else {
+                // Si vas a Spark, Buscar o Detalles, ocultamos el catálogo completo e inicio
+                homeContainer.classList.remove('active');
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) targetPage.classList.add('active');
+            }
+
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            
-            const targetPage = document.getElementById(pageId);
-            if (targetPage) targetPage.classList.add('active');
-            
             const activeTab = document.querySelector(`.tab[data-target="${pageId}"]`);
             if (activeTab) activeTab.classList.add('active');
             
             window.scrollTo({ top: 0 });
-
-            if (pageId === 'home' || pageId === 'series' || pageId === 'peliculas' || pageId === 'kids') {
-                renderContent(pageId);
-            }
         }
 
         function toggleSidebar() {
@@ -1168,7 +1140,6 @@
             overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
-        // --- NÚCLEO DE RENDERIZADO GRÁFICO (CATÁLOGO) ---
         function renderContent(viewType) {
             let data = [];
             let rowsConfig = [];
@@ -1183,19 +1154,17 @@
             } else if (viewType === 'series') {
                 data = contentDB.filter(item => item.type === 'serie' || item.type === 'ambos');
                 rowsConfig = [
-                    { title: "Todas las Series", filter: () => true },
-                    { title: "Acción & Drama", filter: item => item.genres.includes('accion') || item.genres.includes('drama') }
+                    { title: "Todas las Series", filter: () => true }
                 ];
             } else if (viewType === 'peliculas') {
                 data = contentDB.filter(item => item.type === 'pelicula' || item.type === 'ambos');
                 rowsConfig = [
-                    { title: "Largometrajes y Cortos", filter: () => true },
-                    { title: "Fantasía y Ciencia Ficción", filter: item => item.genres.includes('fantasia') || item.genres.includes('scifi') }
+                    { title: "Largometrajes y Cortos", filter: () => true }
                 ];
             } else if (viewType === 'kids') {
                 data = contentDB.filter(item => item.age === 0 || item.genres.includes('kids'));
                 rowsConfig = [
-                    { title: "Diversión para toda la Familia", filter: () => true }
+                    { title: "Diversión en Familia", filter: () => true }
                 ];
             }
 
@@ -1242,29 +1211,23 @@
             if (el) el.scrollLeft += (dir * 300);
         }
 
-        // --- MANEJO DEL REPRODUCTOR MAESTRO Y DETALLES ---
         function showDetails(id) {
             const item = contentDB.find(c => c.id === id);
             if (!item) return;
 
             switchPage('detailsPage');
             const container = document.getElementById('detailsViewContainer');
-            container.innerHTML = '';
-
-            const mainView = document.createElement('div');
-            mainView.innerHTML = `
+            container.innerHTML = `
                 <button class="back-btn" onclick="switchPage('home')">← Volver</button>
                 <div class="details-main">
                     <img src="${item.img}" alt="${item.title}" class="details-poster">
                     <div class="details-info">
                         <h2 class="details-title">${item.title}</h2>
-                        <div class="details-meta">${item.year} • ${item.age === 0 ? 'Todo Público' : '+'+item.age} • ${item.genres.join(', ').toUpperCase()}</div>
+                        <div class="details-meta">${item.year} • ${item.age === 0 ? 'Todo Público' : '+'+item.age}</div>
                         <p class="details-desc">${item.desc}</p>
-                        
                         <div class="video-player-container">
                             <video id="lumeraVideoPlayer" controls controlsList="nodownload" playsinline></video>
                         </div>
-
                         <div class="seasons-section" id="seasonsSection" style="display: none;">
                             <select class="season-selector" id="seasonSelector" onchange="changeSeason()"></select>
                             <div class="episodes-list" id="episodesList"></div>
@@ -1272,194 +1235,91 @@
                     </div>
                 </div>
             `;
-            container.appendChild(mainView);
-
-            window.history.pushState({ isDetails: true, itemId: id }, "");
 
             const videoElement = document.getElementById('lumeraVideoPlayer');
-            
             if (item.isSeries && item.seasons && item.seasons.length > 0) {
                 document.getElementById('seasonsSection').style.display = 'block';
                 const selector = document.getElementById('seasonSelector');
-                selector.innerHTML = '';
-                
                 item.seasons.forEach((season, index) => {
                     const opt = document.createElement('option');
                     opt.value = index;
                     opt.textContent = season.name;
                     selector.appendChild(opt);
                 });
-
                 window.currentViewingSeries = item;
                 changeSeason(0, 0);
             } else {
                 videoElement.src = item.url;
-                configureTracks(videoElement, item.tracks);
             }
         }
-
-        window.onpopstate = function(event) {
-            if (event.state && event.state.isDetails) {
-                showDetails(event.state.itemId);
-            } else {
-                if(activeProfile) switchPage('home');
-                else goToProfilesScreen();
-            }
-        };
 
         function changeSeason(forcedSeasonIdx = null, forcedEpisodeIdx = null) {
             const item = window.currentViewingSeries;
             if (!item) return;
-
             const selector = document.getElementById('seasonSelector');
             const seasonIdx = forcedSeasonIdx !== null ? forcedSeasonIdx : parseInt(selector.value);
-            if (forcedSeasonIdx !== null) selector.value = seasonIdx;
-
             const season = item.seasons[seasonIdx];
             const listContainer = document.getElementById('episodesList');
             listContainer.innerHTML = '';
 
-            if(!season || !season.episodes) return;
-
             season.episodes.forEach((ep, epIdx) => {
                 const row = document.createElement('div');
                 row.className = `episode-item ${forcedEpisodeIdx === epIdx ? 'active' : ''}`;
-                row.id = `ep_item_${epIdx}`;
-                row.innerHTML = `
-                    <div class="episode-title">${ep.title}</div>
-                    <div class="episode-play-icon">▶</div>
-                `;
-                row.onclick = () => playEpisode(seasonIdx, epIdx);
+                row.innerHTML = `<div class="episode-title">${ep.title}</div><div class="episode-play-icon">▶</div>`;
+                row.onclick = () => {
+                    document.querySelectorAll('.episode-item').forEach(el => el.classList.remove('active'));
+                    row.classList.add('active');
+                    document.getElementById('lumeraVideoPlayer').src = ep.url;
+                    document.getElementById('lumeraVideoPlayer').play().catch(()=>{});
+                };
                 listContainer.appendChild(row);
             });
-
-            if (forcedEpisodeIdx !== null) {
-                playEpisode(seasonIdx, forcedEpisodeIdx);
+            if (forcedEpisodeIdx !== null && season.episodes[forcedEpisodeIdx]) {
+                document.getElementById('lumeraVideoPlayer').src = season.episodes[forcedEpisodeIdx].url;
             }
         }
 
-        function playEpisode(seasonIdx, epIdx) {
-            const item = window.currentViewingSeries;
-            const episode = item.seasons[seasonIdx].episodes[epIdx];
-            const videoElement = document.getElementById('lumeraVideoPlayer');
-
-            document.querySelectorAll('.episode-item').forEach(el => el.classList.remove('active'));
-            const activeRow = document.getElementById(`ep_item_${epIdx}`);
-            if(activeRow) activeRow.classList.add('active');
-
-            videoElement.src = episode.url;
-            configureTracks(videoElement, episode.tracks);
-            videoElement.play().catch(()=>{});
-        }
-
-        function configureTracks(videoElement, tracks) {
-            Array.from(videoElement.querySelectorAll('track')).forEach(t => t.remove());
-            if (tracks && tracks.length > 0) {
-                tracks.forEach((track, idx) => {
-                    const tNode = document.createElement('track');
-                    tNode.kind = "subtitles";
-                    tNode.label = track.label;
-                    tNode.srclang = track.srclang;
-                    tNode.src = track.src;
-                    if(idx === 0) tNode.default = true;
-                    videoElement.appendChild(tNode);
-                });
-            }
-        }
-
-        // --- MOTOR DE BÚSQUEDA ---
         function executeSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
             const grid = document.getElementById('searchResultsGrid');
             const metaTitle = document.getElementById('searchMetaTitle');
             grid.innerHTML = '';
+            if (!query) { metaTitle.textContent = "Escribe algo para buscar"; return; }
 
-            if (!query) {
-                metaTitle.textContent = "Escribe algo para buscar";
-                return;
-            }
-
-            const matched = contentDB.filter(item => 
-                item.title.toLowerCase().includes(query) || 
-                item.genres.some(g => g.toLowerCase().includes(query)) ||
-                item.year.includes(query)
-            );
-
-            if (matched.length === 0) {
-                metaTitle.textContent = `No se encontraron resultados para "${query}"`;
-                return;
-            }
-
+            const matched = contentDB.filter(item => item.title.toLowerCase().includes(query));
             metaTitle.textContent = `Resultados encontrados (${matched.length}):`;
             matched.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => showDetails(item.id);
-                card.innerHTML = `
-                    <img src="${item.img}" alt="${item.title}">
-                    <div class="card-info">
-                        <div class="card-title">${item.title}</div>
-                        <div class="card-meta">${item.year}</div>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
                 grid.appendChild(card);
-            });
-        }
-
-        // --- COMUNIDAD SPARK ---
-        function renderSparks() {
-            const feed = document.getElementById('sparkFeed');
-            if(!feed) return;
-            feed.innerHTML = '';
-
-            if(sparks.length === 0) {
-                feed.innerHTML = `<div style="text-align:center; color:#444; font-size:12px; padding:20px;">No hay publicaciones comunitarias. ¡Sé el primero!</div>`;
-                return;
-            }
-
-            [...sparks].reverse().forEach(sp => {
-                const card = document.createElement('div');
-                card.className = 'spark-card';
-                card.innerHTML = `
-                    <div class="spark-card-header">
-                        <span class="spark-author">${sp.author}</span>
-                        <span class="spark-time">${sp.time}</span>
-                    </div>
-                    <div class="spark-body">${escapeHTML(sp.text)}</div>
-                `;
-                feed.appendChild(card);
             });
         }
 
         function postSpark() {
             const input = document.getElementById('sparkInput');
-            const text = input.value.trim();
-            if(!text) return;
-
-            const newSpark = {
-                author: activeProfile ? activeProfile.name : "Anónimo",
-                text: text,
-                time: new Date().toLocaleDateString()
-            };
-
-            sparks.push(newSpark);
+            if(!input.value.trim()) return;
+            sparks.push({ author: activeProfile ? activeProfile.name : "Anónimo", text: input.value.trim(), time: new Date().toLocaleDateString() });
             localStorage.setItem("lumera_sparks", JSON.stringify(sparks));
             input.value = '';
             renderSparks();
         }
 
-        // --- ESCAPE HTML PARA SEGURIDAD ---
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, tag => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-            }[tag] || tag));
+        function renderSparks() {
+            const feed = document.getElementById('sparkFeed');
+            if(!feed) return; feed.innerHTML = '';
+            if(sparks.length === 0) { feed.innerHTML = '<div style="padding:20px;text-align:center;color:#444;">No hay publicaciones.</div>'; return; }
+            [...sparks].reverse().forEach(sp => {
+                const card = document.createElement('div');
+                card.className = 'spark-card';
+                card.innerHTML = `<div class="spark-card-header"><span class="spark-author">${sp.author}</span></div><div class="spark-body">${sp.text}</div>`;
+                feed.appendChild(card);
+            });
         }
 
-        // --- GESTIÓN DE PERFILES ---
         function goToProfilesScreen() {
             activeProfile = null;
-            localStorage.removeItem("lumera_active_profile");
-            document.getElementById('activeProfileBtn').textContent = "Perfil";
             document.getElementById('navTabs').style.pointerEvents = "none";
             document.getElementById('navTabs').style.opacity = "0.2";
             switchPage('profiles');
@@ -1467,163 +1327,51 @@
         }
 
         function renderProfilesGrid() {
-            const layout = document.getElementById('profilesLayout');
-            layout.innerHTML = '';
-
+            const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
             profiles.forEach((p, idx) => {
                 const slot = document.createElement('div');
                 slot.className = 'profile-slot';
-                
-                let avatarUi = '';
-                if(p.avatar === 'LETTER') {
-                    avatarUi = `<div class="profile-avatar-box">${p.avatarVal}</div>`;
-                } else {
-                    avatarUi = `<img src="${p.avatarVal}" class="profile-avatar-box">`;
-                }
-
-                slot.innerHTML = `
-                    ${avatarUi}
-                    <div class="profile-slot-name">${p.name}</div>
-                    <div style="font-size:9px; color:#444; text-transform:uppercase; font-weight:600; margin-top:2px;" onclick="event.stopPropagation(); openEditProfileModal(${idx})">Editar</div>
-                `;
-                slot.onclick = () => selectProfile(idx);
+                let av = p.avatar === 'LETTER' ? `<div class="profile-avatar-box">${p.name[0]}</div>` : `<img src="${AVATAR_IMAGES[0]}" class="profile-avatar-box">`;
+                slot.innerHTML = `${av}<div class="profile-slot-name">${p.name}</div><div style="font-size:9px;color:#444;" onclick="event.stopPropagation(); openEditProfileModal(${idx})">Editar</div>`;
+                slot.onclick = () => {
+                    activeProfile = p;
+                    document.getElementById('activeProfileBtn').textContent = p.name;
+                    document.getElementById('navTabs').style.pointerEvents = "auto";
+                    document.getElementById('navTabs').style.opacity = "1";
+                    switchPage('home');
+                };
                 layout.appendChild(slot);
             });
-
             if(profiles.length < 4) {
-                const addSlot = document.createElement('div');
-                addSlot.className = 'profile-slot';
-                addSlot.onclick = () => openCreateProfileModal();
-                addSlot.innerHTML = `
-                    <div class="profile-avatar-box add-profile-box">+</div>
-                    <div class="profile-slot-name" style="color:#444;">Añadir</div>
-                `;
-                layout.appendChild(addSlot);
+                const add = document.createElement('div'); add.className = 'profile-slot';
+                add.onclick = openCreateProfileModal;
+                add.innerHTML = '<div class="profile-avatar-box">+</div><div class="profile-slot-name">Añadir</div>';
+                layout.appendChild(add);
             }
         }
 
-        function selectProfile(idx) {
-            activeProfile = profiles[idx];
-            localStorage.setItem("lumera_active_profile", JSON.stringify(activeProfile));
-            updateProfileWidgetUI();
-            
-            document.getElementById('navTabs').style.pointerEvents = "auto";
-            document.getElementById('navTabs').style.opacity = "1";
-            
-            switchPage('home');
-        }
-
-        function updateProfileWidgetUI() {
-            const btn = document.getElementById('activeProfileBtn');
-            if(btn && activeProfile) btn.textContent = activeProfile.name;
-        }
-
-        function openCreateProfileModal() {
-            currentIdx = null;
-            document.getElementById('modalTitle').textContent = "Crear Perfil";
-            document.getElementById('profileName').value = '';
-            document.getElementById('deleteProfileBtn').style.display = 'none';
-            setProfileMode('DARK');
-            setAvatarType('LETTER');
-            openModal();
-        }
-
-        function openEditProfileModal(idx) {
-            currentIdx = idx;
-            const p = profiles[idx];
-            document.getElementById('modalTitle').textContent = "Editar Perfil";
-            document.getElementById('profileName').value = p.name;
-            document.getElementById('deleteProfileBtn').style.display = 'block';
-            setProfileMode(p.mode);
-            setAvatarType(p.avatar, p.avatarVal);
-            openModal();
-        }
-
+        function openCreateProfileModal() { currentIdx = null; document.getElementById('profileName').value = ''; openModal(); }
+        function openEditProfileModal(idx) { currentIdx = idx; document.getElementById('profileName').value = profiles[idx].name; openModal(); }
         function openModal() { document.getElementById('modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-        function setProfileMode(mode) {
-            selectedMode = mode;
-            document.getElementById('modeDark').classList.toggle('active', mode === 'DARK');
-            document.getElementById('modeLight').classList.toggle('active', mode === 'LIGHT');
-        }
-
-        function setAvatarType(type, forcedValue = null) {
-            selectedAvatar = type;
-            document.getElementById('avLetter').classList.toggle('active', type === 'LETTER');
-            document.getElementById('avCustom').classList.toggle('active', type === 'CUSTOM');
-            renderAvatarGrid(forcedValue);
-        }
-
-        function renderAvatarGrid(forcedValue = null) {
-            const grid = document.getElementById('avatarGrid');
-            grid.innerHTML = '';
-            const dataPool = selectedAvatar === 'LETTER' ? AVATAR_LETTERS : AVATAR_IMAGES;
-            
-            if(forcedValue !== null) {
-                selectedAvatarVal = forcedValue;
-            } else {
-                selectedAvatarVal = dataPool[0];
-            }
-
-            dataPool.forEach(val => {
-                const item = document.createElement('div');
-                item.className = `avatar-item ${selectedAvatarVal === val ? 'active' : ''}`;
-                
-                if(selectedAvatar === 'LETTER') {
-                    item.textContent = val;
-                } else {
-                    item.innerHTML = `<img src="${val}" style="width:100%; height:100%; object-fit:cover; border-radius:3px;">`;
-                }
-
-                item.onclick = () => {
-                    document.querySelectorAll('.avatar-item').forEach(el => el.classList.remove('active'));
-                    item.classList.add('active');
-                    selectedAvatarVal = val;
-                };
-                grid.appendChild(item);
-            });
-        }
+        function setProfileMode(m) { selectedMode = m; }
+        function setAvatarType(t) { selectedAvatar = t; }
 
         function saveProfile() {
             const name = document.getElementById('profileName').value.trim();
             if(!name) return;
-
-            const profileData = {
-                name: name,
-                mode: selectedMode,
-                avatar: selectedAvatar,
-                avatarVal: selectedAvatarVal
-            };
-
-            if(currentIdx !== null) {
-                profiles[currentIdx] = profileData;
-                if(activeProfile && activeProfile.name === profiles[currentIdx].name) {
-                    activeProfile = profileData;
-                    localStorage.setItem("lumera_active_profile", JSON.stringify(activeProfile));
-                }
-            } else {
-                profiles.push(profileData);
-            }
-
+            if(currentIdx !== null) profiles[currentIdx].name = name;
+            else profiles.push({ name, mode: "DARK", avatar: "LETTER" });
             localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
-            closeModal();
-            renderProfilesGrid();
-            updateProfileWidgetUI();
+            closeModal(); renderProfilesGrid();
         }
 
         function deleteProfile() {
-            if(currentIdx !== null) {
-                profiles.splice(currentIdx, 1);
-                localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
-                activeProfile = null;
-                localStorage.removeItem("lumera_active_profile");
-            }
-            closeModal();
-            goToProfilesScreen();
+            if(currentIdx !== null) profiles.splice(currentIdx, 1);
+            localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
+            closeModal(); goToProfilesScreen();
         }
 
-        // --- DISPARADOR AUTOMÁTICO INICIAL ---
         document.addEventListener('DOMContentLoaded', initLumera);
     </script>
 </body>
