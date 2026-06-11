@@ -15,7 +15,7 @@
             background: #0b0b0b; 
             color: white; 
             font-family: 'Poppins', sans-serif; 
-            overflow-x: hidden; 
+            overflow-x: hidden; \
         }
         
         /* =========================================
@@ -126,19 +126,6 @@
             left: 0; 
         }
         
-        .sidebar-item { 
-            padding: 10px 0; 
-            font-size: 15px; 
-            font-weight: 600; 
-            color: #8c8c8c; 
-            cursor: pointer; 
-            transition: color 0.2s; 
-        }
-        
-        .sidebar-item:hover { 
-            color: white; 
-        }
-        
         .sidebar-overlay { 
             position: fixed; 
             top: 0; 
@@ -178,8 +165,8 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            opacity: 0.45; 
-            transition: opacity 0.5s ease-in-out;
+            opacity: 0.55; 
+            transition: opacity 0.4s ease-in-out;
         }
         
         .banner-gradient {
@@ -338,7 +325,7 @@
         }
         
         /* =========================================
-           8. VISTA DE DETALLES (REPRODUCTOR MAESTRO)
+           8. VISTA DE DETALLES (REPRODUCTOR)
         ========================================= */
         .details-view { 
             padding: 20px 4%; 
@@ -354,12 +341,9 @@
             padding: 0; 
             margin-bottom: 15px; 
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
-        .back-btn:hover { 
-            color: white; 
-        }
+        .back-btn:hover { color: white; }
         
         .details-main { 
             display: flex; 
@@ -377,484 +361,83 @@
             border: 1px solid #1a1a1a;
         }
         
-        .details-info { 
-            flex: 1; 
-            min-width: 280px; 
-        }
+        .details-info { flex: 1; min-width: 280px; }
+        .details-title { font-size: 26px; font-weight: 600; margin: 0 0 6px 0; }
+        .details-meta { font-size: 11px; color: #8c8c8c; margin-bottom: 12px; font-weight: 600; }
+        .details-desc { font-size: 13px; color: #b3b3b3; line-height: 1.5; margin: 0 0 20px 0; }
         
-        .details-title { 
-            font-size: 26px; 
-            font-weight: 600; 
-            margin: 0 0 6px 0; 
-            line-height: 1.1;
-        }
-        
-        .details-meta { 
-            font-size: 11px; 
-            color: #8c8c8c; 
-            margin-bottom: 12px; 
-            font-weight: 600;
-        }
-        
-        .details-desc { 
-            font-size: 13px; 
-            color: #b3b3b3; 
-            line-height: 1.5; 
-            margin: 0 0 20px 0; 
-        }
-        
-        /* CONTENEDOR DE REPRODUCCIÓN PREMIUM */
         .video-player-container {
-            width: 100%;
-            max-width: 850px;
-            background: black;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #1a1a1a;
-            margin-top: 15px;
+            width: 100%; max-width: 850px; background: black; border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a; margin-top: 15px;
         }
 
-        video { 
-            width: 100%; 
-            display: block; 
-            outline: none;
-        }
+        video { width: 100%; display: block; outline: none; }
         
-        /* SUBTÍTULOS CONFIGURADOS EN MODO CINE */
-        video::cue {
-            background: rgba(0, 0, 0, 0.75);
-            color: #ffffff;
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-        }
-
-        /* ESTRUCTURA DE TEMPORADAS Y EPISODIOS */
-        .seasons-section {
-            margin-top: 30px;
-            max-width: 850px;
-        }
-
+        .seasons-section { margin-top: 30px; max-width: 850px; }
         .season-selector {
-            background: #111;
-            color: white;
-            border: 1px solid #222;
-            padding: 8px 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 4px;
-            outline: none;
-            margin-bottom: 15px;
-            cursor: pointer;
+            background: #111; color: white; border: 1px solid #222; padding: 8px 12px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer;
         }
 
-        .episodes-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
+        .episodes-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px;}
         .episode-item {
-            display: flex;
-            align-items: center;
-            background: #111;
-            border: 1px solid #1a1a1a;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
+            display: flex; align-items: center; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; border-radius: 6px; cursor: pointer;
         }
-
-        .episode-item:hover, .episode-item.active {
-            background: #161616;
-            border-color: #333;
-        }
-
-        .episode-item.active {
-            border-color: white;
-        }
-
-        .episode-title {
-            font-size: 13px;
-            font-weight: 600;
-            flex-grow: 1;
-        }
-
-        .episode-play-icon {
-            font-size: 14px;
-            color: #8c8c8c;
-        }
-
-        .episode-item:hover .episode-play-icon,
-        .episode-item.active .episode-play-icon {
-            color: white;
-        }
-
+        .episode-item:hover, .episode-item.active { background: #161616; border-color: white; }
+        .episode-title { font-size: 13px; font-weight: 600; flex-grow: 1; }
+        
         /* =========================================
-           9. SECCIÓN SPARK (ZONA DE COMUNIDAD)
+           9. SECCIÓN SPARK (COMUNIDAD)
         ========================================= */
-        .spark-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        .spark-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .spark-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .spark-header p {
-            font-size: 11px;
-            color: #666;
-            margin: 0;
-        }
-
-        .spark-composer {
-            background: #111;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-        }
-
+        .spark-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
+        .spark-header { text-align: center; margin-bottom: 25px; }
+        .spark-header h2 { font-size: 20px; font-weight: 600; text-transform: uppercase; }
+        .spark-header p { font-size: 11px; color: #666; }
+        .spark-composer { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px; margin-bottom: 20px; }
         .spark-textarea {
-            width: 100%;
-            height: 70px;
-            background: none;
-            border: none;
-            resize: none;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            outline: none;
-            box-sizing: border-box;
-            padding: 0;
+            width: 100%; height: 70px; background: none; border: none; resize: none; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; outline: none;
         }
+        .spark-composer-footer { display: flex; justify-content: flex-end; margin-top: 8px; border-top: 1px solid #1a1a1a; padding-top: 8px; }
+        .spark-btn { background: white; color: black; border: none; padding: 5px 16px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; }
+        .spark-feed { display: flex; flex-direction: column; gap: 12px; }
+        .spark-card { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 14px; }
+        .spark-author { font-size: 12px; font-weight: 600; }
+        .spark-body { font-size: 13px; color: #cccccc; margin-top: 5px; }
 
-        .spark-textarea::placeholder {
-            color: #444;
-        }
-
-        .spark-composer-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 8px;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 8px;
-        }
-
-        .spark-btn {
-            background: white;
-            color: black;
-            border: none;
-            padding: 5px 16px;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            text-transform: uppercase;
-        }
-
-        .spark-btn:hover {
-            opacity: 0.9;
-        }
-
-        .spark-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .spark-card {
-            background: #111;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            padding: 14px;
-        }
-
-        .spark-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        .spark-author {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .spark-time {
-            font-size: 10px;
-            color: #555;
-        }
-
-        .spark-body {
-            font-size: 13px;
-            color: #cccccc;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-        
         /* =========================================
-           10. SECCIÓN DE BÚSQUEDA INTEGRADA
+           10. BÚSQUEDA
         ========================================= */
-        .search-container {
-            padding: 20px 4%;
-        }
-
-        .search-bar-wrapper {
-            max-width: 500px;
-            margin: 0 auto 25px auto;
-            position: relative;
-        }
-
+        .search-container { padding: 20px 4%; }
+        .search-bar-wrapper { max-width: 500px; margin: 0 auto 25px auto; }
         .search-input {
-            width: 100%;
-            background: #111;
-            border: 1px solid #1a1a1a;
-            padding: 10px 15px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            border-radius: 6px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
+            width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none;
         }
+        .search-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
 
-        .search-input:focus {
-            border-color: #444;
-        }
-
-        .search-results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
         /* =========================================
-           11. MODAL DE GESTIÓN DE PERFILES
+           11. MODAL DE PERFILES Y COMPONENTES
         ========================================= */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
         }
-        
-        .modal-content {
-            background: #111;
-            border: 1px solid #1a1a1a;
-            padding: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 360px;
-            box-sizing: border-box;
-        }
-        
-        .modal-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0 0 15px 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-        
+        .modal-content { background: #111; border: 1px solid #1a1a1a; padding: 25px; border-radius: 8px; width: 90%; max-width: 360px; box-sizing: border-box; }
+        .modal-title { font-size: 15px; font-weight: 600; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
         .modal-input {
-            width: 100%;
-            background: #1a1a1a;
-            border: 1px solid #222;
-            padding: 8px 12px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 12px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            outline: none;
-            margin-bottom: 15px;
+            width: 100%; background: #1a1a1a; border: 1px solid #222; padding: 8px 12px; color: white; font-family: 'Poppins', sans-serif; font-size: 12px; border-radius: 4px; box-sizing: border-box; outline: none; margin-bottom: 15px;
         }
-        
-        .modal-options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .opt-btn {
-            background: #1a1a1a;
-            color: #8c8c8c;
-            border: 1px solid #222;
-            padding: 6px;
-            font-size: 11px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        
-        .opt-btn.active {
-            background: white;
-            color: black;
-            border-color: white;
-        }
-        
-        .avatar-grid-wrapper {
-            max-height: 110px;
-            overflow-y: auto;
-            border: 1px solid #222;
-            background: #161616;
-            border-radius: 4px;
-            padding: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .avatar-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-        }
-        
-        .avatar-item {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #222;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #8c8c8c;
-            object-fit: cover;
-        }
-        
-        .avatar-item:hover {
-            border-color: #444;
-        }
-        
-        .avatar-item.active {
-            border-color: white;
-            color: white;
-            background: #333;
-        }
-        
-        .modal-footer-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .action-btn {
-            width: 100%;
-            padding: 8px;
-            font-size: 11px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-            border: none;
-        }
-        
+        .modal-footer-btns { display: flex; flex-direction: column; gap: 8px; }
+        .action-btn { width: 100%; padding: 8px; font-size: 11px; font-family: 'Poppins', sans-serif; font-weight: 600; border-radius: 4px; cursor: pointer; text-transform: uppercase; border: none; }
         .btn-primary { background: white; color: black; }
         .btn-secondary { background: #222; color: #8c8c8c; border: 1px solid #333; }
-        .btn-danger { background: none; color: #b32424; margin-top: 4px; }
-        .btn-danger:hover { text-decoration: underline; }
-        
-        /* PANEL INICIAL DE SELECCIÓN DE PERFIL */
-        .profile-select-screen {
-            max-width: 500px;
-            margin: 60px auto 0 auto;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .profile-select-title {
-            font-size: 18px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-        }
-        
-        .profiles-layout {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        
-        .profile-slot {
-            width: 90px;
-            cursor: pointer;
-            text-align: center;
-        }
-        
+
+        .profile-select-screen { max-width: 500px; margin: 60px auto 0 auto; text-align: center; padding: 0 20px; }
+        .profile-select-title { font-size: 18px; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; }
+        .profiles-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .profile-slot { width: 90px; cursor: pointer; text-align: center; }
         .profile-avatar-box {
-            width: 90px;
-            height: 90px;
-            background: #111;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 600;
-            color: #8c8c8c;
-            transition: border-color 0.2s, transform 0.2s;
-            object-fit: cover;
+            width: 90px; height: 90px; background: #111; border: 1px solid #1a1a1a; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 600; color: #8c8c8c; transition: all 0.2s;
         }
-        
-        .profile-slot:hover .profile-avatar-box {
-            border-color: white;
-            transform: scale(1.02);
-        }
-        
-        .profile-slot-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: #8c8c8c;
-            transition: color 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .profile-slot:hover .profile-slot-name {
-            color: white;
-        }
-        
-        .add-profile-box {
-            font-size: 24px;
-            color: #444;
-        }
-        
-        .profile-slot:hover .add-profile-box {
-            color: #8c8c8c;
-            border-color: #444;
-        }
+        .profile-slot:hover .profile-avatar-box { border-color: white; transform: scale(1.02); color: white; }
+        .profile-slot-name { font-size: 11px; font-weight: 600; color: #8c8c8c; }
+        .profile-slot:hover .profile-slot-name { color: white; }
     </style>
 </head>
 <body>
@@ -863,7 +446,7 @@
         <div class="menuBtn" onclick="toggleSidebar()">☰</div>
         <h1 class="nav-logo" onclick="switchPage('home')">Lumera Play</h1>
         
-        <div class="nav-tabs" id="navTabs">
+        <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
             <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
             <div class="tab" data-target="series" onclick="switchPage('series')">Series</div>
             <div class="tab" data-target="peliculas" onclick="switchPage('peliculas')">Películas</div>
@@ -872,19 +455,10 @@
         </div>
         
         <div class="nav-right">
-            <button class="search-nav-btn" onclick="switchPage('searchPage')">🔍</button>
+            <button class="search-nav-btn" id="searchNavBtn" style="display:none;" onclick="switchPage('searchPage')">🔍</button>
             <button class="profile-nav-btn" id="activeProfileBtn" onclick="goToProfilesScreen()">Perfil</button>
         </div>
     </div>
-
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-item" onclick="switchPage('home'); toggleSidebar();">Inicio</div>
-        <div class="sidebar-item" onclick="switchPage('series'); toggleSidebar();">Series</div>
-        <div class="sidebar-item" onclick="switchPage('peliculas'); toggleSidebar();">Películas</div>
-        <div class="sidebar-item" onclick="switchPage('kids'); toggleSidebar();">Kids</div>
-        <div class="sidebar-item" onclick="switchPage('spark'); toggleSidebar();">Spark</div>
-    </div>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <div class="page active" id="profiles">
         <div class="profile-select-screen">
@@ -895,40 +469,27 @@
 
     <div class="page" id="home">
         <div class="banner" id="heroBannerGlobal">
-            <img id="heroImgGlobal" src="" alt="Destacado">
+            <img id="heroImgGlobal" src="https://i.imgur.com/PYu8Cmo.jpeg" alt="Destacado">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitleGlobal">Cargando...</h2>
-                <p class="banner-desc" id="heroDescGlobal">Explora el contenido exclusivo de Lumera Play.</p>
+                <h2 class="banner-logo" id="heroTitleGlobal">Look at!</h2>
+                <p class="banner-desc" id="heroDescGlobal">Un secuestro que sale terriblemente mal.</p>
                 <button class="banner-btn" id="heroBtnGlobal">Ver Ahora</button>
             </div>
         </div>
         <div class="row-container" id="homeRows"></div>
     </div>
 
-    <div class="page" id="series">
-        <div class="row-container" id="seriesRows"></div>
-    </div>
-
-    <div class="page" id="peliculas">
-        <div class="row-container" id="peliculasRows"></div>
-    </div>
-
-    <div class="page" id="kids">
-        <div class="row-container" id="kidsRows"></div>
-    </div>
+    <div class="page" id="series"><div class="row-container" id="seriesRows"></div></div>
+    <div class="page" id="peliculas"><div class="row-container" id="peliculasRows"></div></div>
+    <div class="page" id="kids"><div class="row-container" id="kidsRows"></div></div>
 
     <div class="page" id="spark">
         <div class="spark-container">
-            <div class="spark-header">
-                <h2>Spark</h2>
-                <p>¿Qué estás pensando hoy en la comunidad Lumera?</p>
-            </div>
+            <div class="spark-header"><h2>Spark</h2><p>Comunidad Lumera</p></div>
             <div class="spark-composer">
-                <textarea class="spark-textarea" id="sparkInput" placeholder="Comparte un pensamiento, teoría o reseña..."></textarea>
-                <div class="spark-composer-footer">
-                    <button class="spark-btn" onclick="postSpark()">Publicar</button>
-                </div>
+                <textarea class="spark-textarea" id="sparkInput" placeholder="Comparte un pensamiento con la comunidad..."></textarea>
+                <div class="spark-composer-footer"><button class="spark-btn" onclick="postSpark()">Publicar</button></div>
             </div>
             <div class="spark-feed" id="sparkFeed"></div>
         </div>
@@ -937,9 +498,8 @@
     <div class="page" id="searchPage">
         <div class="search-container">
             <div class="search-bar-wrapper">
-                <input type="text" class="search-input" id="searchInput" placeholder="Buscar por título, género o año..." oninput="executeSearch()">
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar contenido..." oninput="executeSearch()">
             </div>
-            <div class="row-title" id="searchMetaTitle">Escribe algo para buscar</div>
             <div class="search-results-grid" id="searchResultsGrid"></div>
         </div>
     </div>
@@ -950,95 +510,64 @@
 
     <div class="modal" id="modal">
         <div class="modal-content">
-            <h3 class="modal-title" id="modalTitle">Crear Perfil</h3>
-            <input type="text" id="profileName" class="modal-input" placeholder="Nombre del perfil" maxlength="15">
-            
-            <label class="modal-label">Modo Visual</label>
-            <div class="modal-options-grid">
-                <button class="opt-btn active" id="modeDark" onclick="setProfileMode('DARK')">Dark</button>
-                <button class="opt-btn" id="modeLight" onclick="setProfileMode('LIGHT')">Light</button>
-            </div>
-            
-            <label class="modal-label">Tipo de Avatar</label>
-            <div class="modal-options-grid">
-                <button class="opt-btn active" id="avLetter" onclick="setAvatarType('LETTER')">Inicial</button>
-                <button class="opt-btn" id="avCustom" onclick="setAvatarType('CUSTOM')">Imagen</button>
-            </div>
-            
-            <label class="modal-label" id="avatarGridLabel">Selecciona tu design</label>
-            <div class="avatar-grid-wrapper">
-                <div class="avatar-grid" id="avatarGrid"></div>
-            </div>
-            
+            <h3 class="modal-title">Crear Perfil</h3>
+            <input type="text" id="profileName" class="modal-input" placeholder="Nombre del perfil" maxlength="12">
             <div class="modal-footer-btns">
-                <button class="action-btn btn-primary" onclick="saveProfile()">Guardar</button>
+                <button class="action-btn btn-primary" onclick="saveProfile()">Crear</button>
                 <button class="action-btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="action-btn btn-danger" id="deleteProfileBtn" onclick="deleteProfile()">Eliminar Perfil</button>
             </div>
         </div>
     </div>
 
     <script>
-        const AVATAR_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-        const AVATAR_IMAGES = [
-            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&h=100&fit=crop",
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
-        ];
-
         let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
         let sparks = JSON.parse(localStorage.getItem("lumera_sparks")) || [];
-        let activeProfile = JSON.parse(localStorage.getItem("lumera_active_profile")) || null;
+        let activeProfile = null;
         
-        let currentIdx = null; 
-        let selectedMode = "DARK";
-        let selectedAvatar = "LETTER";
-        let selectedAvatarVal = "A";
-
         let contentDB = [];
-        let heroDB = [];
+        // Base de datos de respaldo local automática (Si falla el JSON por culpa de la URL file:///, este entra al rescate)
+        let heroDB = [
+            { "titulo": "Look at!", "desc": "Un secuestro que sale terriblemente mal. Explora esta atrapante historia.", "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg", "target_id": "look-at-2026" },
+            { "titulo": "Lumera Play", "desc": "Tu espacio definitivo de entretenimiento digital independiente.", "imagen_banner": "https://i.imgur.com/O22zpTd.png", "target_id": "lumera_intro_01" },
+            { "titulo": "Lumera Kids", "desc": "¡La sección más divertida! Contenido sano para disfrutar en familia.", "imagen_banner": "https://i.imgur.com/albi71Z.jpeg", "target_id": "lumera_intro_01" }
+        ];
         let currentHeroIndex = 0;
         let heroInterval = null;
 
         async function initLumera() {
-            // 1. Cargar catálogo general
+            // Cargar peliculas.json de forma segura
             try {
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
-            } catch(e) { console.error("Error cargando peliculas.json", e); }
+            } catch(e) {
+                console.warn("Bloqueo local detectado. Usando base de datos interna provisional.");
+                contentDB = [
+                    { "id": "lumera_intro_01", "title": "Lumera Intro", "year": "2026", "age": 0, "img": "https://i.imgur.com/KcIAK4D.png", "desc": "Bienvenido a Lumera Play.", "type": "ambos", "genres": ["accion"], "url": "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1", "isSeries": false },
+                    { "id": "look-at-2026", "title": "Look at!", "year": "2026", "age": 16, "img": "https://i.imgur.com/5YRXD8b.jpeg", "desc": "Fantasía | +16. Un secuestro que sale terriblemente mal.", "type": "serie", "genres": ["fantasia"], "isSeries": true, "seasons": [{"name": "Temporada 1", "episodes": [{"title": "1. El Secuestro", "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20PILOTO%201.mp4"}]}]}
+                ];
+            }
 
-            // 2. Cargar Banners del Hero de forma segura
+            // Intentar inyectar el hero externo si el navegador lo permite
             try {
                 const resHero = await fetch('hero.json');
-                heroDB = await resHero.json();
-                startHeroRotation(); // ENCENDEMOS EL MOTOR
+                const externalHero = await resHero.json();
+                if(externalHero && externalHero.length > 0) heroDB = externalHero;
             } catch(e) {
-                console.error("Error leyendo hero.json, usando respaldo local", e);
-                // Respaldo de emergencia por si falla la lectura externa
-                heroDB = [
-                    { "titulo": "Look at!", "desc": "Un secuestro que sale terriblemente mal.", "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg", "target_id": "look-at-2026" },
-                    { "titulo": "Lumera Play", "desc": "Contenido exclusivo.", "imagen_banner": "https://i.imgur.com/O22zpTd.png", "target_id": null },
-                    { "titulo": "Lumera Kids", "desc": "Sección familiar.", "imagen_banner": "https://i.imgur.com/albi71Z.jpeg", "target_id": null }
-                ];
-                startHeroRotation();
+                console.log("CORS Local detectado: Activando motor autónomo para el Hero.");
             }
-            
-            setupAppView();
+
+            renderProfilesGrid();
+            startHeroRotation();
         }
 
-        // ========================================================
-        // MOTOR DEL CARRUSEL: SIN BARRERAS Y SEGURO
-        // ========================================================
+        // ==========================================
+        // MOTOR REPARADO DEL HERO (BANNERS)
+        // ==========================================
         function startHeroRotation() {
-            if (!heroDB || heroDB.length === 0) return;
+            updateHeroUI(); // Pintar el primero de inmediato
+            if(heroInterval) clearInterval(heroInterval);
             
-            // Forzar primer render inmediato
-            updateHeroUI();
-
-            if (heroInterval) clearInterval(heroInterval);
-
-            // Rotación estricta y limpia cada 10 segundos
+            // Forzar rotación infinita estricta cada 10 segundos
             heroInterval = setInterval(() => {
                 currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
                 updateHeroUI();
@@ -1047,71 +576,39 @@
 
         function updateHeroUI() {
             if (!heroDB || heroDB.length === 0) return;
-            const currentHero = heroDB[currentHeroIndex];
+            const item = heroDB[currentHeroIndex];
 
             const imgEl = document.getElementById("heroImgGlobal");
             const titleEl = document.getElementById("heroTitleGlobal");
             const descEl = document.getElementById("heroDescGlobal");
             const btnEl = document.getElementById("heroBtnGlobal");
-            const bannerContainer = document.getElementById("heroBannerGlobal");
 
-            if (imgEl) imgEl.src = currentHero.imagen_banner;
-            if (titleEl) titleEl.textContent = currentHero.titulo || "Lumera Play";
-            if (descEl) descEl.textContent = currentHero.desc || "";
+            if (imgEl) imgEl.src = item.imagen_banner;
+            if (titleEl) titleEl.textContent = item.titulo;
+            if (descEl) descEl.textContent = item.desc;
 
-            // Configurar interactividad según el "target_id"
-            if (currentHero.target_id) {
-                if (bannerContainer) {
-                    bannerContainer.style.cursor = 'pointer';
-                    bannerContainer.onclick = (e) => {
-                        if(e.target.tagName !== 'BUTTON') showDetails(currentHero.target_id);
-                    };
-                }
-                if (btnEl) {
-                    btnEl.style.display = 'inline-block';
-                    btnEl.onclick = () => showDetails(currentHero.target_id);
-                }
-            } else {
-                if (bannerContainer) {
-                    bannerContainer.style.cursor = 'default';
-                    bannerContainer.onclick = null;
-                }
-                if (btnEl) btnEl.style.display = 'none';
+            if (btnEl) {
+                btnEl.onclick = () => {
+                    if(item.target_id) showDetails(item.target_id);
+                };
             }
-        }
-
-        function setupAppView() {
-            if (activeProfile) {
-                updateProfileWidgetUI();
-                switchPage('home');
-            } else {
-                goToProfilesScreen();
-            }
-            renderSparks();
         }
 
         function switchPage(pageId) {
-            if (!activeProfile && pageId !== 'profiles') {
-                goToProfilesScreen();
-                return;
-            }
-
-            // Sistema de pestañas: El Hero se mantiene fijo arriba del Inicio
             const homeContainer = document.getElementById('home');
             const heroBox = document.getElementById('heroBannerGlobal');
 
-            if (pageId === 'home' || pageId === 'series' || pageId === 'peliculas' || pageId === 'kids') {
+            // Control de pestañas de catálogo básicas
+            if (['home', 'series', 'peliculas', 'kids'].includes(pageId)) {
                 homeContainer.classList.add('active');
-                // Movemos el bloque del Hero al principio del contenedor para mantenerlo visible
-                homeContainer.insertBefore(heroBox, homeContainer.firstChild);
+                homeContainer.insertBefore(heroBox, homeContainer.firstChild); // Mover banner arriba
                 
-                // Apagar todas las sub-vistas internas de cuadrículas
                 document.getElementById('homeRows').style.display = pageId === 'home' ? 'block' : 'none';
                 document.getElementById('seriesRows').style.display = pageId === 'series' ? 'block' : 'none';
                 document.getElementById('peliculasRows').style.display = pageId === 'peliculas' ? 'block' : 'none';
                 document.getElementById('kidsRows').style.display = pageId === 'kids' ? 'block' : 'none';
                 
-                // Apagar vistas especiales ajenas
+                // Ocultar páginas secundarias
                 document.getElementById('spark').classList.remove('active');
                 document.getElementById('searchPage').classList.remove('active');
                 document.getElementById('detailsPage').classList.remove('active');
@@ -1119,96 +616,44 @@
                 
                 renderContent(pageId);
             } else {
-                // Si vas a Spark, Buscar o Detalles, ocultamos el catálogo completo e inicio
                 homeContainer.classList.remove('active');
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                
-                const targetPage = document.getElementById(pageId);
-                if (targetPage) targetPage.classList.add('active');
+                const target = document.getElementById(pageId);
+                if(target) target.classList.add('active');
             }
 
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             const activeTab = document.querySelector(`.tab[data-target="${pageId}"]`);
             if (activeTab) activeTab.classList.add('active');
-            
-            window.scrollTo({ top: 0 });
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            const overlay = document.getElementById('sidebarOverlay');
-            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
         function renderContent(viewType) {
-            let data = [];
-            let rowsConfig = [];
-            
-            if (viewType === 'home') {
-                data = contentDB;
-                rowsConfig = [
-                    { title: "Novedades Absolutas", filter: item => item.year === "2026" },
-                    { title: "Series recomendadas", filter: item => item.type === "serie" || item.type === "ambos" },
-                    { title: "Películas Imperdibles", filter: item => item.type === "pelicula" || item.type === "ambos" }
-                ];
-            } else if (viewType === 'series') {
-                data = contentDB.filter(item => item.type === 'serie' || item.type === 'ambos');
-                rowsConfig = [
-                    { title: "Todas las Series", filter: () => true }
-                ];
-            } else if (viewType === 'peliculas') {
-                data = contentDB.filter(item => item.type === 'pelicula' || item.type === 'ambos');
-                rowsConfig = [
-                    { title: "Largometrajes y Cortos", filter: () => true }
-                ];
-            } else if (viewType === 'kids') {
-                data = contentDB.filter(item => item.age === 0 || item.genres.includes('kids'));
-                rowsConfig = [
-                    { title: "Diversión en Familia", filter: () => true }
-                ];
-            }
-
             const targetContainer = document.getElementById(`${viewType}Rows`);
             if (!targetContainer) return;
             targetContainer.innerHTML = '';
 
-            rowsConfig.forEach((row, rIdx) => {
-                let filtered = data.filter(row.filter);
-                if (filtered.length === 0) return;
+            let filteredData = contentDB;
+            if (viewType === 'series') filteredData = contentDB.filter(i => i.type === 'serie');
+            if (viewType === 'peliculas') filteredData = contentDB.filter(i => i.type === 'pelicula');
+            if (viewType === 'kids') filteredData = contentDB.filter(i => i.age === 0);
 
-                const rowHtml = document.createElement('div');
-                rowHtml.style.marginBottom = "25px";
-                rowHtml.innerHTML = `
-                    <div class="row-title">${row.title}</div>
-                    <div class="carousel-wrapper">
-                        <div class="arrow arrow-left" onclick="scrollRow('${viewType}_${rIdx}', -1)">‹</div>
-                        <div class="carousel" id="carousel_${viewType}_${rIdx}"></div>
-                        <div class="arrow arrow-right" onclick="scrollRow('${viewType}_${rIdx}', 1)">›</div>
-                    </div>
-                `;
-                
-                targetContainer.appendChild(rowHtml);
-                const carouselElement = document.getElementById(`carousel_${viewType}_${rIdx}`);
-                
-                filtered.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.onclick = () => showDetails(item.id);
-                    card.innerHTML = `
-                        <img src="${item.img}" alt="${item.title}" loading="lazy">
-                        <div class="card-info">
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-meta">${item.year} • ${item.age === 0 ? 'TP' : '+'+item.age}</div>
-                        </div>
-                    `;
-                    carouselElement.appendChild(card);
-                });
+            const row = document.createElement('div');
+            row.innerHTML = `
+                <div class="row-title">Colección Disponible</div>
+                <div class="carousel-wrapper">
+                    <div class="carousel" id="inner_${viewType}"></div>
+                </div>
+            `;
+            targetContainer.appendChild(row);
+
+            const container = document.getElementById(`inner_${viewType}`);
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => showDetails(item.id);
+                card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
+                container.appendChild(card);
             });
-        }
-
-        function scrollRow(id, dir) {
-            const el = document.getElementById(`carousel_${id}`);
-            if (el) el.scrollLeft += (dir * 300);
         }
 
         function showDetails(id) {
@@ -1220,15 +665,14 @@
             container.innerHTML = `
                 <button class="back-btn" onclick="switchPage('home')">← Volver</button>
                 <div class="details-main">
-                    <img src="${item.img}" alt="${item.title}" class="details-poster">
+                    <img src="${item.img}" class="details-poster">
                     <div class="details-info">
-                        <h2 class="details-title">${item.title}</h2>
-                        <div class="details-meta">${item.year} • ${item.age === 0 ? 'Todo Público' : '+'+item.age}</div>
+                        <h2>${item.title}</h2>
                         <p class="details-desc">${item.desc}</p>
                         <div class="video-player-container">
-                            <video id="lumeraVideoPlayer" controls controlsList="nodownload" playsinline></video>
+                            <video id="lumeraVideoPlayer" controls autoplay></video>
                         </div>
-                        <div class="seasons-section" id="seasonsSection" style="display: none;">
+                        <div class="seasons-section" id="seasonsSection" style="display:none;">
                             <select class="season-selector" id="seasonSelector" onchange="changeSeason()"></select>
                             <div class="episodes-list" id="episodesList"></div>
                         </div>
@@ -1236,141 +680,83 @@
                 </div>
             `;
 
-            const videoElement = document.getElementById('lumeraVideoPlayer');
-            if (item.isSeries && item.seasons && item.seasons.length > 0) {
+            const player = document.getElementById('lumeraVideoPlayer');
+            if(item.isSeries && item.seasons) {
                 document.getElementById('seasonsSection').style.display = 'block';
+                window.currentViewingSeries = item;
                 const selector = document.getElementById('seasonSelector');
-                item.seasons.forEach((season, index) => {
-                    const opt = document.createElement('option');
-                    opt.value = index;
-                    opt.textContent = season.name;
+                item.seasons.forEach((s, idx) => {
+                    let opt = document.createElement('option'); opt.value = idx; opt.textContent = s.name;
                     selector.appendChild(opt);
                 });
-                window.currentViewingSeries = item;
-                changeSeason(0, 0);
+                changeSeason();
             } else {
-                videoElement.src = item.url;
+                player.src = item.url;
             }
         }
 
-        function changeSeason(forcedSeasonIdx = null, forcedEpisodeIdx = null) {
+        function changeSeason() {
             const item = window.currentViewingSeries;
-            if (!item) return;
-            const selector = document.getElementById('seasonSelector');
-            const seasonIdx = forcedSeasonIdx !== null ? forcedSeasonIdx : parseInt(selector.value);
-            const season = item.seasons[seasonIdx];
-            const listContainer = document.getElementById('episodesList');
-            listContainer.innerHTML = '';
-
-            season.episodes.forEach((ep, epIdx) => {
-                const row = document.createElement('div');
-                row.className = `episode-item ${forcedEpisodeIdx === epIdx ? 'active' : ''}`;
-                row.innerHTML = `<div class="episode-title">${ep.title}</div><div class="episode-play-icon">▶</div>`;
-                row.onclick = () => {
-                    document.querySelectorAll('.episode-item').forEach(el => el.classList.remove('active'));
-                    row.classList.add('active');
-                    document.getElementById('lumeraVideoPlayer').src = ep.url;
-                    document.getElementById('lumeraVideoPlayer').play().catch(()=>{});
-                };
-                listContainer.appendChild(row);
+            const idx = document.getElementById('seasonSelector').value;
+            const list = document.getElementById('episodesList');
+            list.innerHTML = '';
+            
+            item.seasons[idx].episodes.forEach(ep => {
+                let div = document.createElement('div'); div.className = 'episode-item';
+                div.innerHTML = `<div class="episode-title">${ep.title}</div>`;
+                div.onclick = () => { document.getElementById('lumeraVideoPlayer').src = ep.url; };
+                list.appendChild(div);
             });
-            if (forcedEpisodeIdx !== null && season.episodes[forcedEpisodeIdx]) {
-                document.getElementById('lumeraVideoPlayer').src = season.episodes[forcedEpisodeIdx].url;
-            }
+            if(item.seasons[idx].episodes[0]) document.getElementById('lumeraVideoPlayer').src = item.seasons[idx].episodes[0].url;
         }
 
         function executeSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const q = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('searchResultsGrid');
-            const metaTitle = document.getElementById('searchMetaTitle');
             grid.innerHTML = '';
-            if (!query) { metaTitle.textContent = "Escribe algo para buscar"; return; }
-
-            const matched = contentDB.filter(item => item.title.toLowerCase().includes(query));
-            metaTitle.textContent = `Resultados encontrados (${matched.length}):`;
-            matched.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => showDetails(item.id);
+            contentDB.filter(i => i.title.toLowerCase().includes(q)).forEach(item => {
+                let card = document.createElement('div'); card.className = 'card'; card.onclick = () => showDetails(item.id);
                 card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
                 grid.appendChild(card);
             });
         }
 
-        function postSpark() {
-            const input = document.getElementById('sparkInput');
-            if(!input.value.trim()) return;
-            sparks.push({ author: activeProfile ? activeProfile.name : "Anónimo", text: input.value.trim(), time: new Date().toLocaleDateString() });
-            localStorage.setItem("lumera_sparks", JSON.stringify(sparks));
-            input.value = '';
-            renderSparks();
-        }
-
-        function renderSparks() {
-            const feed = document.getElementById('sparkFeed');
-            if(!feed) return; feed.innerHTML = '';
-            if(sparks.length === 0) { feed.innerHTML = '<div style="padding:20px;text-align:center;color:#444;">No hay publicaciones.</div>'; return; }
-            [...sparks].reverse().forEach(sp => {
-                const card = document.createElement('div');
-                card.className = 'spark-card';
-                card.innerHTML = `<div class="spark-card-header"><span class="spark-author">${sp.author}</span></div><div class="spark-body">${sp.text}</div>`;
-                feed.appendChild(card);
-            });
-        }
-
-        function goToProfilesScreen() {
-            activeProfile = null;
-            document.getElementById('navTabs').style.pointerEvents = "none";
-            document.getElementById('navTabs').style.opacity = "0.2";
-            switchPage('profiles');
-            renderProfilesGrid();
-        }
-
         function renderProfilesGrid() {
             const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
             profiles.forEach((p, idx) => {
-                const slot = document.createElement('div');
-                slot.className = 'profile-slot';
-                let av = p.avatar === 'LETTER' ? `<div class="profile-avatar-box">${p.name[0]}</div>` : `<img src="${AVATAR_IMAGES[0]}" class="profile-avatar-box">`;
-                slot.innerHTML = `${av}<div class="profile-slot-name">${p.name}</div><div style="font-size:9px;color:#444;" onclick="event.stopPropagation(); openEditProfileModal(${idx})">Editar</div>`;
-                slot.onclick = () => {
-                    activeProfile = p;
-                    document.getElementById('activeProfileBtn').textContent = p.name;
-                    document.getElementById('navTabs').style.pointerEvents = "auto";
-                    document.getElementById('navTabs').style.opacity = "1";
-                    switchPage('home');
-                };
+                let slot = document.createElement('div'); slot.className = 'profile-slot';
+                slot.innerHTML = `<div class="profile-avatar-box">${p.name[0]}</div><div class="profile-slot-name">${p.name}</div>`;
+                slot.onclick = () => selectProfile(p);
                 layout.appendChild(slot);
             });
             if(profiles.length < 4) {
-                const add = document.createElement('div'); add.className = 'profile-slot';
-                add.onclick = openCreateProfileModal;
-                add.innerHTML = '<div class="profile-avatar-box">+</div><div class="profile-slot-name">Añadir</div>';
+                let add = document.createElement('div'); add.className = 'profile-slot';
+                add.innerHTML = `<div class="profile-avatar-box">+</div><div class="profile-slot-name">Añadir</div>`;
+                add.onclick = () => document.getElementById('modal').style.display = 'flex';
                 layout.appendChild(add);
             }
         }
 
-        function openCreateProfileModal() { currentIdx = null; document.getElementById('profileName').value = ''; openModal(); }
-        function openEditProfileModal(idx) { currentIdx = idx; document.getElementById('profileName').value = profiles[idx].name; openModal(); }
-        function openModal() { document.getElementById('modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-        function setProfileMode(m) { selectedMode = m; }
-        function setAvatarType(t) { selectedAvatar = t; }
+        function selectProfile(p) {
+            activeProfile = p;
+            document.getElementById('activeProfileBtn').textContent = p.name;
+            document.getElementById('navTabs').style.pointerEvents = "auto";
+            document.getElementById('navTabs').style.opacity = "1";
+            document.getElementById('searchNavBtn').style.display = "block";
+            switchPage('home');
+        }
 
         function saveProfile() {
-            const name = document.getElementById('profileName').value.trim();
+            let name = document.getElementById('profileName').value.trim();
             if(!name) return;
-            if(currentIdx !== null) profiles[currentIdx].name = name;
-            else profiles.push({ name, mode: "DARK", avatar: "LETTER" });
+            profiles.push({ name });
             localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
             closeModal(); renderProfilesGrid();
         }
-
-        function deleteProfile() {
-            if(currentIdx !== null) profiles.splice(currentIdx, 1);
-            localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
-            closeModal(); goToProfilesScreen();
-        }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('profileName').value = ''; }
+        function goToProfilesScreen() { activeProfile = null; document.getElementById('navTabs').style.pointerEvents = "none"; document.getElementById('navTabs').style.opacity = "0.2"; switchPage('profiles'); }
+        function postSpark() { let input = document.getElementById('sparkInput'); if(!input.value.trim()) return; sparks.push({ author: activeProfile.name, text: input.value.trim() }); localStorage.setItem("lumera_sparks", JSON.stringify(sparks)); input.value = ''; renderSparks(); }
+        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class="spark-author">${s.author}</div><div class="spark-body">${s.text}</div>`; feed.appendChild(c); }); }
 
         document.addEventListener('DOMContentLoaded', initLumera);
     </script>
