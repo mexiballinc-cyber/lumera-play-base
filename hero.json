@@ -2,15 +2,22 @@
   {
     "id": "banner_look_at",
     "titulo": "Look at!",
-    "desc": "Fantasía | Un secuestro que sale terriblemente mal. ¡Temporada 1 ya disponible!",
-    "imagen_banner": "https://i.imgur.com/5YRXD8b.jpeg",
+    "desc": "Un secuestro que sale terriblemente mal. Explora esta atrapante historia de fantasía y drama.",
+    "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg",
     "target_id": "look-at-2026"
   },
   {
-    "id": "banner_relleno_lumera",
-    "titulo": "Lumera Space",
-    "desc": "Contenido original e independiente. Disfruta de la mejor introducción de bienvenida.",
-    "imagen_banner": "https://i.imgur.com/KcIAK4D.png",
-    "target_id": "lumera_intro_01"
+    "id": "banner_lumera_original",
+    "titulo": "Lumera Play",
+    "desc": "Tu espacio definitivo de entretenimiento digital independiente. Contenido exclusivo y producciones originales.",
+    "imagen_banner": "https://i.imgur.com/O22zpTd.png",
+    "target_id": null
+  },
+  {
+    "id": "banner_lumera_kids",
+    "titulo": "Lumera Kids",
+    "desc": "¡La sección más divertida! Contenido apto para todo público y entretenimiento sano para disfrutar en familia.",
+    "imagen_banner": "https://i.imgur.com/albi71Z.jpeg",
+    "target_id": null
   }
 ]
