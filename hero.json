@@ -1,0 +1,14 @@
+[
+  {
+    "id": "banner_look_at",
+    "titulo": "Look at!",
+    "imagen_banner": "https://i.imgur.com/5YRXD8b.jpeg",
+    "url": "#"
+  },
+  {
+    "id": "banner_lumera_intro",
+    "titulo": "Lumera Play",
+    "imagen_banner": "https://i.imgur.com/KcIAK4D.png",
+    "url": "#"
+  }
+]
