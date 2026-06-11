@@ -2,13 +2,15 @@
   {
     "id": "banner_look_at",
     "titulo": "Look at!",
+    "desc": "Fantasía | Un secuestro que sale terriblemente mal. ¡Temporada 1 ya disponible!",
     "imagen_banner": "https://i.imgur.com/5YRXD8b.jpeg",
-    "url": "#"
+    "target_id": "look-at-2026"
   },
   {
-    "id": "banner_lumera_intro",
-    "titulo": "Lumera Play",
+    "id": "banner_relleno_lumera",
+    "titulo": "Lumera Space",
+    "desc": "Contenido original e independiente. Disfruta de la mejor introducción de bienvenida.",
     "imagen_banner": "https://i.imgur.com/KcIAK4D.png",
-    "url": "#"
+    "target_id": "lumera_intro_01"
   }
 ]
