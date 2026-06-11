@@ -179,6 +179,7 @@
             height: 100%; 
             object-fit: cover; 
             opacity: 0.45; 
+            transition: src 0.5s ease-in-out;
         }
         
         .banner-gradient {
@@ -900,13 +901,13 @@
     </div>
 
     <div class="page" id="home">
-        <div class="banner">
-            <img src="" alt="Destacado">
+        <div class="banner" id="heroBannerHome">
+            <img id="heroImgHome" src="" alt="Destacado">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo">Lumera Play</h2>
-                <p class="banner-desc">Tu espacio definitivo de entretenimiento digital independiente.</p>
-                <button class="banner-btn">Ver Contenido</button>
+                <h2 class="banner-logo" id="heroTitleHome">Lumera Play</h2>
+                <p class="banner-desc" id="heroDescHome">Tu espacio definitivo de entretenimiento digital independiente.</p>
+                <button class="banner-btn" id="heroBtnHome">Ver Contenido</button>
             </div>
         </div>
         <div class="row-container" id="homeRows">
@@ -914,39 +915,39 @@
     </div>
 
     <div class="page" id="series">
-        <div class="banner">
-            <img src="" alt="Series Destacadas">
+        <div class="banner" id="heroBannerSeries">
+            <img id="heroImgSeries" src="" alt="Series Destacadas">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo">Series</h2>
-                <p class="banner-desc">Producciones episódicas y narrativas extendidas.</p>
-                <button class="banner-btn">Explorar</button>
+                <h2 class="banner-logo" id="heroTitleSeries">Series</h2>
+                <p class="banner-desc" id="heroDescSeries">Producciones episódicas y narrativas extendidas.</p>
+                <button class="banner-btn" id="heroBtnSeries">Explorar</button>
             </div>
         </div>
         <div class="row-container" id="seriesRows"></div>
     </div>
 
     <div class="page" id="peliculas">
-        <div class="banner">
-            <img src="" alt="Películas Destacadas">
+        <div class="banner" id="heroBannerPeliculas">
+            <img id="heroImgPeliculas" src="" alt="Películas Destacadas">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo">Películas</h2>
-                <p class="banner-desc">Largometrajes, cortometrajes y piezas unitarias.</p>
-                <button class="banner-btn">Explorar</button>
+                <h2 class="banner-logo" id="heroTitlePeliculas">Películas</h2>
+                <p class="banner-desc" id="heroDescPeliculas">Largometrajes, cortometrajes y piezas unitarias.</p>
+                <button class="banner-btn" id="heroBtnPeliculas">Explorar</button>
             </div>
         </div>
         <div class="row-container" id="peliculasRows"></div>
     </div>
 
     <div class="page" id="kids">
-        <div class="banner">
-            <img src="" alt="Kids Destacado">
+        <div class="banner" id="heroBannerKids">
+            <img id="heroImgKids" src="" alt="Kids Destacado">
             <div class="banner-gradient"></div>
             <div class="banner-content">
-                <h2 class="banner-logo">Kids</h2>
-                <p class="banner-desc">Contenido apto para todo público y diversión familiar.</p>
-                <button class="banner-btn">Jugar</button>
+                <h2 class="banner-logo" id="heroTitleKids">Kids</h2>
+                <p class="banner-desc" id="heroDescKids">Contenido apto para todo público y diversión familiar.</p>
+                <button class="banner-btn" id="heroBtnKids">Ver</button>
             </div>
         </div>
         <div class="row-container" id="kidsRows"></div>
@@ -1002,7 +1003,7 @@
                 <button class="opt-btn" id="avCustom" onclick="setAvatarType('CUSTOM')">Imagen</button>
             </div>
             
-            <label class="modal-label" id="avatarGridLabel">Selecciona tu diseño</label>
+            <label class="modal-label" id="avatarGridLabel">Selecciona tu design</label>
             <div class="avatar-grid-wrapper">
                 <div class="avatar-grid" id="avatarGrid">
                     </div>
@@ -1040,52 +1041,92 @@
         let selectedAvatar = "LETTER";
         let selectedAvatarVal = "A";
 
-        // ==========================================
-        // BASE DE DATOS DINÁMICA (CONEXIÓN A JSON)
-        // ==========================================
+        // BASE DE DATOS DINÁMICA
         let contentDB = [];
         let heroDB = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
 
         async function initLumera() {
-            // 1. Cargar el catálogo general desde tu peliculas.json
+            // 1. Cargar el catálogo general desde peliculas.json
             try {
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
             } catch(e) {
-                console.error("Error al cargar peliculas.json. Verifica el archivo.", e);
+                console.error("Error al cargar peliculas.json.", e);
             }
 
-            // 2. Cargar los banners aleatorios desde hero.json
+            // 2. Cargar y configurar el HERO Dinámico desde hero.json
             try {
                 const hRes = await fetch('hero.json');
                 heroDB = await hRes.json();
                 
-                // Actualizar automáticamente los banners de las pestañas
-                if (heroDB && heroDB.length > 0) {
-                    document.querySelectorAll('.banner img').forEach(img => {
-                        // Magia: Elige un banner al azar
-                        const randomHero = heroDB[Math.floor(Math.random() * heroDB.length)];
-                        img.src = randomHero.imagen_banner;
-                        
-                        // Si le das clic al banner, te lleva a la serie
-                        img.parentElement.style.cursor = 'pointer';
-                        img.parentElement.onclick = () => {
-                            if(randomHero.url) window.location.href = randomHero.url;
-                        };
-                    });
-                }
+                // Iniciar la rotación automática cada 10 segundos
+                startHeroRotation();
             } catch(e) {
-                console.error("Error al cargar hero.json. Verifica el archivo.", e);
+                console.error("Error al cargar hero.json.", e);
             }
 
-            // 3. Arrancar la interfaz gráfica original (Tus menús y perfiles)
+            // Ocultar botones provisionales si es necesario
             const initMenuBtn = document.querySelector('.menuBtn');
             const initSearchBtn = document.querySelector('.search-nav-btn');
             if(initMenuBtn) initMenuBtn.style.display = 'none';
             if(initSearchBtn) initSearchBtn.style.display = 'none';
             
-            // Inicialización de Interfaz
             setupAppView();
+        }
+
+        // --- MOTOR DE ROTACIÓN AUTOMÁTICA DEL HERO (10 SEGUNDOS) ---
+        function startHeroRotation() {
+            if (!heroDB || heroDB.length === 0) return;
+            
+            // Renderiza el primer banner de inmediato
+            updateHeroUI();
+
+            // Limpia cualquier intervalo viejo para evitar aceleraciones locas
+            if (heroInterval) clearInterval(heroInterval);
+
+            // Cada 10000 milisegundos (10 segundos) cambia al siguiente banner de forma aleatoria
+            heroInterval = setInterval(() => {
+                currentHeroIndex = Math.floor(Math.random() * heroDB.length);
+                updateHeroUI();
+            }, 10000);
+        }
+
+        function updateHeroUI() {
+            if (!heroDB || heroDB.length === 0) return;
+            const currentHero = heroDB[currentHeroIndex];
+            const tabs = ['Home', 'Series', 'Peliculas', 'Kids'];
+
+            tabs.forEach(tab => {
+                const imgEl = document.getElementById(`heroImg${tab}`);
+                const titleEl = document.getElementById(`heroTitle${tab}`);
+                const descEl = document.getElementById(`heroDesc${tab}`);
+                const btnEl = document.getElementById(`heroBtn${tab}`);
+                const bannerContainer = document.getElementById(`heroBanner${tab}`);
+
+                if (imgEl) imgEl.src = currentHero.imagen_banner;
+                if (titleEl && currentHero.titulo) titleEl.textContent = currentHero.titulo;
+                if (descEl && currentHero.desc) descEl.textContent = currentHero.desc;
+
+                // Definimos la acción del clic
+                const actionClick = () => {
+                    if (currentHero.target_id) {
+                        showDetails(currentHero.target_id);
+                    } else if (currentHero.url && currentHero.url !== "#") {
+                        window.location.href = currentHero.url;
+                    }
+                };
+
+                // Asignar el clic a todo el banner gigante y al botón
+                if (bannerContainer) {
+                    bannerContainer.style.cursor = 'pointer';
+                    bannerContainer.onclick = (e) => {
+                        if(e.target.tagName !== 'BUTTON') actionClick();
+                    };
+                }
+                if (btnEl) btnEl.onclick = actionClick;
+            });
         }
 
         function setupAppView() {
@@ -1210,10 +1251,9 @@
             const container = document.getElementById('detailsViewContainer');
             container.innerHTML = '';
 
-            // Render Base de Detalles
             const mainView = document.createElement('div');
             mainView.innerHTML = `
-                <button class="back-btn" onclick="window.history.back();">← Volver</button>
+                <button class="back-btn" onclick="switchPage('home')">← Volver</button>
                 <div class="details-main">
                     <img src="${item.img}" alt="${item.title}" class="details-poster">
                     <div class="details-info">
@@ -1234,10 +1274,8 @@
             `;
             container.appendChild(mainView);
 
-            // Guardar Estado en el Historial del Navegador
             window.history.pushState({ isDetails: true, itemId: id }, "");
 
-            // Configurar Lógica de Reproducción (Series vs Películas)
             const videoElement = document.getElementById('lumeraVideoPlayer');
             
             if (item.isSeries && item.seasons && item.seasons.length > 0) {
@@ -1252,17 +1290,14 @@
                     selector.appendChild(opt);
                 });
 
-                // Cargar por defecto temporada 1 episodio 1
                 window.currentViewingSeries = item;
                 changeSeason(0, 0);
             } else {
-                // Configurar Película Directa
                 videoElement.src = item.url;
                 configureTracks(videoElement, item.tracks);
             }
         }
 
-        // ESCUCHADOR DE HISTORIAL PARA EL BOTÓN ATRÁS DEL MÓVIL
         window.onpopstate = function(event) {
             if (event.state && event.state.isDetails) {
                 showDetails(event.state.itemId);
@@ -1318,9 +1353,7 @@
         }
 
         function configureTracks(videoElement, tracks) {
-            // Limpiar pistas anteriores
             Array.from(videoElement.querySelectorAll('track')).forEach(t => t.remove());
-            
             if (tracks && tracks.length > 0) {
                 tracks.forEach((track, idx) => {
                     const tNode = document.createElement('track');
@@ -1373,7 +1406,7 @@
             });
         }
 
-        // --- COMUNIDAD SPARK (SISTEMA DE EVENTOS LOCALES) ---
+        // --- COMUNIDAD SPARK ---
         function renderSparks() {
             const feed = document.getElementById('sparkFeed');
             if(!feed) return;
@@ -1384,7 +1417,6 @@
                 return;
             }
 
-            // Mostrar orden inverso (últimos primero)
             [...sparks].reverse().forEach(sp => {
                 const card = document.createElement('div');
                 card.className = 'spark-card';
@@ -1416,13 +1448,14 @@
             renderSparks();
         }
 
+        // --- ESCAPE HTML PARA SEGURIDAD ---
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, tag => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
             }[tag] || tag));
         }
 
-        // --- SISTEMA MAESTRO DE PERFILES (LOCALSTORAGE) ---
+        // --- GESTIÓN DE PERFILES ---
         function goToProfilesScreen() {
             activeProfile = null;
             localStorage.removeItem("lumera_active_profile");
@@ -1457,7 +1490,6 @@
                 layout.appendChild(slot);
             });
 
-            // Ranura para añadir nuevo perfil (Límite 4)
             if(profiles.length < 4) {
                 const addSlot = document.createElement('div');
                 addSlot.className = 'profile-slot';
@@ -1486,7 +1518,6 @@
             if(btn && activeProfile) btn.textContent = activeProfile.name;
         }
 
-        // MODAL CONFIGS
         function openCreateProfileModal() {
             currentIdx = null;
             document.getElementById('modalTitle').textContent = "Crear Perfil";
@@ -1521,7 +1552,6 @@
             selectedAvatar = type;
             document.getElementById('avLetter').classList.toggle('active', type === 'LETTER');
             document.getElementById('avCustom').classList.toggle('active', type === 'CUSTOM');
-            
             renderAvatarGrid(forcedValue);
         }
 
