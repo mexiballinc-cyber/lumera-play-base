@@ -15,7 +15,7 @@
             background: #0b0b0b; 
             color: white; 
             font-family: 'Poppins', sans-serif; 
-            overflow-x: hidden; \
+            overflow-x: hidden;
         }
         
         /* =========================================
@@ -525,7 +525,6 @@
         let activeProfile = null;
         
         let contentDB = [];
-        // Base de datos de respaldo local automática (Si falla el JSON por culpa de la URL file:///, este entra al rescate)
         let heroDB = [
             { "titulo": "Look at!", "desc": "Un secuestro que sale terriblemente mal. Explora esta atrapante historia.", "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg", "target_id": "look-at-2026" },
             { "titulo": "Lumera Play", "desc": "Tu espacio definitivo de entretenimiento digital independiente.", "imagen_banner": "https://i.imgur.com/O22zpTd.png", "target_id": "lumera_intro_01" },
@@ -535,7 +534,6 @@
         let heroInterval = null;
 
         async function initLumera() {
-            // Cargar peliculas.json de forma segura
             try {
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
@@ -547,7 +545,6 @@
                 ];
             }
 
-            // Intentar inyectar el hero externo si el navegador lo permite
             try {
                 const resHero = await fetch('hero.json');
                 const externalHero = await resHero.json();
@@ -561,13 +558,12 @@
         }
 
         // ==========================================
-        // MOTOR REPARADO DEL HERO (BANNERS)
+        // MOTOR EN INTERFAZ DINÁMICA DEL HERO
         // ==========================================
         function startHeroRotation() {
-            updateHeroUI(); // Pintar el primero de inmediato
+            updateHeroUI(); 
             if(heroInterval) clearInterval(heroInterval);
             
-            // Forzar rotación infinita estricta cada 10 segundos
             heroInterval = setInterval(() => {
                 currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
                 updateHeroUI();
@@ -588,27 +584,34 @@
             if (descEl) descEl.textContent = item.desc;
 
             if (btnEl) {
-                btnEl.onclick = () => {
-                    if(item.target_id) showDetails(item.target_id);
-                };
+                if (item.target_id) {
+                    btnEl.style.display = "inline-block";
+                    btnEl.textContent = "Ver Ahora";
+                    btnEl.onclick = () => {
+                        showDetails(item.target_id);
+                    };
+                } else {
+                    btnEl.style.display = "none";
+                }
             }
         }
 
         function switchPage(pageId) {
-            const homeContainer = document.getElementById('home');
+            const tabsCatalog = ['home', 'series', 'peliculas', 'kids'];
             const heroBox = document.getElementById('heroBannerGlobal');
 
-            // Control de pestañas de catálogo básicas
-            if (['home', 'series', 'peliculas', 'kids'].includes(pageId)) {
+            if (tabsCatalog.includes(pageId)) {
+                const homeContainer = document.getElementById('home');
                 homeContainer.classList.add('active');
-                homeContainer.insertBefore(heroBox, homeContainer.firstChild); // Mover banner arriba
                 
+                homeContainer.insertBefore(heroBox, homeContainer.firstChild); 
+                heroBox.style.display = "block"; 
+
                 document.getElementById('homeRows').style.display = pageId === 'home' ? 'block' : 'none';
                 document.getElementById('seriesRows').style.display = pageId === 'series' ? 'block' : 'none';
                 document.getElementById('peliculasRows').style.display = pageId === 'peliculas' ? 'block' : 'none';
                 document.getElementById('kidsRows').style.display = pageId === 'kids' ? 'block' : 'none';
                 
-                // Ocultar páginas secundarias
                 document.getElementById('spark').classList.remove('active');
                 document.getElementById('searchPage').classList.remove('active');
                 document.getElementById('detailsPage').classList.remove('active');
@@ -616,7 +619,9 @@
                 
                 renderContent(pageId);
             } else {
-                homeContainer.classList.remove('active');
+                document.getElementById('home').classList.remove('active');
+                if(heroBox) heroBox.style.display = "none"; 
+                
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 const target = document.getElementById(pageId);
                 if(target) target.classList.add('active');
