@@ -150,7 +150,7 @@
         }
         
         /* =========================================
-           5. DISEÑO DE BANNERS (HERO ÚNICO DINÁMICO REPARADO)
+           5. DISEÑO DE BANNERS (MANTENIENDO TU CONFIGURACIÓN)
         ========================================= */
         .banner { 
             position: relative; 
@@ -319,11 +319,6 @@
             text-overflow: ellipsis; 
         }
         
-        .card-meta { 
-            font-size: 9px; 
-            color: #777; 
-        }
-        
         /* =========================================
            8. VISTA DE DETALLES (REPRODUCTOR)
         ========================================= */
@@ -408,7 +403,7 @@
         .search-container { padding: 20px 4%; }
         .search-bar-wrapper { max-width: 500px; margin: 0 auto 25px auto; }
         .search-input {
-            width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none;
+            width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none; margin-bottom: 0;
         }
         .search-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
 
@@ -467,19 +462,17 @@
         </div>
     </div>
 
-    <div class="page" id="home">
-        <div class="banner" id="heroBannerGlobal">
-            <img id="heroImgGlobal" src="https://i.imgur.com/O22zpTd.png" alt="Destacado">
-            <div class="banner-gradient"></div>
-            <div class="banner-content">
-                <h2 class="banner-logo" id="heroTitleGlobal">LUMERA</h2>
-                <p class="banner-desc" id="heroDescGlobal">Cargando catálogo...</p>
-                <button class="banner-btn" id="heroBtnGlobal" style="display: none;">Ver Ahora</button>
-            </div>
+    <div class="banner" id="heroBannerGlobal" style="display: none;">
+        <img id="heroImgGlobal" src="https://i.imgur.com/O22zpTd.png" alt="Destacado">
+        <div class="banner-gradient"></div>
+        <div class="banner-content">
+            <h2 class="banner-logo" id="heroTitleGlobal">LUMERA</h2>
+            <p class="banner-desc" id="heroDescGlobal">Cargando catálogo...</p>
+            <button class="banner-btn" id="heroBtnGlobal" style="display: none;">Ver Ahora</button>
         </div>
-        <div class="row-container" id="homeRows"></div>
     </div>
 
+    <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
     <div class="page" id="series"><div class="row-container" id="seriesRows"></div></div>
     <div class="page" id="peliculas"><div class="row-container" id="peliculasRows"></div></div>
     <div class="page" id="kids"><div class="row-container" id="kidsRows"></div></div>
@@ -538,7 +531,7 @@
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
             } catch(e) {
-                console.warn("Usando base de datos interna provisional.");
+                console.warn("Cargando base de datos interna provisional.");
                 contentDB = [
                     { "id": "lumera_intro_01", "title": "Lumera Intro", "year": "2026", "age": 0, "img": "https://i.imgur.com/KcIAK4D.png", "desc": "Bienvenido a Lumera Play.", "type": "ambos", "genres": ["accion"], "url": "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1", "isSeries": false },
                     { "id": "look-at-2026", "title": "Look at!", "year": "2026", "age": 16, "img": "https://i.imgur.com/5YRXD8b.jpeg", "desc": "Fantasía | +16. Un secuestro que sale terriblemente mal.", "type": "serie", "genres": ["fantasia"], "isSeries": true, "seasons": [{"name": "Temporada 1", "episodes": [{"title": "1. El Secuestro", "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20PILOTO%201.mp4"}]}]}
@@ -550,7 +543,7 @@
                 const externalHero = await resHero.json();
                 if(externalHero && externalHero.length > 0) heroDB = externalHero;
             } catch(e) {
-                console.log("CORS Local detectado: Activando motor de respaldo para el Hero.");
+                console.log("CORS/Local: Corriendo respaldo de seguridad para Hero Slider.");
             }
 
             renderProfilesGrid();
@@ -578,7 +571,7 @@
 
             if (imgEl) imgEl.src = item.imagen_banner;
             if (titleEl) titleEl.textContent = item.titulo;
-            if (descEl) document.getElementById("heroDescGlobal").textContent = item.desc;
+            if (descEl) descEl.textContent = item.desc;
 
             if (btnEl) {
                 if(item.target_id) {
@@ -591,29 +584,23 @@
         }
 
         function switchPage(pageId) {
-            const homeContainer = document.getElementById('home');
-            const heroBox = document.getElementById('heroBannerGlobal');
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Activar la seleccionada
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active');
 
-            if (['home', 'series', 'peliculas', 'kids'].includes(pageId)) {
-                homeContainer.classList.add('active');
-                homeContainer.insertBefore(heroBox, homeContainer.firstChild); 
-                
-                document.getElementById('homeRows').style.display = pageId === 'home' ? 'block' : 'none';
-                document.getElementById('seriesRows').style.display = pageId === 'series' ? 'block' : 'none';
-                document.getElementById('peliculasRows').style.display = pageId === 'peliculas' ? 'block' : 'none';
-                document.getElementById('kidsRows').style.display = pageId === 'kids' ? 'block' : 'none';
-                
-                document.getElementById('spark').classList.remove('active');
-                document.getElementById('searchPage').classList.remove('active');
-                document.getElementById('detailsPage').classList.remove('active');
-                document.getElementById('profiles').classList.remove('active');
-                
-                renderContent(pageId);
-            } else {
-                homeContainer.classList.remove('active');
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const target = document.getElementById(pageId);
-                if(target) target.classList.add('active');
+            // Mover y controlar el banner global de forma inteligente arriba de los carruseles
+            const banner = document.getElementById('heroBannerGlobal');
+            if(banner) {
+                if (['home', 'series', 'peliculas', 'kids'].includes(pageId)) {
+                    target.insertBefore(banner, target.firstChild);
+                    banner.style.display = "block";
+                    renderContent(pageId);
+                } else {
+                    banner.style.display = "none";
+                }
             }
 
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
