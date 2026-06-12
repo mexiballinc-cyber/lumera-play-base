@@ -12,240 +12,240 @@
         ========================================= */
         body { 
             margin: 0; 
-            background: #0b0b0b; \
-            color: white; \
-            font-family: 'Poppins', sans-serif; \
-            overflow-x: hidden; \
+            background: #0b0b0b; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
         }
         
         /* =========================================
            2. NAVBAR SUPERIOR
         ========================================= */
         .navbar { 
-            display: flex; \
-            align-items: center; \
+            display: flex; 
+            align-items: center; 
             padding: 12px 18px; \
-            background: #0b0b0b; \
-            position: sticky; \
-            top: 0; \
-            z-index: 1001; \
-            gap: 15px; \
-            border-bottom: 1px solid #1a1a1a; \
+            background: #0b0b0b; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1001; 
+            gap: 15px; 
+            border-bottom: 1px solid #1a1a1a; 
         }
         
-        .menuBtn { \
-            font-size: 26px; \
-            cursor: pointer; \
-            display: none; \
-            align-items: center; \
+        .menuBtn { 
+            font-size: 26px; 
+            cursor: pointer; 
+            display: none; 
+            align-items: center; 
         } 
         
         .nav-logo { \
-            font-size: 20px; \
-            font-weight: 600; \
-            letter-spacing: 1px; \
-            margin: 0; \
+            font-size: 20px; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+            margin: 0; 
             cursor: pointer; \
         }
         
-        .nav-tabs { \
-            display: flex; \
-            gap: 15px; \
-            margin-left: 10px; \
+        .nav-tabs { 
+            display: flex; 
+            gap: 15px; 
+            margin-left: 10px; 
             flex-grow: 1; \
         }
         
-        .tab { \
-            font-size: 13px; \
-            font-weight: 600; \
-            color: #8c8c8c; \
-            cursor: pointer; \
-            transition: color 0.2s; \
-            text-transform: uppercase; \
-            letter-spacing: 0.5px; \
+        .tab { 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #8c8c8c; 
+            cursor: pointer; 
+            transition: color 0.2s; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
         }
         
         .tab:hover, .tab.active { \
-            color: white; \
+            color: white; 
         }
         
-        .nav-right { \
-            display: flex; \
-            align-items: center; \
+        .nav-right { 
+            display: flex; 
+            align-items: center; 
             gap: 12px; \
         }
         
-        .search-nav-btn { \
-            background: none; \
-            border: none; \
-            color: #8c8c8c; \
-            font-size: 18px; \
-            cursor: pointer; \
-            padding: 4px; \
-            display: flex; \
-            align-items: center; \
+        .search-nav-btn { 
+            background: none; 
+            border: none; 
+            color: #8c8c8c; 
+            font-size: 18px; 
+            cursor: pointer; 
+            padding: 4px; 
+            display: flex; 
+            align-items: center; 
         }
         
-        .search-nav-btn:hover { \
-            color: white; \
+        .search-nav-btn:hover { 
+            color: white; 
         }
         
         .profile-nav-btn { \
-            background: white; \
-            color: black; \
-            border: none; \
-            padding: 6px 14px; \
-            font-size: 11px; \
-            font-weight: 600; \
-            border-radius: 20px; \
-            cursor: pointer; \
-            text-transform: uppercase; \
-            letter-spacing: 0.5px; \
+            background: white; 
+            color: black; 
+            border: none; 
+            padding: 6px 14px; 
+            font-size: 11px; 
+            font-weight: 600; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
         }
 
         /* =========================================
            3. ESTRUCTURA DE PÁGINAS Y CONTENEDORES
         ========================================= */
-        .page { \
-            display: none; \
-            padding-bottom: 60px; \
+        .page { 
+            display: none; 
+            padding-bottom: 60px; 
         }
         
-        .page.active { \
-            display: block; \
+        .page.active { 
+            display: block; 
         }
 
         /* =========================================
            4. HERO BANNER GLOBAL (TU ZONA AZUL - ESTILO DISNEY+)
         ========================================= */
-        .banner { \
-            position: relative; \
-            width: 100%; \
-            height: 55vh; \
-            min-height: 360px; \
-            background: #111; \
-            overflow: hidden; \
-            cursor: default; \
-            transition: transform 0.2s ease; \
+        .banner { 
+            position: relative; 
+            width: 100%; 
+            height: 55vh; 
+            min-height: 360px; 
+            background: #111; 
+            overflow: hidden; 
+            cursor: default; 
+            transition: transform 0.2s ease; 
         }
         
-        .banner.clickable { \
-            cursor: pointer; \
+        .banner.clickable { 
+            cursor: pointer; 
         }
         
-        .banner.clickable:hover { \
-            transform: scale(1.005); \
+        .banner.clickable:hover { 
+            transform: scale(1.005); 
         }
         
-        .banner img { \
-            width: 100%; \
-            height: 100%; \
-            object-fit: cover; \
-            opacity: 0.95; \
-            transition: opacity 0.4s ease-in-out; \
+        .banner img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0.95; 
+            transition: opacity 0.4s ease-in-out; 
         }
         
-        .banner-gradient { \
-            position: absolute; \
-            bottom: 0; \
-            left: 0; \
-            width: 100%; \
-            height: 30%; \
-            background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); \
+        .banner-gradient { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 30%; 
+            background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); 
         }
 
         /* =========================================
            5. FILAS DE CONTENIDO (CAROUSEL)
         ========================================= */
-        .row-container { \
-            padding: 20px 4% 0 4%; \
+        .row-container { 
+            padding: 20px 4% 0 4%; 
         }
         
-        .row-title { \
-            font-size: 14px; \
-            font-weight: 600; \
+        .row-title { 
+            font-size: 14px; 
+            font-weight: 600; 
             margin-bottom: 10px; \
             text-transform: uppercase; \
             letter-spacing: 1px; \
             color: #ffffff; \
         }
         
-        .carousel-wrapper { \
-            position: relative; \
-            display: flex; \
-            align-items: center; \
+        .carousel-wrapper { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
         }
         
-        .carousel { \
-            display: flex; \
+        .carousel { 
+            display: flex; 
             gap: 12px; \
-            overflow-x: auto; \
-            scroll-behavior: smooth; \
-            width: 100%; \
-            padding-bottom: 10px; \
+            overflow-x: auto; 
+            scroll-behavior: smooth; 
+            width: 100%; 
+            padding-bottom: 10px; 
         }
         
-        .carousel::-webkit-scrollbar { \
-            display: none; \
+        .carousel::-webkit-scrollbar { 
+            display: none; 
         }
         
         /* Flechas del carrusel */
-        .arrow { \
-            position: absolute; \
-            background: rgba(0,0,0,0.75); \
-            color: white; \
-            border: 1px solid #222; \
-            font-size: 18px; \
-            width: 36px; \
-            height: 36px; \
+        .arrow { 
+            position: absolute; 
+            background: rgba(0,0,0,0.75); 
+            color: white; 
+            border: 1px solid #222; 
+            font-size: 18px; 
+            width: 36px; 
+            height: 36px; 
             cursor: pointer; \
-            z-index: 10; \
-            display: flex; \
+            z-index: 10; 
+            display: flex; 
             align-items: center; \
             justify-content: center; \
             border-radius: 50%; \
-            user-select: none; \
-            transition: background 0.2s; \
+            user-select: none; 
+            transition: background 0.2s; 
         }
         
-        .arrow:hover { \
-            background: white; \
-            color: black; \
+        .arrow:hover { 
+            background: white; 
+            color: black; 
         }
         
         .arrow-left { left: -15px; }
         .arrow-right { right: -15px; }
 
         /* Tarjetas de Películas/Series */
-        .card { \
-            flex: 0 0 auto; \
-            width: 140px; \
-            background: #111; \
-            border: 1px solid #1a1a1a; \
-            border-radius: 6px; \
-            overflow: hidden; \
-            cursor: pointer; \
-            transition: transform 0.2s, border-color 0.2s; \
+        .card { 
+            flex: 0 0 auto; 
+            width: 140px; 
+            background: #111; 
+            border: 1px solid #1a1a1a; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: transform 0.2s, border-color 0.2s; 
         }
         
-        .card:hover { \
+        .card:hover { 
             transform: scale(1.03); \
-            border-color: white; \
+            border-color: white; 
         }
         
-        .card img { \
-            width: 100%; \
-            height: 190px; \
-            object-fit: cover; \
-            background: #1a1a1a; \
+        .card img { 
+            width: 100%; 
+            height: 190px; 
+            object-fit: cover; 
+            background: #1a1a1a; 
         }
         
-        .card-info { \
+        .card-info { 
             padding: 8px; \
         }
         
-        .card-title { \
-            font-size: 11px; \
+        .card-title { 
+            font-size: 11px; 
             font-weight: 600; \
             margin: 0 0 2px 0; \
             white-space: nowrap; \
@@ -256,129 +256,129 @@
         /* =========================================
            6. VISTA DE DETALLES Y REPRODUCTOR
         ========================================= */
-        .details-view { \
-            padding: 20px 4%; \
+        .details-view { 
+            padding: 20px 4%; 
         }
         
-        .back-btn { \
-            background: none; \
-            border: none; \
-            color: #8c8c8c; \
+        .back-btn { 
+            background: none; 
+            border: none; 
+            color: #8c8c8c; 
             cursor: pointer; \
-            font-size: 12px; \
-            font-weight: 600; \
-            margin-bottom: 15px; \
-            text-transform: uppercase; \
+            font-size: 12px; 
+            font-weight: 600; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
         }
         
-        .back-btn:hover { \
-            color: white; \
+        .back-btn:hover { 
+            color: white; 
         }
         
         .details-main { \
             display: flex; \
-            gap: 25px; \
+            gap: 25px; 
             margin-bottom: 25px; \
-            flex-wrap: wrap; \
+            flex-wrap: wrap; 
         }
         
-        .details-poster { \
-            width: 180px; \
-            height: 250px; \
+        .details-poster { 
+            width: 180px; 
+            height: 250px; 
             object-fit: cover; \
-            border-radius: 6px; \
+            border-radius: 6px; 
             border: 1px solid #1a1a1a; \
         }
         
-        .details-info { \
+        .details-info { 
             flex: 1; \
-            min-width: 280px; \
+            min-width: 280px; 
         }
         
-        .details-title { \
-            font-size: 26px; \
-            font-weight: 600; \
+        .details-title { 
+            font-size: 26px; 
+            font-weight: 600; 
             margin: 0 0 6px 0; \
         }
         
-        .details-desc { \
+        .details-desc { 
             font-size: 13px; \
-            color: #b3b3b3; \
-            line-height: 1.5; \
+            color: #b3b3b3; 
+            line-height: 1.5; 
             margin: 0 0 20px 0; \
         }
         
-        .episode-selector-container { \
-            margin: 15px 0; \
+        .episode-selector-container { 
+            margin: 15px 0; 
         }
         
-        .episode-select { \
+        .episode-select { 
             background: #111; \
-            color: white; \
+            color: white; 
             border: 1px solid #333; \
             padding: 8px 12px; \
             font-family: 'Poppins', sans-serif; \
             font-size: 13px; \
             border-radius: 4px; \
-            outline: none; \
+            outline: none; 
             width: 100%; \
             max-width: 300px; \
         }
         
-        .video-player-container { \
+        .video-player-container { 
             width: 100%; \
-            max-width: 850px; \
-            background: black; \
+            max-width: 850px; 
+            background: black; 
             border-radius: 8px; \
-            overflow: hidden; \
-            border: 1px solid #1a1a1a; \
-            margin-top: 15px; \
+            overflow: hidden; 
+            border: 1px solid #1a1a1a; 
+            margin-top: 15px; 
         }
         
         video { \
             width: 100%; \
-            display: block; \
+            display: block; 
             outline: none; \
         }
 
         /* =========================================
            7. SECCIÓN SPARK (COMUNIDAD)
         ========================================= */
-        .spark-container { \
-            max-width: 600px; \
-            margin: 0 auto; \
+        .spark-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
             padding: 20px 15px; \
         }
         
-        .spark-header { \
-            text-align: center; \
-            margin-bottom: 25px; \
+        .spark-header { 
+            text-align: center; 
+            margin-bottom: 25px; 
         }
         
-        .spark-header h2 { \
-            font-size: 20px; \
+        .spark-header h2 { 
+            font-size: 20px; 
             font-weight: 600; \
-            text-transform: uppercase; \
+            text-transform: uppercase; 
         }
         
-        .spark-composer { \
-            background: #111; \
+        .spark-composer { 
+            background: #111; 
             border: 1px solid #1a1a1a; \
             border-radius: 8px; \
             padding: 12px; \
-            margin-bottom: 20px; \
+            margin-bottom: 20px; 
         }
         
-        .spark-textarea { \
+        .spark-textarea { 
             width: 100%; \
             height: 70px; \
-            background: none; \
-            border: none; \
-            resize: none; \
-            color: white; \
+            background: none; 
+            border: none; 
+            resize: none; 
+            color: white; 
             font-family: 'Poppins', sans-serif; \
             font-size: 13px; \
-            outline: none; \
+            outline: none; 
         }
         
         .spark-composer-footer { \
@@ -400,7 +400,7 @@
             cursor: pointer; \
         }
         
-        .spark-feed { \
+        .spark-feed { 
             display: flex; \
             flex-direction: column; \
             gap: 12px; \
@@ -413,7 +413,7 @@
             padding: 14px; \
         }
         
-        .spark-author { \
+        .spark-author { 
             font-size: 12px; \
             font-weight: 600; \
         }
@@ -673,7 +673,7 @@
         let currentHeroIndex = 0;
         let heroInterval = null;
 
-        // 1. Inicialización e inyección controlada de bases de datos
+        // 1. Carga segura de Base de Datos
         async function initLumera() {
             try {
                 const res = await fetch('peliculas.json');
@@ -689,16 +689,16 @@
             startHeroRotation();
         }
 
-        // 2. Sistema de Carrusel del Hero (Disney+ Style)
+        // 2. Sistema de rotación Disney+ (Saneado por completo)
         function startHeroRotation() {
             if(heroInterval) clearInterval(heroInterval);
             updateHeroUI();
             heroInterval = setInterval(() => {
-                if(heroDB.length > 0) {
+                if(heroDB && heroDB.length > 0) {
                     currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
                     updateHeroUI();
                 }
-            }, 10000); // Cambia de imagen cada 10 segundos
+            }, 10000); // 10 segundos limpios de rotación
         }
 
         function updateHeroUI() {
@@ -712,7 +712,7 @@
             if (bannerEl) {
                 if(item.target_id) {
                     bannerEl.classList.add("clickable");
-                    bannerEl.onclick = () => showDetails(item.target_id); // Al picar te manda a la INFO de la serie
+                    bannerEl.onclick = () => showDetails(item.target_id); // Te manda a la INFO de la serie directo
                 } else {
                     bannerEl.classList.remove("clickable");
                     bannerEl.onclick = null;
@@ -720,7 +720,7 @@
             }
         }
 
-        // 3. Manejo de navegación inteligente en cascada
+        // 3. Control de Navegación (Se eliminó la reescritura destructiva de HTML)
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
@@ -728,7 +728,6 @@
 
             const banner = document.getElementById('heroBannerGlobal');
             if(banner) {
-                // Inyecta dinámicamente el cuadro arriba solo en pestañas principales
                 if (['home', 'series', 'pelis', 'kids'].includes(pageId)) {
                     target.insertBefore(banner, target.firstChild);
                     banner.style.display = "block";
@@ -744,7 +743,7 @@
             if(pageId === 'spark') renderSparks();
         }
 
-        // 4. Renderizador de Carruseles de fila
+        // 4. Render de Filas comunes
         function renderContent(viewType) {
             const targetContainer = document.getElementById(`${viewType}Rows`);
             if (!targetContainer) return;
@@ -782,7 +781,7 @@
             if (el) el.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
-        // 5. Vista Detallada de Contenido e info de Series
+        // 5. Pantalla de información de la producción (Lógica sana)
         function showDetails(id) {
             const item = contentDB.find(c => c.id === id);
             if (!item) return;
@@ -850,7 +849,7 @@
             player.load();
         }
 
-        // 6. Buscador Corregido (Saneado)
+        // 6. Buscador Blindado
         function executeSearch() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('searchResultsGrid');
@@ -860,11 +859,11 @@
                 card.className = 'card'; 
                 card.onclick = () => showDetails(item.id);
                 card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
-                grid.appendChild(card); // Corrección limpia sin duplicación catastrófica
+                grid.appendChild(card);
             });
         }
 
-        // 7. Gestión de perfiles y comunidad Spark
+        // 7. Perfiles y Spark
         function renderProfilesGrid() {
             const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
             profiles.forEach((p) => {
