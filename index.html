@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumera Play - B&W Edition</title>
+    <title>Lumera Play - Disney+ Style</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=400;600&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; background: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
         .navbar { display: flex; align-items: center; padding: 12px 18px; background: #0b0b0b; position: sticky; top: 0; z-index: 1001; gap: 15px; border-bottom: 1px solid #1a1a1a; }
-        .menuBtn { font-size: 26px; cursor: pointer; display: none; align-items: center; } 
         .nav-logo { font-size: 20px; font-weight: 600; letter-spacing: 1px; margin: 0; cursor: pointer; }
         .nav-tabs { display: flex; gap: 15px; margin-left: 10px; flex-grow: 1; }
         .tab { font-size: 13px; font-weight: 600; color: #8c8c8c; cursor: pointer; transition: color 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -17,40 +16,48 @@
         .search-nav-btn { background: none; border: none; color: #8c8c8c; font-size: 18px; cursor: pointer; padding: 4px; display: flex; align-items: center; }
         .search-nav-btn:hover { color: white; }
         .profile-nav-btn { background: white; color: black; border: none; padding: 6px 14px; font-size: 11px; font-weight: 600; border-radius: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        
         .page { display: none; padding-bottom: 60px; }
         .page.active { display: block; }
-        .banner { position: relative; width: 100%; height: 48vh; min-height: 320px; background: black; overflow: hidden; }
-        .banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; transition: opacity 0.4s ease-in-out; }
-        .banner-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 70%; background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0.5) 60%, rgba(11,11,11,0) 100%); }
-        .banner-content { position: absolute; bottom: 25px; left: 4%; max-width: 92%; z-index: 2; }
-        .banner-logo { font-size: 32px; font-weight: 600; margin: 0 0 8px 0; letter-spacing: -0.5px; text-transform: uppercase; }
-        .banner-desc { font-size: 13px; color: #b3b3b3; max-width: 500px; margin: 0 0 14px 0; line-height: 1.4; }
-        .banner-btn { background: white; color: black; border: none; padding: 8px 22px; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; transition: transform 0.2s; }
-        .banner-btn:hover { transform: scale(1.03); }
+        
+        /* BANNER ESTILO DISNEY+ (LIMPIO Y CLIQUEABLE) */
+        .banner { position: relative; width: 100%; height: 55vh; min-height: 360px; background: black; overflow: hidden; cursor: default; transition: transform 0.2s ease; }
+        .banner.clickable { cursor: pointer; }
+        .banner.clickable:hover { transform: scale(1.01); }
+        .banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: opacity 0.4s ease-in-out; }
+        .banner-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 25%; background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); }
+        
         .row-container { padding: 20px 4% 0 4%; }
         .row-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; }
         .carousel-wrapper { position: relative; display: flex; align-items: center; }
         .carousel { display: flex; gap: 12px; overflow-x: auto; scroll-behavior: smooth; width: 100%; padding-bottom: 10px; }
         .carousel::-webkit-scrollbar { display: none; }
-        .arrow { position: absolute; background: rgba(0,0,0,0.75); color: white; border: 1px solid #222; font-size: 18px; width: 36px; height: 36px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 50%; user-select: none; transition: background 0.2s, border-color 0.2s; }
-        .arrow:hover { background: white; color: black; border-color: white; }
+        
+        .arrow { position: absolute; background: rgba(0,0,0,0.75); color: white; border: 1px solid #222; font-size: 18px; width: 36px; height: 36px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; border-radius: 50%; user-select: none; transition: background 0.2s; }
+        .arrow:hover { background: white; color: black; }
         .arrow-left { left: -15px; }
         .arrow-right { right: -15px; }
+        
         .card { flex: 0 0 auto; width: 140px; background: #111; border: 1px solid #1a1a1a; border-radius: 6px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
         .card:hover { transform: scale(1.03); border-color: white; }
         .card img { width: 100%; height: 190px; object-fit: cover; background: #1a1a1a; }
         .card-info { padding: 8px; }
         .card-title { font-size: 11px; font-weight: 600; margin: 0 0 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
         .details-view { padding: 20px 4%; }
-        .back-btn { background: none; border: none; color: #8c8c8c; cursor: pointer; font-size: 12px; font-weight: 600; padding: 0; margin-bottom: 15px; text-transform: uppercase; }
+        .back-btn { background: none; border: none; color: #8c8c8c; cursor: pointer; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
         .back-btn:hover { color: white; }
         .details-main { display: flex; gap: 25px; margin-bottom: 25px; flex-wrap: wrap; }
-        .details-poster { width: 180px; height: 250px; object-fit: cover; border-radius: 6px; background: #1a1a1a; border: 1px solid #1a1a1a; }
+        .details-poster { width: 180px; height: 250px; object-fit: cover; border-radius: 6px; border: 1px solid #1a1a1a; }
         .details-info { flex: 1; min-width: 280px; }
         .details-title { font-size: 26px; font-weight: 600; margin: 0 0 6px 0; }
         .details-desc { font-size: 13px; color: #b3b3b3; line-height: 1.5; margin: 0 0 20px 0; }
+        
+        .episode-selector-container { margin: 15px 0; }
+        .episode-select { background: #111; color: white; border: 1px solid #333; padding: 8px 12px; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 4px; outline: none; width: 100%; max-width: 300px; }
         .video-player-container { width: 100%; max-width: 850px; background: black; border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a; margin-top: 15px; }
         video { width: 100%; display: block; outline: none; }
+        
         .spark-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
         .spark-header { text-align: center; margin-bottom: 25px; }
         .spark-header h2 { font-size: 20px; font-weight: 600; text-transform: uppercase; }
@@ -62,10 +69,12 @@
         .spark-card { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 14px; }
         .spark-author { font-size: 12px; font-weight: 600; }
         .spark-body { font-size: 13px; color: #cccccc; margin-top: 5px; }
+        
         .search-container { padding: 20px 4%; }
         .search-bar-wrapper { max-width: 500px; margin: 0 auto 25px auto; }
         .search-input { width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none; }
         .search-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
         .modal-content { background: #111; border: 1px solid #1a1a1a; padding: 25px; border-radius: 8px; width: 90%; max-width: 360px; box-sizing: border-box; }
         .modal-title { font-size: 15px; font-weight: 600; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
@@ -74,6 +83,7 @@
         .action-btn { width: 100%; padding: 8px; font-size: 11px; font-family: 'Poppins', sans-serif; font-weight: 600; border-radius: 4px; cursor: pointer; text-transform: uppercase; border: none; }
         .btn-primary { background: white; color: black; }
         .btn-secondary { background: #222; color: #8c8c8c; border: 1px solid #333; }
+        
         .profile-select-screen { max-width: 500px; margin: 60px auto 0 auto; text-align: center; padding: 0 20px; }
         .profile-select-title { font-size: 18px; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; }
         .profiles-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
@@ -87,7 +97,6 @@
 <body>
 
     <div class="navbar">
-        <div class="menuBtn" onclick="toggleSidebar()">☰</div>
         <h1 class="nav-logo" onclick="switchPage('home')">Lumera Play</h1>
         <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
             <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
@@ -112,11 +121,6 @@
     <div class="banner" id="heroBannerGlobal" style="display: none;">
         <img id="heroImgGlobal" src="" alt="Destacado">
         <div class="banner-gradient"></div>
-        <div class="banner-content">
-            <h2 class="banner-logo" id="heroTitleGlobal">LUMERA</h2>
-            <p class="banner-desc" id="heroDescGlobal">Cargando...</p>
-            <button class="banner-btn" id="heroBtnGlobal" style="display: none;">Ver Ahora</button>
-        </div>
     </div>
 
     <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
@@ -164,11 +168,7 @@
         let sparks = JSON.parse(localStorage.getItem("lumera_sparks")) || [];
         let activeProfile = null;
         let contentDB = [];
-        let heroDB = [
-            { "titulo": "Look at!", "desc": "Un secuestro que sale terriblemente mal. Explora esta atrapante historia de fantasía y drama.", "imagen_banner": "https://i.imgur.com/PYu8Cmo.jpeg", "target_id": "look-at-2026" },
-            { "titulo": "Lumera Play", "desc": "Tu espacio definitivo de entretenimiento digital independiente. Contenido exclusivo y producciones originales.", "imagen_banner": "https://i.imgur.com/O22zpTd.png", "target_id": null },
-            { "titulo": "Lumera Kids", "desc": "¡La sección más divertida! Contenido apto para todo público y entretenimiento sano para disfrutar en familia.", "imagen_banner": "https://i.imgur.com/albi71Z.jpeg", "target_id": null }
-        ];
+        let heroDB = [];
         let currentHeroIndex = 0;
         let heroInterval = null;
 
@@ -177,19 +177,14 @@
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
             } catch(e) {
-                console.warn("Cargando DB de respaldo.");
-                contentDB = [
-                    { "id": "lumera_intro_01", "title": "Lumera Intro", "year": "2026", "age": 0, "img": "https://i.imgur.com/KcIAK4D.png", "desc": "Bienvenido a Lumera Play.", "type": "ambos", "genres": ["accion"], "url": "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1", "isSeries": false },
-                    { "id": "look-at-2026", "title": "Look at!", "year": "2026", "age": 16, "img": "https://i.imgur.com/5YRXD8b.jpeg", "desc": "Un secuestro que sale terriblemente mal.", "type": "serie", "genres": ["fantasia"], "isSeries": false, "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20PILOTO%201.mp4" }
-                ];
+                console.warn("Error al cargar peliculas.json.");
             }
 
             try {
                 const resHero = await fetch('hero.json');
-                const externalHero = await resHero.json();
-                if(externalHero && externalHero.length > 0) heroDB = externalHero;
+                heroDB = await resHero.json();
             } catch(e) {
-                console.log("Usando array local de banners.");
+                console.warn("Error al cargar hero.json.");
             }
 
             renderProfilesGrid();
@@ -197,31 +192,31 @@
         }
 
         function startHeroRotation() {
-            updateHeroUI();
             if(heroInterval) clearInterval(heroInterval);
+            updateHeroUI();
             heroInterval = setInterval(() => {
-                currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
-                updateHeroUI();
+                if(heroDB.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
+                    updateHeroUI();
+                }
             }, 10000);
         }
 
         function updateHeroUI() {
             if (!heroDB || heroDB.length === 0) return;
             const item = heroDB[currentHeroIndex];
+            const bannerEl = document.getElementById("heroBannerGlobal");
             const imgEl = document.getElementById("heroImgGlobal");
-            const titleEl = document.getElementById("heroTitleGlobal");
-            const descEl = document.getElementById("heroDescGlobal");
-            const btnEl = document.getElementById("heroBtnGlobal");
 
             if (imgEl) imgEl.src = item.imagen_banner;
-            if (titleEl) titleEl.textContent = item.titulo;
-            if (descEl) descEl.textContent = item.desc;
-            if (btnEl) {
+            
+            if (bannerEl) {
                 if(item.target_id) {
-                    btnEl.style.display = "inline-block";
-                    btnEl.onclick = () => showDetails(item.target_id);
+                    bannerEl.classList.add("clickable");
+                    bannerEl.onclick = () => showDetails(item.target_id);
                 } else {
-                    btnEl.style.display = "none";
+                    bannerEl.classList.remove("clickable");
+                    bannerEl.onclick = null;
                 }
             }
         }
@@ -250,6 +245,7 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             const activeTab = document.querySelector(`.tab[data-target="${pageId}"]`);
             if (activeTab) activeTab.classList.add('active');
+            if(pageId === 'spark') renderSparks();
         }
 
         function renderContent(viewType) {
@@ -258,8 +254,8 @@
             targetContainer.innerHTML = '';
 
             let filteredData = contentDB;
-            if (viewType === 'series') filteredData = contentDB.filter(i => i.type === 'serie');
-            if (viewType === 'pelis') filteredData = contentDB.filter(i => i.type === 'pelicula' || i.type === 'ambos');
+            if (viewType === 'series') filteredData = contentDB.filter(i => i.isSeries === true || i.type === 'serie');
+            if (viewType === 'pelis') filteredData = contentDB.filter(i => i.isSeries === false && (i.type === 'pelicula' || i.type === 'ambos'));
             if (viewType === 'kids') filteredData = contentDB.filter(i => i.age === 0);
 
             const row = document.createElement('div');
@@ -288,21 +284,67 @@
             const item = contentDB.find(c => c.id === id);
             if (!item) return;
             switchPage('detailsPage');
+            
             const container = document.getElementById('detailsViewContainer');
-            container.innerHTML = `
+            
+            let htmlContent = `
                 <button class="back-btn" onclick="switchPage('home')">← Volver</button>
                 <div class="details-main">
                     <img src="${item.img}" class="details-poster">
                     <div class="details-info">
                         <h2>${item.title}</h2>
                         <p class="details-desc">${item.desc}</p>
+            `;
+
+            if(item.isSeries && item.seasons) {
+                htmlContent += `<div class="episode-selector-container"><select class="episode-select" id="episodeSelector" onchange="changeEpisode('${item.id}')">`;
+                item.seasons[0].episodes.forEach((ep, idx) => {
+                    htmlContent += `<option value="${idx}">${ep.title}</option>`;
+                });
+                htmlContent += `</select></div>`;
+            }
+
+            htmlContent += `
                         <div class="video-player-container">
                             <video id="lumeraVideoPlayer" controls autoplay></video>
                         </div>
                     </div>
                 </div>
             `;
-            document.getElementById('lumeraVideoPlayer').src = item.url;
+            
+            container.innerHTML = htmlContent;
+            
+            if(item.isSeries && item.seasons) {
+                changeEpisode(item.id);
+            } else {
+                document.getElementById('lumeraVideoPlayer').src = item.url;
+            }
+        }
+
+        function changeEpisode(itemId) {
+            const item = contentDB.find(c => c.id === itemId);
+            const selector = document.getElementById('episodeSelector');
+            const player = document.getElementById('lumeraVideoPlayer');
+            if(!item || !selector || !player) return;
+
+            const epIdx = selector.value;
+            const episode = item.seasons[0].episodes[epIdx];
+            
+            player.innerHTML = ''; 
+            player.src = episode.url;
+
+            if(episode.tracks) {
+                episode.tracks.forEach(trackData => {
+                    const track = document.createElement('track');
+                    track.kind = 'subtitles';
+                    track.label = trackData.label;
+                    track.srclang = trackData.srclang;
+                    track.src = trackData.src;
+                    if(trackData.srclang === 'es') track.default = true;
+                    player.appendChild(track);
+                });
+            }
+            player.load();
         }
 
         function executeSearch() {
@@ -312,7 +354,7 @@
             contentDB.filter(i => i.title.toLowerCase().includes(q)).forEach(item => {
                 let card = document.createElement('div'); card.className = 'card'; card.onclick = () => showDetails(item.id);
                 card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
-                grid.appendChild(grid.appendChild(card));
+                grid.appendChild(card);
             });
         }
 
