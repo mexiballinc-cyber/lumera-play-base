@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumera Play - B&W Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=400;600&display=swap" rel="stylesheet">
     
     <style>
         /* =========================================
@@ -150,7 +150,7 @@
         }
         
         /* =========================================
-           5. DISEÑO DE BANNERS (MANTENIENDO TU CONFIGURACIÓN)
+           5. DISEÑO DE BANNERS DINÁMICOS
         ========================================= */
         .banner { 
             position: relative; 
@@ -253,33 +253,6 @@
             display: none; 
         }
         
-        .arrow { 
-            position: absolute; 
-            background: rgba(0,0,0,0.75); 
-            color: white; 
-            border: 1px solid #222; 
-            font-size: 18px; 
-            width: 36px; 
-            height: 36px; 
-            cursor: pointer; 
-            z-index: 10; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 50%;
-            user-select: none;
-            transition: background 0.2s, border-color 0.2s;
-        }
-
-        .arrow:hover {
-            background: white;
-            color: black;
-            border-color: white;
-        }
-        
-        .arrow-left { left: -15px; }
-        .arrow-right { right: -15px; }
-        
         /* =========================================
            7. TARJETAS DE CONTENIDO (POSTERS)
         ========================================= */
@@ -320,7 +293,7 @@
         }
         
         /* =========================================
-           8. VISTA DE DETALLES (REPRODUCTOR)
+           8. VISTA DE DETALLES
         ========================================= */
         .details-view { 
             padding: 20px 4%; 
@@ -358,7 +331,6 @@
         
         .details-info { flex: 1; min-width: 280px; }
         .details-title { font-size: 26px; font-weight: 600; margin: 0 0 6px 0; }
-        .details-meta { font-size: 11px; color: #8c8c8c; margin-bottom: 12px; font-weight: 600; }
         .details-desc { font-size: 13px; color: #b3b3b3; line-height: 1.5; margin: 0 0 20px 0; }
         
         .video-player-container {
@@ -367,25 +339,12 @@
 
         video { width: 100%; display: block; outline: none; }
         
-        .seasons-section { margin-top: 30px; max-width: 850px; }
-        .season-selector {
-            background: #111; color: white; border: 1px solid #222; padding: 8px 12px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; border-radius: 4px; cursor: pointer;
-        }
-
-        .episodes-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px;}
-        .episode-item {
-            display: flex; align-items: center; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; border-radius: 6px; cursor: pointer;
-        }
-        .episode-item:hover, .episode-item.active { background: #161616; border-color: white; }
-        .episode-title { font-size: 13px; font-weight: 600; flex-grow: 1; }
-        
         /* =========================================
-           9. SECCIÓN SPARK (COMUNIDAD)
+           9. SECCIÓN SPARK
         ========================================= */
         .spark-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
         .spark-header { text-align: center; margin-bottom: 25px; }
         .spark-header h2 { font-size: 20px; font-weight: 600; text-transform: uppercase; }
-        .spark-header p { font-size: 11px; color: #666; }
         .spark-composer { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px; margin-bottom: 20px; }
         .spark-textarea {
             width: 100%; height: 70px; background: none; border: none; resize: none; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; outline: none;
@@ -403,12 +362,12 @@
         .search-container { padding: 20px 4%; }
         .search-bar-wrapper { max-width: 500px; margin: 0 auto 25px auto; }
         .search-input {
-            width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none; margin-bottom: 0;
+            width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none;
         }
         .search-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
 
         /* =========================================
-           11. MODAL DE PERFILES Y COMPONENTES
+           11. MODAL DE PERFILES
         ========================================= */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
@@ -444,7 +403,7 @@
         <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
             <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
             <div class="tab" data-target="series" onclick="switchPage('series')">Series</div>
-            <div class="tab" data-target="peliculas" onclick="switchPage('peliculas')">Películas</div>
+            <div class="tab" data-target="pelis" onclick="switchPage('pelis')">Películas</div>
             <div class="tab" data-target="kids" onclick="switchPage('kids')">Kids</div>
             <div class="tab" data-target="spark" onclick="switchPage('spark')">Spark</div>
         </div>
@@ -463,18 +422,18 @@
     </div>
 
     <div class="banner" id="heroBannerGlobal" style="display: none;">
-        <img id="heroImgGlobal" src="https://i.imgur.com/O22zpTd.png" alt="Destacado">
+        <img id="heroImgGlobal" src="" alt="Destacado">
         <div class="banner-gradient"></div>
         <div class="banner-content">
             <h2 class="banner-logo" id="heroTitleGlobal">LUMERA</h2>
-            <p class="banner-desc" id="heroDescGlobal">Cargando catálogo...</p>
+            <p class="banner-desc" id="heroDescGlobal">Cargando...</p>
             <button class="banner-btn" id="heroBtnGlobal" style="display: none;">Ver Ahora</button>
         </div>
     </div>
 
     <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
     <div class="page" id="series"><div class="row-container" id="seriesRows"></div></div>
-    <div class="page" id="peliculas"><div class="row-container" id="peliculasRows"></div></div>
+    <div class="page" id="pelis"><div class="row-container" id="pelisRows"></div></div>
     <div class="page" id="kids"><div class="row-container" id="kidsRows"></div></div>
 
     <div class="page" id="spark">
@@ -531,7 +490,7 @@
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
             } catch(e) {
-                console.warn("Cargando base de datos interna provisional.");
+                console.warn("Usando base de datos interna provisional.");
                 contentDB = [
                     { "id": "lumera_intro_01", "title": "Lumera Intro", "year": "2026", "age": 0, "img": "https://i.imgur.com/KcIAK4D.png", "desc": "Bienvenido a Lumera Play.", "type": "ambos", "genres": ["accion"], "url": "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1", "isSeries": false },
                     { "id": "look-at-2026", "title": "Look at!", "year": "2026", "age": 16, "img": "https://i.imgur.com/5YRXD8b.jpeg", "desc": "Fantasía | +16. Un secuestro que sale terriblemente mal.", "type": "serie", "genres": ["fantasia"], "isSeries": true, "seasons": [{"name": "Temporada 1", "episodes": [{"title": "1. El Secuestro", "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20PILOTO%201.mp4"}]}]}
@@ -543,7 +502,7 @@
                 const externalHero = await resHero.json();
                 if(externalHero && externalHero.length > 0) heroDB = externalHero;
             } catch(e) {
-                console.log("CORS/Local: Corriendo respaldo de seguridad para Hero Slider.");
+                console.log("Cargando array por defecto para el Slider.");
             }
 
             renderProfilesGrid();
@@ -553,7 +512,6 @@
         function startHeroRotation() {
             updateHeroUI();
             if(heroInterval) clearInterval(heroInterval);
-            
             heroInterval = setInterval(() => {
                 currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
                 updateHeroUI();
@@ -584,17 +542,16 @@
         }
 
         function switchPage(pageId) {
-            // Ocultar todas las páginas
+            // Ocultar todas las páginas removiendo la clase active
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             
-            // Activar la seleccionada
             const target = document.getElementById(pageId);
             if(target) target.classList.add('active');
 
-            // Mover y controlar el banner global de forma inteligente arriba de los carruseles
+            // Control de inyección dinámica del Banner
             const banner = document.getElementById('heroBannerGlobal');
             if(banner) {
-                if (['home', 'series', 'peliculas', 'kids'].includes(pageId)) {
+                if (['home', 'series', 'pelis', 'kids'].includes(pageId)) {
                     target.insertBefore(banner, target.firstChild);
                     banner.style.display = "block";
                     renderContent(pageId);
@@ -615,7 +572,7 @@
 
             let filteredData = contentDB;
             if (viewType === 'series') filteredData = contentDB.filter(i => i.type === 'serie');
-            if (viewType === 'peliculas') filteredData = contentDB.filter(i => i.type === 'pelicula');
+            if (viewType === 'pelis') filteredData = contentDB.filter(i => i.type === 'pelicula' || i.type === 'ambos');
             if (viewType === 'kids') filteredData = contentDB.filter(i => i.age === 0);
 
             const row = document.createElement('div');
@@ -653,42 +610,10 @@
                         <div class="video-player-container">
                             <video id="lumeraVideoPlayer" controls autoplay></video>
                         </div>
-                        <div class="seasons-section" id="seasonsSection" style="display:none;">
-                            <select class="season-selector" id="seasonSelector" onchange="changeSeason()"></select>
-                            <div class="episodes-list" id="episodesList"></div>
-                        </div>
                     </div>
                 </div>
             `;
-
-            const player = document.getElementById('lumeraVideoPlayer');
-            if(item.isSeries && item.seasons) {
-                document.getElementById('seasonsSection').style.display = 'block';
-                window.currentViewingSeries = item;
-                const selector = document.getElementById('seasonSelector');
-                item.seasons.forEach((s, idx) => {
-                    let opt = document.createElement('option'); opt.value = idx; opt.textContent = s.name;
-                    selector.appendChild(opt);
-                });
-                changeSeason();
-            } else {
-                player.src = item.url;
-            }
-        }
-
-        function changeSeason() {
-            const item = window.currentViewingSeries;
-            const idx = document.getElementById('seasonSelector').value;
-            const list = document.getElementById('episodesList');
-            list.innerHTML = '';
-            
-            item.seasons[idx].episodes.forEach(ep => {
-                let div = document.createElement('div'); div.className = 'episode-item';
-                div.innerHTML = `<div class="episode-title">${ep.title}</div>`;
-                div.onclick = () => { document.getElementById('lumeraVideoPlayer').src = ep.url; };
-                list.appendChild(div);
-            });
-            if(item.seasons[idx].episodes[0]) document.getElementById('lumeraVideoPlayer').src = item.seasons[idx].episodes[0].url;
+            document.getElementById('lumeraVideoPlayer').src = item.url;
         }
 
         function executeSearch() {
@@ -704,7 +629,7 @@
 
         function renderProfilesGrid() {
             const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
-            profiles.forEach((p, idx) => {
+            profiles.forEach((p) => {
                 let slot = document.createElement('div'); slot.className = 'profile-slot';
                 slot.innerHTML = `<div class="profile-avatar-box">${p.name[0]}</div><div class="profile-slot-name">${p.name}</div>`;
                 slot.onclick = () => selectProfile(p);
@@ -737,7 +662,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('profileName').value = ''; }
         function goToProfilesScreen() { activeProfile = null; document.getElementById('navTabs').style.pointerEvents = "none"; document.getElementById('navTabs').style.opacity = "0.2"; switchPage('profiles'); }
         function postSpark() { let input = document.getElementById('sparkInput'); if(!input.value.trim()) return; sparks.push({ author: activeProfile.name, text: input.value.trim() }); localStorage.setItem("lumera_sparks", JSON.stringify(sparks)); input.value = ''; renderSparks(); }
-        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class=\"spark-author\">${s.author}</div><div class=\"spark-body\">${s.text}</div>`; feed.appendChild(c); }); }
+        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class="spark-author">${s.author}</div><div class="spark-body">${s.text}</div>`; feed.appendChild(c); }); }
 
         document.addEventListener('DOMContentLoaded', initLumera);
     </script>
