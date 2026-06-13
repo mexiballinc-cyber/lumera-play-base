@@ -14,7 +14,7 @@
             margin: 0; 
             background: #0b0b0b; 
             color: white; 
-            font-family: 'Poppins', sans-serif; 
+            font-family: 'Poppins', sans-serif; \
             overflow-x: hidden; 
         }
         
@@ -23,229 +23,229 @@
         ========================================= */
         .navbar { 
             display: flex; 
-            align-items: center; 
-            padding: 12px 18px; \
+            align-items: center; \
+            padding: 12px 18px; 
             background: #0b0b0b; 
-            position: sticky; 
+            position: sticky; \
             top: 0; 
             z-index: 1001; 
             gap: 15px; 
             border-bottom: 1px solid #1a1a1a; 
         }
         
-        .menuBtn { 
+        .menuBtn { \
             font-size: 26px; 
-            cursor: pointer; 
+            cursor: pointer; \
             display: none; 
             align-items: center; 
         } 
         
-        .nav-logo { \
+        .nav-logo { 
             font-size: 20px; 
             font-weight: 600; 
-            letter-spacing: 1px; 
+            letter-spacing: 1px; \
             margin: 0; 
-            cursor: pointer; \
+            cursor: pointer; 
         }
         
         .nav-tabs { 
-            display: flex; 
+            display: flex; \
             gap: 15px; 
             margin-left: 10px; 
             flex-grow: 1; \
         }
         
-        .tab { 
-            font-size: 13px; 
+        .tab { \
+            font-size: 13px; \
             font-weight: 600; 
-            color: #8c8c8c; 
-            cursor: pointer; 
-            transition: color 0.2s; 
-            text-transform: uppercase; 
+            color: #8c8c8c; \
+            cursor: pointer; \
+            transition: color 0.2s; \
+            text-transform: uppercase; \
             letter-spacing: 0.5px; 
         }
         
-        .tab:hover, .tab.active { \
+        .tab:hover, .tab.active { 
             color: white; 
         }
         
-        .nav-right { 
+        .nav-right { \
             display: flex; 
-            align-items: center; 
-            gap: 12px; \
+            align-items: center; \
+            gap: 12px; 
         }
         
         .search-nav-btn { 
-            background: none; 
-            border: none; 
-            color: #8c8c8c; 
-            font-size: 18px; 
-            cursor: pointer; 
-            padding: 4px; 
-            display: flex; 
-            align-items: center; 
+            background: none; \
+            border: none; \
+            color: #8c8c8c; \
+            font-size: 18px; \
+            cursor: pointer; \
+            padding: 4px; \
+            display: flex; \
+            align-items: center; \
         }
         
-        .search-nav-btn:hover { 
-            color: white; 
+        .search-nav-btn:hover { \
+            color: white; \
         }
         
         .profile-nav-btn { \
-            background: white; 
-            color: black; 
-            border: none; 
-            padding: 6px 14px; 
-            font-size: 11px; 
-            font-weight: 600; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
+            background: white; \
+            color: black; \
+            border: none; \
+            padding: 6px 14px; \
+            font-size: 11px; \
+            font-weight: 600; \
+            border-radius: 20px; \
+            cursor: pointer; \
+            text-transform: uppercase; \
+            letter-spacing: 0.5px; \
         }
 
         /* =========================================
            3. ESTRUCTURA DE PÁGINAS Y CONTENEDORES
         ========================================= */
-        .page { 
-            display: none; 
-            padding-bottom: 60px; 
+        .page { \
+            display: none; \
+            padding-bottom: 60px; \
         }
         
-        .page.active { 
-            display: block; 
+        .page.active { \
+            display: block; \
         }
 
         /* =========================================
-           4. HERO BANNER GLOBAL (TU ZONA AZUL - ESTILO DISNEY+)
+           4. HERO BANNER GLOBAL (ESTILO DISNEY+ - FIJO)
         ========================================= */
-        .banner { 
-            position: relative; 
-            width: 100%; 
-            height: 55vh; 
-            min-height: 360px; 
-            background: #111; 
-            overflow: hidden; 
-            cursor: default; 
-            transition: transform 0.2s ease; 
+        .banner { \
+            position: relative; \
+            width: 100%; \
+            height: 55vh; \
+            min-height: 360px; \
+            background: #111; \
+            overflow: hidden; \
+            cursor: default; \
+            transition: transform 0.2s ease; \
         }
         
-        .banner.clickable { 
-            cursor: pointer; 
+        .banner.clickable { \
+            cursor: pointer; \
         }
         
-        .banner.clickable:hover { 
-            transform: scale(1.005); 
+        .banner.clickable:hover { \
+            transform: scale(1.005); \
         }
         
-        .banner img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            opacity: 0.95; 
-            transition: opacity 0.4s ease-in-out; 
+        .banner img { \
+            width: 100%; \
+            height: 100%; \
+            object-fit: cover; \
+            opacity: 0.95; \
+            transition: opacity 0.4s ease-in-out; \
         }
         
-        .banner-gradient { 
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 30%; 
-            background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); 
+        .banner-gradient { \
+            position: absolute; \
+            bottom: 0; \
+            left: 0; \
+            width: 100%; \
+            height: 30%; \
+            background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); \
         }
 
         /* =========================================
            5. FILAS DE CONTENIDO (CAROUSEL)
         ========================================= */
-        .row-container { 
-            padding: 20px 4% 0 4%; 
+        .row-container { \
+            padding: 20px 4% 0 4%; \
         }
         
-        .row-title { 
-            font-size: 14px; 
-            font-weight: 600; 
+        .row-title { \
+            font-size: 14px; \
+            font-weight: 600; \
             margin-bottom: 10px; \
             text-transform: uppercase; \
             letter-spacing: 1px; \
             color: #ffffff; \
         }
         
-        .carousel-wrapper { 
-            position: relative; 
-            display: flex; 
-            align-items: center; 
+        .carousel-wrapper { \
+            position: relative; \
+            display: flex; \
+            align-items: center; \
         }
         
-        .carousel { 
-            display: flex; 
+        .carousel { \
+            display: flex; \
             gap: 12px; \
-            overflow-x: auto; 
-            scroll-behavior: smooth; 
-            width: 100%; 
-            padding-bottom: 10px; 
+            overflow-x: auto; \
+            scroll-behavior: smooth; \
+            width: 100%; \
+            padding-bottom: 10px; \
         }
         
-        .carousel::-webkit-scrollbar { 
-            display: none; 
+        .carousel::-webkit-scrollbar { \
+            display: none; \
         }
         
         /* Flechas del carrusel */
-        .arrow { 
-            position: absolute; 
-            background: rgba(0,0,0,0.75); 
-            color: white; 
-            border: 1px solid #222; 
-            font-size: 18px; 
-            width: 36px; 
-            height: 36px; 
+        .arrow { \
+            position: absolute; \
+            background: rgba(0,0,0,0.75); \
+            color: white; \
+            border: 1px solid #222; \
+            font-size: 18px; \
+            width: 36px; \
+            height: 36px; \
             cursor: pointer; \
-            z-index: 10; 
-            display: flex; 
+            z-index: 10; \
+            display: flex; \
             align-items: center; \
             justify-content: center; \
             border-radius: 50%; \
-            user-select: none; 
-            transition: background 0.2s; 
+            user-select: none; \
+            transition: background 0.2s; \
         }
         
-        .arrow:hover { 
-            background: white; 
-            color: black; 
+        .arrow:hover { \
+            background: white; \
+            color: black; \
         }
         
         .arrow-left { left: -15px; }
         .arrow-right { right: -15px; }
 
         /* Tarjetas de Películas/Series */
-        .card { 
-            flex: 0 0 auto; 
-            width: 140px; 
-            background: #111; 
-            border: 1px solid #1a1a1a; 
-            border-radius: 6px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            transition: transform 0.2s, border-color 0.2s; 
+        .card { \
+            flex: 0 0 auto; \
+            width: 140px; \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            border-radius: 6px; \
+            overflow: hidden; \
+            cursor: pointer; \
+            transition: transform 0.2s, border-color 0.2s; \
         }
         
-        .card:hover { 
+        .card:hover { \
             transform: scale(1.03); \
-            border-color: white; 
+            border-color: white; \
         }
         
-        .card img { 
-            width: 100%; 
-            height: 190px; 
-            object-fit: cover; 
-            background: #1a1a1a; 
+        .card img { \
+            width: 100%; \
+            height: 190px; \
+            object-fit: cover; \
+            background: #1a1a1a; \
         }
         
-        .card-info { 
+        .card-info { \
             padding: 8px; \
         }
         
-        .card-title { 
-            font-size: 11px; 
+        .card-title { \
+            font-size: 11px; \
             font-weight: 600; \
             margin: 0 0 2px 0; \
             white-space: nowrap; \
@@ -256,129 +256,129 @@
         /* =========================================
            6. VISTA DE DETALLES Y REPRODUCTOR
         ========================================= */
-        .details-view { 
-            padding: 20px 4%; 
+        .details-view { \
+            padding: 20px 4%; \
         }
         
-        .back-btn { 
-            background: none; 
-            border: none; 
-            color: #8c8c8c; 
+        .back-btn { \
+            background: none; \
+            border: none; \
+            color: #8c8c8c; \
             cursor: pointer; \
-            font-size: 12px; 
-            font-weight: 600; 
-            margin-bottom: 15px; 
-            text-transform: uppercase; 
+            font-size: 12px; \
+            font-weight: 600; \
+            margin-bottom: 15px; \
+            text-transform: uppercase; \
         }
         
-        .back-btn:hover { 
-            color: white; 
+        .back-btn:hover { \
+            color: white; \
         }
         
         .details-main { \
             display: flex; \
-            gap: 25px; 
+            gap: 25px; \
             margin-bottom: 25px; \
-            flex-wrap: wrap; 
+            flex-wrap: wrap; \
         }
         
-        .details-poster { 
-            width: 180px; 
-            height: 250px; 
+        .details-poster { \
+            width: 180px; \
+            height: 250px; \
             object-fit: cover; \
-            border-radius: 6px; 
+            border-radius: 6px; \
             border: 1px solid #1a1a1a; \
         }
         
-        .details-info { 
+        .details-info { \
             flex: 1; \
-            min-width: 280px; 
+            min-width: 280px; \
         }
         
-        .details-title { 
-            font-size: 26px; 
-            font-weight: 600; 
+        .details-title { \
+            font-size: 26px; \
+            font-weight: 600; \
             margin: 0 0 6px 0; \
         }
         
-        .details-desc { 
+        .details-desc { \
             font-size: 13px; \
-            color: #b3b3b3; 
-            line-height: 1.5; 
+            color: #b3b3b3; \
+            line-height: 1.5; \
             margin: 0 0 20px 0; \
         }
         
-        .episode-selector-container { 
-            margin: 15px 0; 
+        .episode-selector-container { \
+            margin: 15px 0; \
         }
         
-        .episode-select { 
+        .episode-select { \
             background: #111; \
-            color: white; 
+            color: white; \
             border: 1px solid #333; \
             padding: 8px 12px; \
             font-family: 'Poppins', sans-serif; \
             font-size: 13px; \
             border-radius: 4px; \
-            outline: none; 
+            outline: none; \
             width: 100%; \
             max-width: 300px; \
         }
         
-        .video-player-container { 
+        .video-player-container { \
             width: 100%; \
-            max-width: 850px; 
-            background: black; 
+            max-width: 850px; \
+            background: black; \
             border-radius: 8px; \
-            overflow: hidden; 
-            border: 1px solid #1a1a1a; 
-            margin-top: 15px; 
+            overflow: hidden; \
+            border: 1px solid #1a1a1a; \
+            margin-top: 15px; \
         }
         
         video { \
             width: 100%; \
-            display: block; 
+            display: block; \
             outline: none; \
         }
 
         /* =========================================
            7. SECCIÓN SPARK (COMUNIDAD)
         ========================================= */
-        .spark-container { 
-            max-width: 600px; 
-            margin: 0 auto; 
+        .spark-container { \
+            max-width: 600px; \
+            margin: 0 auto; \
             padding: 20px 15px; \
         }
         
-        .spark-header { 
-            text-align: center; 
-            margin-bottom: 25px; 
+        .spark-header { \
+            text-align: center; \
+            margin-bottom: 25px; \
         }
         
-        .spark-header h2 { 
-            font-size: 20px; 
+        .spark-header h2 { \
+            font-size: 20px; \
             font-weight: 600; \
-            text-transform: uppercase; 
+            text-transform: uppercase; \
         }
         
-        .spark-composer { 
-            background: #111; 
+        .spark-composer { \
+            background: #111; \
             border: 1px solid #1a1a1a; \
             border-radius: 8px; \
             padding: 12px; \
-            margin-bottom: 20px; 
+            margin-bottom: 20px; \
         }
         
-        .spark-textarea { 
+        .spark-textarea { \
             width: 100%; \
             height: 70px; \
-            background: none; 
-            border: none; 
-            resize: none; 
-            color: white; 
+            background: none; \
+            border: none; \
+            resize: none; \
+            color: white; \
             font-family: 'Poppins', sans-serif; \
             font-size: 13px; \
-            outline: none; 
+            outline: none; \
         }
         
         .spark-composer-footer { \
@@ -400,7 +400,7 @@
             cursor: pointer; \
         }
         
-        .spark-feed { 
+        .spark-feed { \
             display: flex; \
             flex-direction: column; \
             gap: 12px; \
@@ -413,7 +413,7 @@
             padding: 14px; \
         }
         
-        .spark-author { 
+        .spark-author { \
             font-size: 12px; \
             font-weight: 600; \
         }
@@ -600,7 +600,7 @@
     <div class="navbar">
         <h1 class="nav-logo" onclick="switchPage('home')">Lumera Play</h1>
         <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
-            <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
+            <div class="tab" data-target="home" onclick="switchPage('home')">Inicio</div>
             <div class="tab" data-target="series" onclick="switchPage('series')">Series</div>
             <div class="tab" data-target="pelis" onclick="switchPage('pelis')">Películas</div>
             <div class="tab" data-target="kids" onclick="switchPage('kids')">Kids</div>
@@ -612,16 +612,16 @@
         </div>
     </div>
 
+    <div class="banner" id="heroBannerGlobal" style="display: none;">
+        <img id="heroImgGlobal" src="" alt="Destacado Lumera">
+        <div class="banner-gradient"></div>
+    </div>
+
     <div class="page active" id="profiles">
         <div class="profile-select-screen">
             <h2 class="profile-select-title">¿Quién está viendo ahora?</h2>
             <div class="profiles-layout" id="profilesLayout"></div>
         </div>
-    </div>
-
-    <div class="banner" id="heroBannerGlobal" style="display: none;">
-        <img id="heroImgGlobal" src="" alt="Destacado Lumera">
-        <div class="banner-gradient"></div>
     </div>
 
     <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
@@ -673,67 +673,69 @@
         let currentHeroIndex = 0;
         let heroInterval = null;
 
-        // 1. Carga segura de Base de Datos
+        // Inicializador General
         async function initLumera() {
             try {
                 const res = await fetch('peliculas.json');
                 contentDB = await res.json();
-            } catch(e) { console.warn("Error al cargar peliculas.json."); }
+            } catch(e) { console.warn("Error al cargar peliculas.json local."); }
 
             try {
                 const resHero = await fetch('hero.json');
                 heroDB = await resHero.json();
-            } catch(e) { console.warn("Error al cargar hero.json."); }
+            } catch(e) { console.warn("Error al cargar hero.json local."); }
 
             renderProfilesGrid();
-            startHeroRotation();
+            startHeroTimer(); // Arranca el motor del carrusel automático
         }
 
-        // 2. Sistema de rotación Disney+ (Saneado por completo)
-        function startHeroRotation() {
+        // CONTROL DEL TEMPORIZADOR DE 10 SEGUNDOS CONEXIÓN HERO.JSON
+        function startHeroTimer() {
             if(heroInterval) clearInterval(heroInterval);
-            updateHeroUI();
+            renderHeroSlide();
             heroInterval = setInterval(() => {
                 if(heroDB && heroDB.length > 0) {
                     currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
-                    updateHeroUI();
+                    renderHeroSlide();
                 }
-            }, 10000); // 10 segundos limpios de rotación
+            }, 10000); // 10 Segundos limpios
         }
 
-        function updateHeroUI() {
+        function renderHeroSlide() {
             if (!heroDB || heroDB.length === 0) return;
-            const item = heroDB[currentHeroIndex];
-            const bannerEl = document.getElementById("heroBannerGlobal");
-            const imgEl = document.getElementById("heroImgGlobal");
+            const slide = heroDB[currentHeroIndex];
+            const bannerElement = document.getElementById("heroBannerGlobal");
+            const imgElement = document.getElementById("heroImgGlobal");
 
-            if (imgEl) imgEl.src = item.imagen_banner;
+            if (imgElement) {
+                imgElement.src = slide.imagen_banner;
+            }
             
-            if (bannerEl) {
-                if(item.target_id) {
-                    bannerEl.classList.add("clickable");
-                    bannerEl.onclick = () => showDetails(item.target_id); // Te manda a la INFO de la serie directo
+            if (bannerElement) {
+                if(slide.target_id) {
+                    bannerElement.classList.add("clickable");
+                    bannerElement.onclick = () => showDetails(slide.target_id);
                 } else {
-                    bannerEl.classList.remove("clickable");
-                    bannerEl.onclick = null;
+                    bannerElement.classList.remove("clickable");
+                    bannerElement.onclick = null;
                 }
             }
         }
 
-        // 3. Control de Navegación (Se eliminó la reescritura destructiva de HTML)
+        // Navegación Inteligente de Páginas (Controla cuándo se ve o se oculta el Banner)
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
             if(target) target.classList.add('active');
 
-            const banner = document.getElementById('heroBannerGlobal');
-            if(banner) {
-                if (['home', 'series', 'pelis', 'kids'].includes(pageId)) {
-                    target.insertBefore(banner, target.firstChild);
-                    banner.style.display = "block";
+            // Mostrar/Ocultar Banner según la sección de manera segura
+            const bannerGlobal = document.getElementById('heroBannerGlobal');
+            if(bannerGlobal) {
+                if (['home', 'series', 'pelis', 'kids'].includes(pageId) && activeProfile !== null) {
+                    bannerGlobal.style.display = "block";
                     renderContent(pageId);
                 } else {
-                    banner.style.display = "none";
+                    bannerGlobal.style.display = "none";
                 }
             }
 
@@ -743,7 +745,7 @@
             if(pageId === 'spark') renderSparks();
         }
 
-        // 4. Render de Filas comunes
+        // Renderizador Dinámico de Contenido por Categorías
         function renderContent(viewType) {
             const targetContainer = document.getElementById(`${viewType}Rows`);
             if (!targetContainer) return;
@@ -781,14 +783,13 @@
             if (el) el.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
-        // 5. Pantalla de información de la producción (Lógica sana)
+        // Vista de Información y Reproductor Multimedia
         function showDetails(id) {
             const item = contentDB.find(c => c.id === id);
             if (!item) return;
             switchPage('detailsPage');
             
             const container = document.getElementById('detailsViewContainer');
-            
             let htmlContent = `
                 <button class="back-btn" onclick="switchPage('home')">← Volver al Inicio</button>
                 <div class="details-main">
@@ -849,7 +850,7 @@
             player.load();
         }
 
-        // 6. Buscador Blindado
+        // Sistema de Búsqueda Integrado
         function executeSearch() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('searchResultsGrid');
@@ -863,7 +864,7 @@
             });
         }
 
-        // 7. Perfiles y Spark
+        // Administración de Perfiles y Red Spark
         function renderProfilesGrid() {
             const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
             profiles.forEach((p) => {
@@ -899,7 +900,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('profileName').value = ''; }
         function goToProfilesScreen() { activeProfile = null; document.getElementById('navTabs').style.pointerEvents = "none"; document.getElementById('navTabs').style.opacity = "0.2"; switchPage('profiles'); }
         function postSpark() { let input = document.getElementById('sparkInput'); if(!input.value.trim()) return; sparks.push({ author: activeProfile.name, text: input.value.trim() }); localStorage.setItem("lumera_sparks", JSON.stringify(sparks)); input.value = ''; renderSparks(); }
-        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class="spark-author">${s.author}</div><div class="spark-body">${s.text}</div>`; feed.appendChild(c); }); }
+        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class=\"spark-author\">${s.author}</div><div class=\"spark-body\">${s.text}</div>`; feed.appendChild(c); }); }
 
         document.addEventListener('DOMContentLoaded', initLumera);
     </script>
