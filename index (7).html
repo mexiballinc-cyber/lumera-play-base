@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumera Play - B&W Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. ESTILOS GENERALES
+        ========================================= */
+        body { 
+            margin: 0; 
+            background: #0b0b0b; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
+        }
+        
+        /* =========================================
+           2. NAVBAR SUPERIOR
+        ========================================= */
+        .navbar { 
+            display: flex; 
+            align-items: center; 
+            padding: 12px 18px; \
+            background: #0b0b0b; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1001; 
+            gap: 15px; 
+            border-bottom: 1px solid #1a1a1a; 
+        }
+        
+        .menuBtn { 
+            font-size: 26px; 
+            cursor: pointer; 
+            display: none; 
+            align-items: center; 
+        } 
+        
+        .nav-logo { \
+            font-size: 20px; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+            margin: 0; 
+            cursor: pointer; \
+        }
+        
+        .nav-tabs { 
+            display: flex; 
+            gap: 15px; 
+            margin-left: 10px; 
+            flex-grow: 1; \
+        }
+        
+        .tab { 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #8c8c8c; 
+            cursor: pointer; 
+            transition: color 0.2s; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .tab:hover, .tab.active { \
+            color: white; 
+        }
+        
+        .nav-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; \
+        }
+        
+        .search-nav-btn { 
+            background: none; 
+            border: none; 
+            color: #8c8c8c; 
+            font-size: 18px; 
+            cursor: pointer; 
+            padding: 4px; 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .search-nav-btn:hover { 
+            color: white; 
+        }
+        
+        .profile-nav-btn { \
+            background: white; 
+            color: black; 
+            border: none; 
+            padding: 6px 14px; 
+            font-size: 11px; 
+            font-weight: 600; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+
+        /* =========================================
+           3. ESTRUCTURA DE PÁGINAS Y CONTENEDORES
+        ========================================= */
+        .page { 
+            display: none; 
+            padding-bottom: 60px; 
+        }
+        
+        .page.active { 
+            display: block; 
+        }
+
+        /* =========================================
+           4. HERO BANNER GLOBAL (TU ZONA AZUL - ESTILO DISNEY+)
+        ========================================= */
+        .banner { 
+            position: relative; 
+            width: 100%; 
+            height: 55vh; 
+            min-height: 360px; 
+            background: #111; 
+            overflow: hidden; 
+            cursor: default; 
+            transition: transform 0.2s ease; 
+        }
+        
+        .banner.clickable { 
+            cursor: pointer; 
+        }
+        
+        .banner.clickable:hover { 
+            transform: scale(1.005); 
+        }
+        
+        .banner img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0.95; 
+            transition: opacity 0.4s ease-in-out; 
+        }
+        
+        .banner-gradient { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 30%; 
+            background: linear-gradient(to top, #0b0b0b 0%, rgba(11,11,11,0) 100%); 
+        }
+
+        /* =========================================
+           5. FILAS DE CONTENIDO (CAROUSEL)
+        ========================================= */
+        .row-container { 
+            padding: 20px 4% 0 4%; 
+        }
+        
+        .row-title { 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-bottom: 10px; \
+            text-transform: uppercase; \
+            letter-spacing: 1px; \
+            color: #ffffff; \
+        }
+        
+        .carousel-wrapper { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .carousel { 
+            display: flex; 
+            gap: 12px; \
+            overflow-x: auto; 
+            scroll-behavior: smooth; 
+            width: 100%; 
+            padding-bottom: 10px; 
+        }
+        
+        .carousel::-webkit-scrollbar { 
+            display: none; 
+        }
+        
+        /* Flechas del carrusel */
+        .arrow { 
+            position: absolute; 
+            background: rgba(0,0,0,0.75); 
+            color: white; 
+            border: 1px solid #222; 
+            font-size: 18px; 
+            width: 36px; 
+            height: 36px; 
+            cursor: pointer; \
+            z-index: 10; 
+            display: flex; 
+            align-items: center; \
+            justify-content: center; \
+            border-radius: 50%; \
+            user-select: none; 
+            transition: background 0.2s; 
+        }
+        
+        .arrow:hover { 
+            background: white; 
+            color: black; 
+        }
+        
+        .arrow-left { left: -15px; }
+        .arrow-right { right: -15px; }
+
+        /* Tarjetas de Películas/Series */
+        .card { 
+            flex: 0 0 auto; 
+            width: 140px; 
+            background: #111; 
+            border: 1px solid #1a1a1a; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: transform 0.2s, border-color 0.2s; 
+        }
+        
+        .card:hover { 
+            transform: scale(1.03); \
+            border-color: white; 
+        }
+        
+        .card img { 
+            width: 100%; 
+            height: 190px; 
+            object-fit: cover; 
+            background: #1a1a1a; 
+        }
+        
+        .card-info { 
+            padding: 8px; \
+        }
+        
+        .card-title { 
+            font-size: 11px; 
+            font-weight: 600; \
+            margin: 0 0 2px 0; \
+            white-space: nowrap; \
+            overflow: hidden; \
+            text-overflow: ellipsis; \
+        }
+
+        /* =========================================
+           6. VISTA DE DETALLES Y REPRODUCTOR
+        ========================================= */
+        .details-view { 
+            padding: 20px 4%; 
+        }
+        
+        .back-btn { 
+            background: none; 
+            border: none; 
+            color: #8c8c8c; 
+            cursor: pointer; \
+            font-size: 12px; 
+            font-weight: 600; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+        }
+        
+        .back-btn:hover { 
+            color: white; 
+        }
+        
+        .details-main { \
+            display: flex; \
+            gap: 25px; 
+            margin-bottom: 25px; \
+            flex-wrap: wrap; 
+        }
+        
+        .details-poster { 
+            width: 180px; 
+            height: 250px; 
+            object-fit: cover; \
+            border-radius: 6px; 
+            border: 1px solid #1a1a1a; \
+        }
+        
+        .details-info { 
+            flex: 1; \
+            min-width: 280px; 
+        }
+        
+        .details-title { 
+            font-size: 26px; 
+            font-weight: 600; 
+            margin: 0 0 6px 0; \
+        }
+        
+        .details-desc { 
+            font-size: 13px; \
+            color: #b3b3b3; 
+            line-height: 1.5; 
+            margin: 0 0 20px 0; \
+        }
+        
+        .episode-selector-container { 
+            margin: 15px 0; 
+        }
+        
+        .episode-select { 
+            background: #111; \
+            color: white; 
+            border: 1px solid #333; \
+            padding: 8px 12px; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            border-radius: 4px; \
+            outline: none; 
+            width: 100%; \
+            max-width: 300px; \
+        }
+        
+        .video-player-container { 
+            width: 100%; \
+            max-width: 850px; 
+            background: black; 
+            border-radius: 8px; \
+            overflow: hidden; 
+            border: 1px solid #1a1a1a; 
+            margin-top: 15px; 
+        }
+        
+        video { \
+            width: 100%; \
+            display: block; 
+            outline: none; \
+        }
+
+        /* =========================================
+           7. SECCIÓN SPARK (COMUNIDAD)
+        ========================================= */
+        .spark-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px 15px; \
+        }
+        
+        .spark-header { 
+            text-align: center; 
+            margin-bottom: 25px; 
+        }
+        
+        .spark-header h2 { 
+            font-size: 20px; 
+            font-weight: 600; \
+            text-transform: uppercase; 
+        }
+        
+        .spark-composer { 
+            background: #111; 
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            padding: 12px; \
+            margin-bottom: 20px; 
+        }
+        
+        .spark-textarea { 
+            width: 100%; \
+            height: 70px; \
+            background: none; 
+            border: none; 
+            resize: none; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            outline: none; 
+        }
+        
+        .spark-composer-footer { \
+            display: flex; \
+            justify-content: flex-end; \
+            margin-top: 8px; \
+            border-top: 1px solid #1a1a1a; \
+            padding-top: 8px; \
+        }
+        
+        .spark-btn { \
+            background: white; \
+            color: black; \
+            border: none; \
+            padding: 5px 16px; \
+            font-size: 11px; \
+            font-weight: 600; \
+            border-radius: 4px; \
+            cursor: pointer; \
+        }
+        
+        .spark-feed { 
+            display: flex; \
+            flex-direction: column; \
+            gap: 12px; \
+        }
+        
+        .spark-card { \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            padding: 14px; \
+        }
+        
+        .spark-author { 
+            font-size: 12px; \
+            font-weight: 600; \
+        }
+        
+        .spark-body { \
+            font-size: 13px; \
+            color: #cccccc; \
+            margin-top: 5px; \
+        }
+
+        /* =========================================
+           8. VISTA DE BÚSQUEDA
+        ========================================= */
+        .search-container { \
+            padding: 20px 4%; \
+        }
+        
+        .search-bar-wrapper { \
+            max-width: 500px; \
+            margin: 0 auto 25px auto; \
+        }
+        
+        .search-input { \
+            width: 100%; \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            padding: 10px 15px; \
+            color: white; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            border-radius: 6px; \
+            box-sizing: border-box; \
+            outline: none; \
+        }
+        
+        .search-results-grid { \
+            display: grid; \
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); \
+            gap: 15px; \
+        }
+
+        /* =========================================
+           9. MODALES Y CONFIGURACIÓN
+        ========================================= */
+        .modal { \
+            display: none; \
+            position: fixed; \
+            top: 0; \
+            left: 0; \
+            width: 100%; \
+            height: 100%; \
+            background: rgba(0,0,0,0.85); \
+            z-index: 2000; \
+            align-items: center; \
+            justify-content: center; \
+        }
+        
+        .modal-content { \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            padding: 25px; \
+            border-radius: 8px; \
+            width: 90%; \
+            max-width: 360px; \
+            box-sizing: border-box; \
+        }
+        
+        .modal-title { \
+            font-size: 15px; \
+            font-weight: 600; \
+            text-align: center; \
+            margin-bottom: 15px; \
+            text-transform: uppercase; \
+        }
+        
+        .modal-input { \
+            width: 100%; \
+            background: #1a1a1a; \
+            border: 1px solid #222; \
+            padding: 8px 12px; \
+            color: white; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 12px; \
+            border-radius: 4px; \
+            box-sizing: border-box; \
+            outline: none; \
+            margin-bottom: 15px; \
+        }
+        
+        .modal-footer-btns { \
+            display: flex; \
+            flex-direction: column; \
+            gap: 8px; \
+        }
+        
+        .action-btn { \
+            width: 100%; \
+            padding: 8px; \
+            font-size: 11px; \
+            font-family: 'Poppins', sans-serif; \
+            font-weight: 600; \
+            border-radius: 4px; \
+            cursor: pointer; \
+            text-transform: uppercase; \
+            border: none; \
+        }
+        
+        .btn-primary { \
+            background: white; \
+            color: black; \
+        }
+        
+        .btn-secondary { \
+            background: #222; \
+            color: #8c8c8c; \
+            border: 1px solid #333; \
+        }
+
+        /* =========================================
+           10. PANTALLA DE SELECCIÓN DE PERFILES
+        ========================================= */
+        .profile-select-screen { \
+            max-width: 500px; \
+            margin: 60px auto 0 auto; \
+            text-align: center; \
+            padding: 0 20px; \
+        }
+        
+        .profile-select-title { \
+            font-size: 18px; \
+            font-weight: 600; \
+            text-transform: uppercase; \
+            margin-bottom: 30px; \
+        }
+        
+        .profiles-layout { \
+            display: flex; \
+            flex-wrap: wrap; \
+            gap: 20px; \
+            justify-content: center; \
+        }
+        
+        .profile-slot { \
+            width: 90px; \
+            cursor: pointer; \
+            text-align: center; \
+        }
+        
+        .profile-avatar-box { \
+            width: 90px; \
+            height: 90px; \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            margin-bottom: 8px; \
+            display: flex; \
+            align-items: center; \
+            justify-content: center; \
+            font-size: 32px; \
+            font-weight: 600; \
+            color: #8c8c8c; \
+            transition: all 0.2s; \
+        }
+        
+        .profile-slot:hover .profile-avatar-box { \
+            border-color: white; \
+            transform: scale(1.02); \
+            color: white; \
+        }
+        
+        .profile-slot-name { \
+            font-size: 11px; \
+            font-weight: 600; \
+            color: #8c8c8c; \
+        }
+        
+        .profile-slot:hover .profile-slot-name { \
+            color: white; \
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1 class="nav-logo" onclick="switchPage('home')">Lumera Play</h1>
+        <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
+            <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
+            <div class="tab" data-target="series" onclick="switchPage('series')">Series</div>
+            <div class="tab" data-target="pelis" onclick="switchPage('pelis')">Películas</div>
+            <div class="tab" data-target="kids" onclick="switchPage('kids')">Kids</div>
+            <div class="tab" data-target="spark" onclick="switchPage('spark')">Spark</div>
+        </div>
+        <div class="nav-right">
+            <button class="search-nav-btn" id="searchNavBtn" style="display:none;" onclick="switchPage('searchPage')">🔍</button>
+            <button class="profile-nav-btn" id="activeProfileBtn" onclick="goToProfilesScreen()">Perfil</button>
+        </div>
+    </div>
+
+    <div class="page active" id="profiles">
+        <div class="profile-select-screen">
+            <h2 class="profile-select-title">¿Quién está viendo ahora?</h2>
+            <div class="profiles-layout" id="profilesLayout"></div>
+        </div>
+    </div>
+
+    <div class="banner" id="heroBannerGlobal" style="display: none;">
+        <img id="heroImgGlobal" src="" alt="Destacado Lumera">
+        <div class="banner-gradient"></div>
+    </div>
+
+    <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
+    <div class="page" id="series"><div class="row-container" id="seriesRows"></div></div>
+    <div class="page" id="pelis"><div class="row-container" id="pelisRows"></div></div>
+    <div class="page" id="kids"><div class="row-container" id="kidsRows"></div></div>
+
+    <div class="page" id="spark">
+        <div class="spark-container">
+            <div class="spark-header"><h2>Spark</h2><p>Comunidad Lumera</p></div>
+            <div class="spark-composer">
+                <textarea class="spark-textarea" id="sparkInput" placeholder="Comparte un pensamiento con la comunidad..."></textarea>
+                <div class="spark-composer-footer"><button class="spark-btn" onclick="postSpark()">Publicar</button></div>
+            </div>
+            <div class="spark-feed" id="sparkFeed"></div>
+        </div>
+    </div>
+
+    <div class="page" id="searchPage">
+        <div class="search-container">
+            <div class="search-bar-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar contenido..." oninput="executeSearch()">
+            </div>
+            <div class="search-results-grid" id="searchResultsGrid"></div>
+        </div>
+    </div>
+
+    <div class="page" id="detailsPage">
+        <div class="details-view" id="detailsViewContainer"></div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Crear Perfil</h3>
+            <input type="text" id="profileName" class="modal-input" placeholder="Nombre del perfil" maxlength="12">
+            <div class="modal-footer-btns">
+                <button class="action-btn btn-primary" onclick="saveProfile()">Crear</button>
+                <button class="action-btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
+        let sparks = JSON.parse(localStorage.getItem("lumera_sparks")) || [];
+        let activeProfile = null;
+        let contentDB = [];
+        let heroDB = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
+
+        // 1. Carga segura de Base de Datos
+        async function initLumera() {
+            try {
+                const res = await fetch('peliculas.json');
+                contentDB = await res.json();
+            } catch(e) { console.warn("Error al cargar peliculas.json."); }
+
+            try {
+                const resHero = await fetch('hero.json');
+                heroDB = await resHero.json();
+            } catch(e) { console.warn("Error al cargar hero.json."); }
+
+            renderProfilesGrid();
+            startHeroRotation();
+        }
+
+        // 2. Sistema de rotación Disney+ (Saneado por completo)
+        function startHeroRotation() {
+            if(heroInterval) clearInterval(heroInterval);
+            updateHeroUI();
+            heroInterval = setInterval(() => {
+                if(heroDB && heroDB.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
+                    updateHeroUI();
+                }
+            }, 10000); // 10 segundos limpios de rotación
+        }
+
+        function updateHeroUI() {
+            if (!heroDB || heroDB.length === 0) return;
+            const item = heroDB[currentHeroIndex];
+            const bannerEl = document.getElementById("heroBannerGlobal");
+            const imgEl = document.getElementById("heroImgGlobal");
+
+            if (imgEl) imgEl.src = item.imagen_banner;
+            
+            if (bannerEl) {
+                if(item.target_id) {
+                    bannerEl.classList.add("clickable");
+                    bannerEl.onclick = () => showDetails(item.target_id); // Te manda a la INFO de la serie directo
+                } else {
+                    bannerEl.classList.remove("clickable");
+                    bannerEl.onclick = null;
+                }
+            }
+        }
+
+        // 3. Control de Navegación (Se eliminó la reescritura destructiva de HTML)
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active');
+
+            const banner = document.getElementById('heroBannerGlobal');
+            if(banner) {
+                if (['home', 'series', 'pelis', 'kids'].includes(pageId)) {
+                    target.insertBefore(banner, target.firstChild);
+                    banner.style.display = "block";
+                    renderContent(pageId);
+                } else {
+                    banner.style.display = "none";
+                }
+            }
+
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            const activeTab = document.querySelector(`.tab[data-target="${pageId}"]`);
+            if (activeTab) activeTab.classList.add('active');
+            if(pageId === 'spark') renderSparks();
+        }
+
+        // 4. Render de Filas comunes
+        function renderContent(viewType) {
+            const targetContainer = document.getElementById(`${viewType}Rows`);
+            if (!targetContainer) return;
+            targetContainer.innerHTML = '';
+
+            let filteredData = contentDB;
+            if (viewType === 'series') filteredData = contentDB.filter(i => i.isSeries === true || i.type === 'serie');
+            if (viewType === 'pelis') filteredData = contentDB.filter(i => i.isSeries === false && (i.type === 'pelicula' || i.type === 'ambos'));
+            if (viewType === 'kids') filteredData = contentDB.filter(i => i.age === 0);
+
+            const row = document.createElement('div');
+            const carouselId = `inner_${viewType}`;
+            row.innerHTML = `
+                <div class="row-title">Colección Disponible</div>
+                <div class="carousel-wrapper">
+                    <button class="arrow arrow-left" onclick="scrollCarousel('${carouselId}', -1)">‹</button>
+                    <div class="carousel" id="${carouselId}"></div>
+                    <button class="arrow arrow-right" onclick="scrollCarousel('${carouselId}', 1)">›</button>
+                </div>
+            `;
+            targetContainer.appendChild(row);
+
+            const container = document.getElementById(carouselId);
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => showDetails(item.id);
+                card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
+                container.appendChild(card);
+            });
+        }
+
+        function scrollCarousel(id, direction) {
+            const el = document.getElementById(id);
+            if (el) el.scrollBy({ left: direction * 300, behavior: 'smooth' });
+        }
+
+        // 5. Pantalla de información de la producción (Lógica sana)
+        function showDetails(id) {
+            const item = contentDB.find(c => c.id === id);
+            if (!item) return;
+            switchPage('detailsPage');
+            
+            const container = document.getElementById('detailsViewContainer');
+            
+            let htmlContent = `
+                <button class="back-btn" onclick="switchPage('home')">← Volver al Inicio</button>
+                <div class="details-main">
+                    <img src="${item.img}" class="details-poster">
+                    <div class="details-info">
+                        <h2 class="details-title">${item.title}</h2>
+                        <p class="details-desc">${item.desc}</p>
+            `;
+
+            if(item.isSeries && item.seasons) {
+                htmlContent += `<div class="episode-selector-container"><select class="episode-select" id="episodeSelector" onchange="changeEpisode('${item.id}')">`;
+                item.seasons[0].episodes.forEach((ep, idx) => {
+                    htmlContent += `<option value="${idx}">${ep.title}</option>`;
+                });
+                htmlContent += `</select></div>`;
+            }
+
+            htmlContent += `
+                        <div class="video-player-container">
+                            <video id="lumeraVideoPlayer" controls autoplay></video>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = htmlContent;
+            
+            if(item.isSeries && item.seasons) {
+                changeEpisode(item.id);
+            } else {
+                document.getElementById('lumeraVideoPlayer').src = item.url;
+            }
+        }
+
+        function changeEpisode(itemId) {
+            const item = contentDB.find(c => c.id === itemId);
+            const selector = document.getElementById('episodeSelector');
+            const player = document.getElementById('lumeraVideoPlayer');
+            if(!item || !selector || !player) return;
+
+            const epIdx = selector.value;
+            const episode = item.seasons[0].episodes[epIdx];
+            
+            player.innerHTML = ''; 
+            player.src = episode.url;
+
+            if(episode.tracks) {
+                episode.tracks.forEach(trackData => {
+                    const track = document.createElement('track');
+                    track.kind = 'subtitles';
+                    track.label = trackData.label;
+                    track.srclang = trackData.srclang;
+                    track.src = trackData.src;
+                    if(trackData.srclang === 'es') track.default = true;
+                    player.appendChild(track);
+                });
+            }
+            player.load();
+        }
+
+        // 6. Buscador Blindado
+        function executeSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('searchResultsGrid');
+            grid.innerHTML = '';
+            contentDB.filter(i => i.title.toLowerCase().includes(q)).forEach(item => {
+                let card = document.createElement('div'); 
+                card.className = 'card'; 
+                card.onclick = () => showDetails(item.id);
+                card.innerHTML = `<img src="${item.img}"><div class="card-info"><div class="card-title">${item.title}</div></div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // 7. Perfiles y Spark
+        function renderProfilesGrid() {
+            const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
+            profiles.forEach((p) => {
+                let slot = document.createElement('div'); slot.className = 'profile-slot';
+                slot.innerHTML = `<div class="profile-avatar-box">${p.name[0]}</div><div class="profile-slot-name">${p.name}</div>`;
+                slot.onclick = () => selectProfile(p);
+                layout.appendChild(slot);
+            });
+            if(profiles.length < 4) {
+                let add = document.createElement('div'); add.className = 'profile-slot';
+                add.innerHTML = `<div class="profile-avatar-box">+</div><div class="profile-slot-name">Añadir</div>`;
+                add.onclick = () => document.getElementById('modal').style.display = 'flex';
+                layout.appendChild(add);
+            }
+        }
+
+        function selectProfile(p) {
+            activeProfile = p;
+            document.getElementById('activeProfileBtn').textContent = p.name;
+            document.getElementById('navTabs').style.pointerEvents = "auto";
+            document.getElementById('navTabs').style.opacity = "1";
+            document.getElementById('searchNavBtn').style.display = "block";
+            switchPage('home');
+        }
+
+        function saveProfile() {
+            let name = document.getElementById('profileName').value.trim();
+            if(!name) return;
+            profiles.push({ name });
+            localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
+            closeModal(); renderProfilesGrid();
+        }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('profileName').value = ''; }
+        function goToProfilesScreen() { activeProfile = null; document.getElementById('navTabs').style.pointerEvents = "none"; document.getElementById('navTabs').style.opacity = "0.2"; switchPage('profiles'); }
+        function postSpark() { let input = document.getElementById('sparkInput'); if(!input.value.trim()) return; sparks.push({ author: activeProfile.name, text: input.value.trim() }); localStorage.setItem("lumera_sparks", JSON.stringify(sparks)); input.value = ''; renderSparks(); }
+        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class="spark-author">${s.author}</div><div class="spark-body">${s.text}</div>`; feed.appendChild(c); }); }
+
+        document.addEventListener('DOMContentLoaded', initLumera);
+    </script>
+</body>
+</html>
