@@ -8,17 +8,14 @@
     
     <style>
         /* =========================================
-           1. ESTILOS GENERALES Y SCROLL DESBLOQUEADO
+           1. ESTILOS GENERALES
         ========================================= */
-        html, body {
-            background: #0b0b0b;
-            margin: 0;
-            padding: 0;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto; /* Forzamos scroll vertical */
-            height: 100%;
+        body { 
+            margin: 0; 
+            background: #0b0b0b; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; 
+            overflow-x: hidden; 
         }
         
         /* =========================================
@@ -27,7 +24,7 @@
         .navbar { 
             display: flex; 
             align-items: center; 
-            padding: 12px 18px; 
+            padding: 12px 18px; \
             background: #0b0b0b; 
             position: sticky; 
             top: 0; 
@@ -36,19 +33,26 @@
             border-bottom: 1px solid #1a1a1a; 
         }
         
-        .nav-logo { 
+        .menuBtn { 
+            font-size: 26px; 
+            cursor: pointer; 
+            display: none; 
+            align-items: center; 
+        } 
+        
+        .nav-logo { \
             font-size: 20px; 
             font-weight: 600; 
             letter-spacing: 1px; 
             margin: 0; 
-            cursor: pointer; 
+            cursor: pointer; \
         }
         
         .nav-tabs { 
             display: flex; 
             gap: 15px; 
             margin-left: 10px; 
-            flex-grow: 1; 
+            flex-grow: 1; \
         }
         
         .tab { 
@@ -61,14 +65,14 @@
             letter-spacing: 0.5px; 
         }
         
-        .tab:hover, .tab.active { 
+        .tab:hover, .tab.active { \
             color: white; 
         }
         
         .nav-right { 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 12px; \
         }
         
         .search-nav-btn { 
@@ -82,9 +86,11 @@
             align-items: center; 
         }
         
-        .search-nav-btn:hover { color: white; }
+        .search-nav-btn:hover { 
+            color: white; 
+        }
         
-        .profile-nav-btn { 
+        .profile-nav-btn { \
             background: white; 
             color: black; 
             border: none; 
@@ -98,13 +104,11 @@
         }
 
         /* =========================================
-           3. ESTRUCTURA DE PÁGINAS FLUIDAS
+           3. ESTRUCTURA DE PÁGINAS Y CONTENEDORES
         ========================================= */
         .page { 
             display: none; 
-            width: 100%;
-            box-sizing: border-box;
-            padding-bottom: 80px; 
+            padding-bottom: 60px; 
         }
         
         .page.active { 
@@ -112,7 +116,7 @@
         }
 
         /* =========================================
-           4. HERO BANNER GLOBAL
+           4. HERO BANNER GLOBAL (TU ZONA AZUL - ESTILO DISNEY+)
         ========================================= */
         .banner { 
             position: relative; 
@@ -125,8 +129,13 @@
             transition: transform 0.2s ease; 
         }
         
-        .banner.clickable { cursor: pointer; }
-        .banner.clickable:hover { transform: scale(1.005); }
+        .banner.clickable { 
+            cursor: pointer; 
+        }
+        
+        .banner.clickable:hover { 
+            transform: scale(1.005); 
+        }
         
         .banner img { 
             width: 100%; 
@@ -146,141 +155,444 @@
         }
 
         /* =========================================
-           5. FILAS DE CONTENIDO (CAROUSEL PERFECTO)
+           5. FILAS DE CONTENIDO (CAROUSEL)
         ========================================= */
         .row-container { 
-            padding: 30px 4% 0 4%; 
-            box-sizing: border-box;
-            position: relative;
-            z-index: 5;
+            padding: 20px 4% 0 4%; 
         }
         
         .row-title { 
-            font-size: 15px; 
+            font-size: 14px; 
             font-weight: 600; 
-            margin-bottom: 15px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: #ffffff; 
+            margin-bottom: 10px; \
+            text-transform: uppercase; \
+            letter-spacing: 1px; \
+            color: #ffffff; \
         }
         
         .carousel-wrapper { 
             position: relative; 
             display: flex; 
             align-items: center; 
-            width: 100%;
         }
         
         .carousel { 
             display: flex; 
-            gap: 14px; 
+            gap: 12px; \
             overflow-x: auto; 
             scroll-behavior: smooth; 
             width: 100%; 
-            padding: 5px 0 20px 0; 
+            padding-bottom: 10px; 
         }
         
-        .carousel::-webkit-scrollbar { display: none; }
+        .carousel::-webkit-scrollbar { 
+            display: none; 
+        }
         
+        /* Flechas del carrusel */
         .arrow { 
             position: absolute; 
-            background: rgba(0,0,0,0.85); 
+            background: rgba(0,0,0,0.75); 
             color: white; 
             border: 1px solid #222; 
-            font-size: 20px; 
-            width: 38px; 
-            height: 38px; 
-            cursor: pointer; 
+            font-size: 18px; 
+            width: 36px; 
+            height: 36px; 
+            cursor: pointer; \
             z-index: 10; 
             display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 50%; 
+            align-items: center; \
+            justify-content: center; \
+            border-radius: 50%; \
             user-select: none; 
-            transition: all 0.2s ease; 
-            top: 45%;
-            transform: translateY(-50%);
+            transition: background 0.2s; 
         }
         
-        .arrow:hover { background: white; color: black; transform: translateY(-50%) scale(1.1); }
+        .arrow:hover { 
+            background: white; 
+            color: black; 
+        }
+        
         .arrow-left { left: -15px; }
         .arrow-right { right: -15px; }
 
+        /* Tarjetas de Películas/Series */
         .card { 
             flex: 0 0 auto; 
-            width: 145px; 
+            width: 140px; 
             background: #111; 
             border: 1px solid #1a1a1a; 
             border-radius: 6px; 
             overflow: hidden; 
             cursor: pointer; 
-            transition: all 0.2s ease; 
+            transition: transform 0.2s, border-color 0.2s; 
         }
         
-        .card:hover { transform: scale(1.04); border-color: white; }
-        .card img { width: 100%; height: 200px; object-fit: cover; background: #1a1a1a; }
-        .card-info { padding: 8px; }
-        .card-title { font-size: 11px; font-weight: 600; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card:hover { 
+            transform: scale(1.03); \
+            border-color: white; 
+        }
+        
+        .card img { 
+            width: 100%; 
+            height: 190px; 
+            object-fit: cover; 
+            background: #1a1a1a; 
+        }
+        
+        .card-info { 
+            padding: 8px; \
+        }
+        
+        .card-title { 
+            font-size: 11px; 
+            font-weight: 600; \
+            margin: 0 0 2px 0; \
+            white-space: nowrap; \
+            overflow: hidden; \
+            text-overflow: ellipsis; \
+        }
 
         /* =========================================
-           6. DETALLES Y REPRODUCTOR VIDEO
+           6. VISTA DE DETALLES Y REPRODUCTOR
         ========================================= */
-        .details-view { padding: 20px 4%; }
-        .back-btn { background: none; border: none; color: #8c8c8c; cursor: pointer; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
-        .back-btn:hover { color: white; }
-        .details-main { display: flex; gap: 25px; margin-bottom: 25px; flex-wrap: wrap; }
-        .details-poster { width: 180px; height: 250px; object-fit: cover; border-radius: 6px; border: 1px solid #1a1a1a; }
-        .details-info { flex: 1; min-width: 280px; }
-        .details-title { font-size: 26px; font-weight: 600; margin: 0 0 6px 0; }
-        .details-desc { font-size: 13px; color: #b3b3b3; line-height: 1.5; margin: 0 0 20px 0; }
-        .episode-selector-container { margin: 15px 0; }
-        .episode-select { background: #111; color: white; border: 1px solid #333; padding: 8px 12px; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 4px; width: 100%; max-width: 300px; outline: none; }
-        .video-player-container { width: 100%; max-width: 850px; background: black; border-radius: 8px; overflow: hidden; border: 1px solid #1a1a1a; margin-top: 15px; }
-        video { width: 100%; display: block; outline: none; }
+        .details-view { 
+            padding: 20px 4%; 
+        }
+        
+        .back-btn { 
+            background: none; 
+            border: none; 
+            color: #8c8c8c; 
+            cursor: pointer; \
+            font-size: 12px; 
+            font-weight: 600; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+        }
+        
+        .back-btn:hover { 
+            color: white; 
+        }
+        
+        .details-main { \
+            display: flex; \
+            gap: 25px; 
+            margin-bottom: 25px; \
+            flex-wrap: wrap; 
+        }
+        
+        .details-poster { 
+            width: 180px; 
+            height: 250px; 
+            object-fit: cover; \
+            border-radius: 6px; 
+            border: 1px solid #1a1a1a; \
+        }
+        
+        .details-info { 
+            flex: 1; \
+            min-width: 280px; 
+        }
+        
+        .details-title { 
+            font-size: 26px; 
+            font-weight: 600; 
+            margin: 0 0 6px 0; \
+        }
+        
+        .details-desc { 
+            font-size: 13px; \
+            color: #b3b3b3; 
+            line-height: 1.5; 
+            margin: 0 0 20px 0; \
+        }
+        
+        .episode-selector-container { 
+            margin: 15px 0; 
+        }
+        
+        .episode-select { 
+            background: #111; \
+            color: white; 
+            border: 1px solid #333; \
+            padding: 8px 12px; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            border-radius: 4px; \
+            outline: none; 
+            width: 100%; \
+            max-width: 300px; \
+        }
+        
+        .video-player-container { 
+            width: 100%; \
+            max-width: 850px; 
+            background: black; 
+            border-radius: 8px; \
+            overflow: hidden; 
+            border: 1px solid #1a1a1a; 
+            margin-top: 15px; 
+        }
+        
+        video { \
+            width: 100%; \
+            display: block; 
+            outline: none; \
+        }
 
         /* =========================================
-           7. SECCIÓN SPARK
+           7. SECCIÓN SPARK (COMUNIDAD)
         ========================================= */
-        .spark-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
-        .spark-header { text-align: center; margin-bottom: 25px; }
-        .spark-header h2 { font-size: 20px; font-weight: 600; text-transform: uppercase; }
-        .spark-composer { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px; margin-bottom: 20px; }
-        .spark-textarea { width: 100%; height: 70px; background: none; border: none; resize: none; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; outline: none; }
-        .spark-composer-footer { display: flex; justify-content: flex-end; margin-top: 8px; border-top: 1px solid #1a1a1a; padding-top: 8px; }
-        .spark-btn { background: white; color: black; border: none; padding: 5px 16px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer; }
-        .spark-feed { display: flex; flex-direction: column; gap: 12px; }
-        .spark-card { background: #111; border: 1px solid #1a1a1a; border-radius: 8px; padding: 14px; }
-        .spark-author { font-size: 12px; font-weight: 600; }
-        .spark-body { font-size: 13px; color: #cccccc; margin-top: 5px; }
+        .spark-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px 15px; \
+        }
+        
+        .spark-header { 
+            text-align: center; 
+            margin-bottom: 25px; 
+        }
+        
+        .spark-header h2 { 
+            font-size: 20px; 
+            font-weight: 600; \
+            text-transform: uppercase; 
+        }
+        
+        .spark-composer { 
+            background: #111; 
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            padding: 12px; \
+            margin-bottom: 20px; 
+        }
+        
+        .spark-textarea { 
+            width: 100%; \
+            height: 70px; \
+            background: none; 
+            border: none; 
+            resize: none; 
+            color: white; 
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            outline: none; 
+        }
+        
+        .spark-composer-footer { \
+            display: flex; \
+            justify-content: flex-end; \
+            margin-top: 8px; \
+            border-top: 1px solid #1a1a1a; \
+            padding-top: 8px; \
+        }
+        
+        .spark-btn { \
+            background: white; \
+            color: black; \
+            border: none; \
+            padding: 5px 16px; \
+            font-size: 11px; \
+            font-weight: 600; \
+            border-radius: 4px; \
+            cursor: pointer; \
+        }
+        
+        .spark-feed { 
+            display: flex; \
+            flex-direction: column; \
+            gap: 12px; \
+        }
+        
+        .spark-card { \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            padding: 14px; \
+        }
+        
+        .spark-author { 
+            font-size: 12px; \
+            font-weight: 600; \
+        }
+        
+        .spark-body { \
+            font-size: 13px; \
+            color: #cccccc; \
+            margin-top: 5px; \
+        }
 
         /* =========================================
            8. VISTA DE BÚSQUEDA
         ========================================= */
-        .search-container { padding: 20px 4%; }
-        .search-bar-wrapper { max-width: 500px; margin: 0 auto 25px auto; }
-        .search-input { width: 100%; background: #111; border: 1px solid #1a1a1a; padding: 10px 15px; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; border-radius: 6px; box-sizing: border-box; outline: none; }
-        .search-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        .search-container { \
+            padding: 20px 4%; \
+        }
+        
+        .search-bar-wrapper { \
+            max-width: 500px; \
+            margin: 0 auto 25px auto; \
+        }
+        
+        .search-input { \
+            width: 100%; \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            padding: 10px 15px; \
+            color: white; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 13px; \
+            border-radius: 6px; \
+            box-sizing: border-box; \
+            outline: none; \
+        }
+        
+        .search-results-grid { \
+            display: grid; \
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); \
+            gap: 15px; \
+        }
 
         /* =========================================
-           9. MODALES Y PERFILES
+           9. MODALES Y CONFIGURACIÓN
         ========================================= */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: #111; border: 1px solid #1a1a1a; padding: 25px; border-radius: 8px; width: 90%; max-width: 360px; box-sizing: border-box; }
-        .modal-title { font-size: 15px; font-weight: 600; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
-        .modal-input { width: 100%; background: #1a1a1a; border: 1px solid #222; padding: 8px 12px; color: white; font-family: 'Poppins', sans-serif; font-size: 12px; border-radius: 4px; box-sizing: border-box; outline: none; margin-bottom: 15px; }
-        .modal-footer-btns { display: flex; flex-direction: column; gap: 8px; }
-        .action-btn { width: 100%; padding: 8px; font-size: 11px; font-family: 'Poppins', sans-serif; font-weight: 600; border-radius: 4px; cursor: pointer; text-transform: uppercase; border: none; }
-        .btn-primary { background: white; color: black; }
-        .btn-secondary { background: #222; color: #8c8c8c; border: 1px solid #333; }
+        .modal { \
+            display: none; \
+            position: fixed; \
+            top: 0; \
+            left: 0; \
+            width: 100%; \
+            height: 100%; \
+            background: rgba(0,0,0,0.85); \
+            z-index: 2000; \
+            align-items: center; \
+            justify-content: center; \
+        }
+        
+        .modal-content { \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            padding: 25px; \
+            border-radius: 8px; \
+            width: 90%; \
+            max-width: 360px; \
+            box-sizing: border-box; \
+        }
+        
+        .modal-title { \
+            font-size: 15px; \
+            font-weight: 600; \
+            text-align: center; \
+            margin-bottom: 15px; \
+            text-transform: uppercase; \
+        }
+        
+        .modal-input { \
+            width: 100%; \
+            background: #1a1a1a; \
+            border: 1px solid #222; \
+            padding: 8px 12px; \
+            color: white; \
+            font-family: 'Poppins', sans-serif; \
+            font-size: 12px; \
+            border-radius: 4px; \
+            box-sizing: border-box; \
+            outline: none; \
+            margin-bottom: 15px; \
+        }
+        
+        .modal-footer-btns { \
+            display: flex; \
+            flex-direction: column; \
+            gap: 8px; \
+        }
+        
+        .action-btn { \
+            width: 100%; \
+            padding: 8px; \
+            font-size: 11px; \
+            font-family: 'Poppins', sans-serif; \
+            font-weight: 600; \
+            border-radius: 4px; \
+            cursor: pointer; \
+            text-transform: uppercase; \
+            border: none; \
+        }
+        
+        .btn-primary { \
+            background: white; \
+            color: black; \
+        }
+        
+        .btn-secondary { \
+            background: #222; \
+            color: #8c8c8c; \
+            border: 1px solid #333; \
+        }
 
-        .profile-select-screen { max-width: 500px; margin: 60px auto 0 auto; text-align: center; padding: 0 20px; }
-        .profile-select-title { font-size: 18px; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; }
-        .profiles-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .profile-slot { width: 90px; cursor: pointer; text-align: center; }
-        .profile-avatar-box { width: 90px; height: 90px; background: #111; border: 1px solid #1a1a1a; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 600; color: #8c8c8c; transition: all 0.2s; }
-        .profile-slot:hover .profile-avatar-box { border-color: white; transform: scale(1.02); color: white; }
-        .profile-slot-name { font-size: 11px; font-weight: 600; color: #8c8c8c; }
-        .profile-slot:hover .profile-slot-name { color: white; }
+        /* =========================================
+           10. PANTALLA DE SELECCIÓN DE PERFILES
+        ========================================= */
+        .profile-select-screen { \
+            max-width: 500px; \
+            margin: 60px auto 0 auto; \
+            text-align: center; \
+            padding: 0 20px; \
+        }
+        
+        .profile-select-title { \
+            font-size: 18px; \
+            font-weight: 600; \
+            text-transform: uppercase; \
+            margin-bottom: 30px; \
+        }
+        
+        .profiles-layout { \
+            display: flex; \
+            flex-wrap: wrap; \
+            gap: 20px; \
+            justify-content: center; \
+        }
+        
+        .profile-slot { \
+            width: 90px; \
+            cursor: pointer; \
+            text-align: center; \
+        }
+        
+        .profile-avatar-box { \
+            width: 90px; \
+            height: 90px; \
+            background: #111; \
+            border: 1px solid #1a1a1a; \
+            border-radius: 8px; \
+            margin-bottom: 8px; \
+            display: flex; \
+            align-items: center; \
+            justify-content: center; \
+            font-size: 32px; \
+            font-weight: 600; \
+            color: #8c8c8c; \
+            transition: all 0.2s; \
+        }
+        
+        .profile-slot:hover .profile-avatar-box { \
+            border-color: white; \
+            transform: scale(1.02); \
+            color: white; \
+        }
+        
+        .profile-slot-name { \
+            font-size: 11px; \
+            font-weight: 600; \
+            color: #8c8c8c; \
+        }
+        
+        .profile-slot:hover .profile-slot-name { \
+            color: white; \
+        }
     </style>
 </head>
 <body>
@@ -288,7 +600,7 @@
     <div class="navbar">
         <h1 class="nav-logo" onclick="switchPage('home')">Lumera Play</h1>
         <div class="nav-tabs" id="navTabs" style="pointer-events: none; opacity: 0.2;">
-            <div class="tab" data-target="home" onclick="switchPage('home')">Inicio</div>
+            <div class="tab active" data-target="home" onclick="switchPage('home')">Inicio</div>
             <div class="tab" data-target="series" onclick="switchPage('series')">Series</div>
             <div class="tab" data-target="pelis" onclick="switchPage('pelis')">Películas</div>
             <div class="tab" data-target="kids" onclick="switchPage('kids')">Kids</div>
@@ -300,16 +612,16 @@
         </div>
     </div>
 
-    <div class="banner" id="heroBannerGlobal" style="display: none;">
-        <img id="heroImgGlobal" src="" alt="Destacado Lumera">
-        <div class="banner-gradient"></div>
-    </div>
-
     <div class="page active" id="profiles">
         <div class="profile-select-screen">
             <h2 class="profile-select-title">¿Quién está viendo ahora?</h2>
             <div class="profiles-layout" id="profilesLayout"></div>
         </div>
+    </div>
+
+    <div class="banner" id="heroBannerGlobal" style="display: none;">
+        <img id="heroImgGlobal" src="" alt="Destacado Lumera">
+        <div class="banner-gradient"></div>
     </div>
 
     <div class="page" id="home"><div class="row-container" id="homeRows"></div></div>
@@ -356,134 +668,74 @@
         let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
         let sparks = JSON.parse(localStorage.getItem("lumera_sparks")) || [];
         let activeProfile = null;
+        let contentDB = [];
+        let heroDB = [];
         let currentHeroIndex = 0;
         let heroInterval = null;
 
-        // BANNERS ACTUALIZADOS CON ENLACES DE IMGUR NUEVOS
-        const heroDB = [
-          {
-            "id": "banner_look_at",
-            "titulo": "Look at!",
-            "desc": "Un secuestro que sale terriblemente mal.",
-            "imagen_banner": "https://i.imgur.com/it3Dgae.jpeg",
-            "target_id": "look-at-2026"
-          },
-          {
-            "id": "banner_lumera_original",
-            "titulo": "Lumera Play",
-            "desc": "Tu espacio definitivo de entretenimiento digital independiente.",
-            "imagen_banner": "https://i.imgur.com/CFf05iK.png",
-            "target_id": "lumera_intro_01"
-          },
-          {
-            "id": "banner_lumera_kids",
-            "titulo": "Lumera Kids",
-            "desc": "¡La sección más divertida!",
-            "imagen_banner": "https://i.imgur.com/BNZhIuA.jpeg",
-            "target_id": null
-          }
-        ];
+        // 1. Carga segura de Base de Datos
+        async function initLumera() {
+            try {
+                const res = await fetch('peliculas.json');
+                contentDB = await res.json();
+            } catch(e) { console.warn("Error al cargar peliculas.json."); }
 
-        // BASE DE DATOS DE PELÍCULAS INTEGRADA
-        const contentDB = [
-          { 
-            "id": "lumera_intro_01",
-            "title": "Lumera Intro", 
-            "year": "2026", 
-            "age": 0, 
-            "img": "https://i.imgur.com/KcIAK4D.png", 
-            "desc": "Bienvenido a Lumera Play.", 
-            "type": "ambos", 
-            "genres": ["accion"], 
-            "url": "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1",
-            "isSeries": false
-          },
-          {
-            "id": "look-at-2026",
-            "title": "Look at!",
-            "year": "2026",
-            "age": 16, 
-            "img": "https://i.imgur.com/5YRXD8b.jpeg",
-            "desc": "Fantasía | +16. Un secuestro que sale terriblemente mal. Próximamente más detalles.",
-            "type": "serie", 
-            "genres": ["fantasia"], 
-            "isSeries": true,
-            "seasons": [
-              {
-                "name": "Temporada 1",
-                "episodes": [
-                  {
-                    "id": "cap-1",
-                    "title": "1. El Secuestro",
-                    "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20%28PILOTO%29%20%281%29.mp4",
-                    "tracks": [
-                      { "label": "Español", "srclang": "es", "src": "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=teqmd2pm&raw=1" }
-                    ]
-                  },
-                  {
-                    "id": "cap-2", 
-                    "title": "2. Borracho",
-                    "url": "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/look%20at%20cap%202%20audiio%20reparado.mp4"
-                  }
-                ]
-              }
-            ]
-          }
-        ];
+            try {
+                const resHero = await fetch('hero.json');
+                heroDB = await resHero.json();
+            } catch(e) { console.warn("Error al cargar hero.json."); }
 
-        function initLumera() {
             renderProfilesGrid();
-            startHeroTimer();
+            startHeroRotation();
         }
 
-        function startHeroTimer() {
+        // 2. Sistema de rotación Disney+ (Saneado por completo)
+        function startHeroRotation() {
             if(heroInterval) clearInterval(heroInterval);
-            renderHeroSlide();
+            updateHeroUI();
             heroInterval = setInterval(() => {
                 if(heroDB && heroDB.length > 0) {
                     currentHeroIndex = (currentHeroIndex + 1) % heroDB.length;
-                    renderHeroSlide();
+                    updateHeroUI();
                 }
-            }, 10000); 
+            }, 10000); // 10 segundos limpios de rotación
         }
 
-        function renderHeroSlide() {
+        function updateHeroUI() {
             if (!heroDB || heroDB.length === 0) return;
-            const slide = heroDB[currentHeroIndex];
-            const bannerElement = document.getElementById("heroBannerGlobal");
-            const imgElement = document.getElementById("heroImgGlobal");
+            const item = heroDB[currentHeroIndex];
+            const bannerEl = document.getElementById("heroBannerGlobal");
+            const imgEl = document.getElementById("heroImgGlobal");
 
-            if (imgElement) {
-                imgElement.src = slide.imagen_banner;
-            }
+            if (imgEl) imgEl.src = item.imagen_banner;
             
-            if (bannerElement) {
-                if(slide.target_id) {
-                    bannerElement.classList.add("clickable");
-                    bannerElement.onclick = () => showDetails(slide.target_id);
+            if (bannerEl) {
+                if(item.target_id) {
+                    bannerEl.classList.add("clickable");
+                    bannerEl.onclick = () => showDetails(item.target_id); // Te manda a la INFO de la serie directo
                 } else {
-                    bannerElement.classList.remove("clickable");
-                    bannerElement.onclick = null;
+                    bannerEl.classList.remove("clickable");
+                    bannerEl.onclick = null;
                 }
             }
         }
 
+        // 3. Control de Navegación (Se eliminó la reescritura destructiva de HTML)
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
             if(target) target.classList.add('active');
 
-            const bannerGlobal = document.getElementById('heroBannerGlobal');
-            if(bannerGlobal) {
-                if (['home', 'series', 'pelis', 'kids'].includes(pageId) && activeProfile !== null) {
-                    bannerGlobal.style.display = "block";
+            const banner = document.getElementById('heroBannerGlobal');
+            if(banner) {
+                if (['home', 'series', 'pelis', 'kids'].includes(pageId)) {
+                    target.insertBefore(banner, target.firstChild);
+                    banner.style.display = "block";
                     renderContent(pageId);
                 } else {
-                    bannerGlobal.style.display = "none";
+                    banner.style.display = "none";
                 }
             }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
 
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             const activeTab = document.querySelector(`.tab[data-target="${pageId}"]`);
@@ -491,6 +743,7 @@
             if(pageId === 'spark') renderSparks();
         }
 
+        // 4. Render de Filas comunes
         function renderContent(viewType) {
             const targetContainer = document.getElementById(`${viewType}Rows`);
             if (!targetContainer) return;
@@ -528,12 +781,14 @@
             if (el) el.scrollBy({ left: direction * 300, behavior: 'smooth' });
         }
 
+        // 5. Pantalla de información de la producción (Lógica sana)
         function showDetails(id) {
             const item = contentDB.find(c => c.id === id);
             if (!item) return;
             switchPage('detailsPage');
             
             const container = document.getElementById('detailsViewContainer');
+            
             let htmlContent = `
                 <button class="back-btn" onclick="switchPage('home')">← Volver al Inicio</button>
                 <div class="details-main">
@@ -594,6 +849,7 @@
             player.load();
         }
 
+        // 6. Buscador Blindado
         function executeSearch() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             const grid = document.getElementById('searchResultsGrid');
@@ -607,6 +863,7 @@
             });
         }
 
+        // 7. Perfiles y Spark
         function renderProfilesGrid() {
             const layout = document.getElementById('profilesLayout'); layout.innerHTML = '';
             profiles.forEach((p) => {
@@ -642,7 +899,7 @@
         function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('profileName').value = ''; }
         function goToProfilesScreen() { activeProfile = null; document.getElementById('navTabs').style.pointerEvents = "none"; document.getElementById('navTabs').style.opacity = "0.2"; switchPage('profiles'); }
         function postSpark() { let input = document.getElementById('sparkInput'); if(!input.value.trim()) return; sparks.push({ author: activeProfile.name, text: input.value.trim() }); localStorage.setItem("lumera_sparks", JSON.stringify(sparks)); input.value = ''; renderSparks(); }
-        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class=\"spark-author\">${s.author}</div><div class=\"spark-body\">${s.text}</div>`; feed.appendChild(c); }); }
+        function renderSparks() { const feed = document.getElementById('sparkFeed'); feed.innerHTML = ''; [...sparks].reverse().forEach(s => { let c = document.createElement('div'); c.className = 'spark-card'; c.innerHTML = `<div class="spark-author">${s.author}</div><div class="spark-body">${s.text}</div>`; feed.appendChild(c); }); }
 
         document.addEventListener('DOMContentLoaded', initLumera);
     </script>
