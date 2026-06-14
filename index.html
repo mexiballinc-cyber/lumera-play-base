@@ -265,15 +265,16 @@
         /* =========================================
            6. BANNERS Y CARDS DE CONTENIDO
         ========================================= */
-        .banner { 
-            margin: 15px; 
-            height: 200px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            background: #1a1a1a; 
-            border: 1px solid #222; 
-        }
-        
+     /* === NUEVO HERO SLIDER DINÁMICO === */
+        .hero-container { position: relative; width: 100%; height: 50vh; min-height: 300px; background: #111; overflow: hidden; cursor: pointer; margin-bottom: 20px; }
+        .hero-slide { width: 100%; height: 100%; position: relative; transition: opacity 0.5s ease-in-out; }
+        .hero-slide img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .hero-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 80px 20px 25px; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); box-sizing: border-box; }
+        .hero-overlay h2 { margin: 0 0 8px 0; font-size: 32px; font-weight: 600; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
+        .hero-overlay p { margin: 0; font-size: 15px; color: #ccc; max-width: 80%; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .hero-indicators { position: absolute; bottom: 15px; right: 20px; display: flex; gap: 8px; }
+        .hero-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; }
+        .hero-dot.active { background: white; transform: scale(1.3); }
         .banner img { 
             width: 100%; 
             height: 100%; 
@@ -842,7 +843,16 @@
         </div>
     </div>
 
-    <div id="menu" class="menu">
+<div id="hero-slider-container" class="hero-container" onclick="onHeroClick()">
+            <div class="hero-slide" id="hero-slide">
+                <img id="hero-img" src="" alt="Hero Banner">
+                <div class="hero-overlay">
+                    <h2 id="hero-title">Cargando...</h2>
+                    <p id="hero-desc"></p>
+                </div>
+            </div>
+            <div class="hero-indicators" id="hero-indicators"></div>
+        </div>
         <div class="menu-header">LUMERA</div>
         <div class="menuItem" onclick="navigate('home')">
             <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z"></path><path d="M9 22V12h6v10"></path></svg>
@@ -1732,5 +1742,74 @@
         
         renderProfiles();
     </script>
+    // ==========================================
+        // SISTEMA DEL HERO BANNER (DINÁMICO)
+        // ==========================================
+        let heroData = [];
+        let currentHeroIndex = 0;
+        let heroInterval;
+
+        async function loadHero() {
+            try {
+                const res = await fetch('hero (2).json'); 
+                heroData = await res.json();
+                if (heroData.length > 0) { 
+                    renderHero(); 
+                    startHeroTimer(); 
+                }
+            } catch (error) { 
+                console.error("Error al cargar el Hero JSON:", error); 
+            }
+        }
+
+        function renderHero() {
+            if (heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            
+            document.getElementById('hero-img').src = hero.imagen_banner;
+            document.getElementById('hero-title').innerText = hero.titulo;
+            document.getElementById('hero-desc').innerText = hero.desc;
+            
+            const indicators = document.getElementById('hero-indicators');
+            indicators.innerHTML = '';
+            heroData.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `hero-dot ${idx === currentHeroIndex ? 'active' : ''}`;
+                dot.onclick = (e) => { 
+                    e.stopPropagation(); 
+                    currentHeroIndex = idx; 
+                    renderHero(); 
+                    resetHeroTimer(); 
+                };
+                indicators.appendChild(dot);
+            });
+        }
+
+        function startHeroTimer() {
+            heroInterval = setInterval(() => { 
+                currentHeroIndex = (currentHeroIndex + 1) % heroData.length; 
+                renderHero(); 
+            }, 10000); 
+        }
+
+        function resetHeroTimer() { 
+            clearInterval(heroInterval); 
+            startHeroTimer(); 
+        }
+
+        function onHeroClick() {
+            if (heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            
+            if (hero.target_id && typeof allMovies !== 'undefined') {
+                const itemEncontrado = allMovies.find(p => p.id === hero.target_id);
+                if (itemEncontrado && typeof openDetail === 'function') {
+                    openDetail(itemEncontrado);
+                }
+            }
+        }
+        
+        // Arrancar la carga del slider dinámico
+        loadHero();
 </body>
 </html>
