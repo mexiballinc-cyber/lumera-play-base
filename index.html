@@ -842,17 +842,6 @@
             </svg>
         </div>
     </div>
-
-<div id="hero-slider-container" class="hero-container" onclick="onHeroClick()">
-            <div class="hero-slide" id="hero-slide">
-                <img id="hero-img" src="" alt="Hero Banner">
-                <div class="hero-overlay">
-                    <h2 id="hero-title">Cargando...</h2>
-                    <p id="hero-desc"></p>
-                </div>
-            </div>
-            <div class="hero-indicators" id="hero-indicators"></div>
-        </div>
         <div class="menu-header">LUMERA</div>
         <div class="menuItem" onclick="navigate('home')">
             <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5z"></path><path d="M9 22V12h6v10"></path></svg>
@@ -924,9 +913,17 @@
         <div data-i18n="select_profile" style="text-align:center; margin-top:40px; font-weight:400; font-size:18px;">SELECCIONA UN PERFIL</div>
         <div class="grid" id="profilesContainer"></div>
     </div>
-
     <div id="home" class="page">
-        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+       <div id="hero-slider-container" class="hero-container" onclick="onHeroClick()">
+            <div class="hero-slide" id="hero-slide">
+                <img id="hero-img" src="" alt="Hero Banner">
+                <div class="hero-overlay">
+                    <h2 id="hero-title">Cargando...</h2>
+                    <p id="hero-desc"></p>
+                </div>
+            </div>
+            <div class="hero-indicators" id="hero-indicators"></div>
+        </div>
         <div id="container-continue-home" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-home"></div></div>
         <div class="rowTitle" data-i18n="row_featured">Destacados</div><div class="row" id="row-home"></div>
         <div id="container-fantasia-home" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-home"></div></div>
