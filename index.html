@@ -239,7 +239,7 @@
         
         .spark-ui { 
             position: absolute; 
-            bottom: 40px; 
+            bottom: 40px; f
             left: 20px; 
             right: 90px; 
             z-index: 2004; 
@@ -1795,19 +1795,28 @@
             clearInterval(heroInterval); 
             startHeroTimer(); 
         }
-
-        function onHeroClick() {
-            if (heroData.length === 0) return;
+function onHeroClick() {
+            if (!heroData || heroData.length === 0) return;
             const hero = heroData[currentHeroIndex];
             
-            if (hero.target_id && typeof allMovies !== 'undefined') {
-                const itemEncontrado = allMovies.find(p => p.id === hero.target_id);
-                if (itemEncontrado && typeof openDetail === 'function') {
-                    openDetail(itemEncontrado);
+            if (hero && hero.target_id) {
+                // Buscamos cuál de todas tus variables globales tiene las películas cargadas realmente
+                const arrayPeliculas = (typeof allMovies !== 'undefined' && allMovies) ? allMovies : 
+                                       (typeof peliculas !== 'undefined' && peliculas) ? peliculas : 
+                                       (typeof peliculasGlobal !== 'undefined' && peliculasGlobal) ? peliculasGlobal : null;
+                
+                if (arrayPeliculas && Array.isArray(arrayPeliculas)) {
+                    const itemEncontrado = arrayPeliculas.find(p => p.id === hero.target_id);
+                    if (itemEncontrado && typeof openDetail === 'function') {
+                        openDetail(itemEncontrado);
+                    } else {
+                        console.warn("No se encontró el item con ID o openDetail no es función:", hero.target_id);
+                    }
+                } else {
+                    console.error("Error: No se encontró la base de datos de películas (allMovies/peliculas está vacía).");
                 }
             }
         }
-        
         // Arrancar la carga del slider dinámico
         loadHero();
 </body>
