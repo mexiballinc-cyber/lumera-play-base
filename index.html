@@ -275,37 +275,32 @@
             position: relative;
         }
         
-        .banner img { 
+        .banner img:not(.hero-square img) { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
             opacity: 0.8; 
         }
 
-        /* CUADRADO DEL HERO AGREGADO (TUS IMÁGENES AQUÍ) */
-        .hero-square-container {
+        /* EL PUTO CUADRADO DEL HERO QUE PIDIÓ */
+        .hero-square {
             position: absolute;
             right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            width: 140px;
-            height: 140px;
-            background: rgba(15, 15, 15, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
+            width: 130px;
+            height: 130px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
             overflow: hidden;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
         }
 
-        .hero-square-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .hero-square img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
             opacity: 1 !important;
         }
         
@@ -345,7 +340,6 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            display: block;
         }
         
         .card::after { 
@@ -379,7 +373,6 @@
             filter: grayscale(0.2); 
         }
         
-        /* BARRA DE "CONTINUAR VIENDO" */
         .progress-bar-bg { 
             position: absolute; 
             bottom: 0; 
@@ -501,6 +494,11 @@
             transform: scale(1.05); 
         }
         
+        .ep-list { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
         .ep-btn { 
             background: #1a1a1a; 
             border: 1px solid #333; 
@@ -535,7 +533,7 @@
         }
 
         /* =========================================
-           9. REPRODUCTOR DE VIDEO
+           9. REPRODUCTOR DE VIDEO CUSTOMIZADO
         ========================================= */
         #lumeraPlayer { 
             display: none; 
@@ -572,6 +570,17 @@
             pointer-events: all; 
         }
         
+        .p-top { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .p-title { 
+            font-size: 16px; 
+            font-weight: 600; 
+        }
+        
         .p-center { 
             display: flex; 
             justify-content: center; 
@@ -598,11 +607,35 @@
             background: white; 
         }
         
+        .p-bottom { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        
+        .p-time-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        
+        .p-time { 
+            font-size: 12px; 
+            font-weight: 600; 
+            min-width: 45px; 
+        }
+        
         input[type=range] { 
             width: 100%; 
             accent-color: white; 
             height: 4px; 
             border-radius: 2px; 
+        }
+        
+        .p-actions { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
 
         /* =========================================
@@ -672,7 +705,7 @@
         }
 
         /* =========================================
-           11. SECCIÓN DE PERFILES (DISEÑO ORIGINAL)
+           11. SECCIÓN DE PERFILES (CÍRCULOS)
         ========================================= */
         .grid { 
             display: grid; 
@@ -946,8 +979,8 @@
     <div id="home" class="page">
         <div class="banner">
             <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square-container">
-                <img src="URL_DE_TU_IMAGEN_AQUI" alt="Contenido Hero">
+            <div class="hero-square">
+                <img id="hero-img-home" src="https://i.imgur.com/5YRXD8b.jpeg">
             </div>
         </div>
         <div id="container-continue-home" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-home"></div></div> 
@@ -961,8 +994,8 @@
     <div id="series" class="page">
         <div class="banner">
             <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square-container">
-                <img src="URL_DE_TU_IMAGEN_AQUI" alt="Contenido Series">
+            <div class="hero-square">
+                <img id="hero-img-series" src="https://i.imgur.com/5YRXD8b.jpeg">
             </div>
         </div>
         <div id="container-continue-series" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-series"></div></div> 
@@ -976,14 +1009,730 @@
     <div id="pelis" class="page">
         <div class="banner">
             <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square-container">
-                <img src="URL_DE_TU_IMAGEN_AQUI" alt="Contenido Pelis">
+            <div class="hero-square">
+                <img id="hero-img-pelis" src="https://i.imgur.com/KcIAK4D.png">
             </div>
         </div>
         <div id="container-continue-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-pelis"></div></div> 
-        <div class="rowTitle" data-i18n="row_movies">Películas</div>
+        <div class="rowTitle" data-i18n="row_movies">Películas</div><div class="row" id="row-pelis"></div> 
+        <div id="container-fantasia-pelis" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-pelis"></div></div> 
+        <div id="container-accion-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-pelis"></div></div> 
+        <div id="container-comedia-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-pelis"></div></div> 
+        <div id="container-drama-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-pelis"></div></div> 
     </div>
 
-    ```
+    <div id="kids" class="page">
+        <div class="rowTitle" data-i18n="row_kids">Infantil</div><div class="row" id="row-kids"></div> 
+    </div>
 
-*Nota: Solo debes cambiar el texto `URL_DE_TU_IMAGEN_AQUI` dentro del contenedor por la ruta o link de tus imágenes de portada.*
+    <div id="cardDetail">
+        <div class="close-detail" onclick="closeDetail()">✕</div>
+        <img id="detailImg" class="detail-img">
+        <div class="detail-content">
+            <div id="detailTitle" class="detail-title"></div>
+            <div id="detailMeta" class="detail-meta"></div>
+            <div id="detailDesc" class="detail-desc"></div>
+            <div id="detailPlayerArea"></div>
+        </div>
+    </div>
+
+    <div id="lumeraPlayer">
+        <video id="mainVid" playsinline></video>
+        <div class="p-controls" id="pControls">
+            <div class="p-top">
+                <button class="p-btn" onclick="exitPlayer()">✕</button>
+                <div class="p-title" id="pTitle">Lumera Video</div>
+                <button class="p-btn" onclick="toggleCCMenu()">CC</button>
+            </div>
+            <div class="p-center">
+                <button class="p-btn" onclick="skipVideo(-10)">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12.5 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.31 2.69-6 6-6s6 2.69 6 6-2.69 6-6 6c-1.66 0-3.17-.67-4.28-1.76L6.26 17.7C7.75 19.14 9.77 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8h-1.5z"/></svg>
+                </button>
+                <button class="p-btn p-play" onclick="togglePlay()" id="pPlayBtn">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="black" id="pPlayIcon"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button class="p-btn" onclick="skipVideo(10)">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M10 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c1.66 0 3.17-.67 4.28-1.76l1.46 1.46C14.25 19.14 12.23 20 10 20c-4.97 0-9-4.03-9-9s4.03-9 9-9c4.97 0 9 4.03 9 9h2.5L17.6 14.1l-.09-.14L13 18h3c0-3.31-2.69-6-6-6zm1-4v5l-4.25 2.52-.77-1.28 3.52-2.09V2h1.5z"/></svg>
+                </button>
+            </div>
+            <div class="p-bottom">
+                <div class="p-time-row">
+                    <span class="p-time" id="pCurrent">00:00</span>
+                    <input type="range" id="pProgress" min="0" max="100" value="0" step="0.1" oninput="seekingVideo(this.value)">
+                    <span class="p-time" id="pDuration">00:00</span>
+                </div>
+                <div class="p-actions">
+                    <div></div>
+                    <button class="p-btn" onclick="toggleFullscreen()">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cc-menu" id="ccMenu">
+            <div class="cc-section-title">Subtítulos</div>
+            <div class="cc-options" id="ccTrackOptions"></div>
+            <div class="cc-section-title" style="margin-top:10px;">Audio</div>
+            <div class="cc-options" id="ccAudioOptions">
+                <button class="cc-opt-btn active">Predeterminado</button>
+            </div>
+            <button class="btn" onclick="toggleCCMenu()" style="margin-top:15px; padding:8px;">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modalContent">
+            <h3 id="modalTitle" style="text-align:center; margin-top:0; font-weight:600; font-size:16px;">CREAR PERFIL</h3>
+            <input type="text" id="profileName" placeholder="Nombre" maxlength="12" oninput="updateLetterAvatar()">
+            
+            <div style="font-size:11px; font-weight:600; color:#888; margin-top:15px; letter-spacing:1px;">MODO DE EDAD</div>
+            <select id="profileMode">
+                <option value="NORMAL">Normal (+16)</option>
+                <option value="KIDS">Kids (Infantil)</option>
+                <option value="ANIME">Anime</option>
+            </select>
+            
+            <div style="font-size:11px; font-weight:600; color:#888; margin-top:15px; letter-spacing:1px;">SELECCIONAR AVATAR</div>
+            <div class="avatarGrid" id="avatarGrid"></div>
+            
+            <button class="btn btn-save" onclick="saveProfile()">GUARDAR</button>
+            <button id="btn-delete-profile" class="btn" style="background:#401010; border-color:#601515; display:none;" onclick="deleteProfile()">ELIMINAR PERFIL</button>
+            <button class="btn" onclick="closeModal()">CANCELAR</button>
+        </div>
+    </div>
+
+    <div id="settingsPage" class="page">
+        <div style="padding:25px;">
+            <h3 style="font-weight:600; font-size:18px; margin-top:0; border-bottom:1px solid #222; padding-bottom:10px;">CONFIGURACIÓN</h3>
+            <div style="font-size:13px; font-weight:600; color:#888; margin-top:20px; text-transform:uppercase;">Idioma de la Interfaz</div>
+            <select id="settingLang" onchange="changeLanguage(this.value)">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+            <button class="btn btn-save" style="margin-top:30px;" onclick="navigate('profiles')">VOLVER</button>
+        </div>
+    </div>
+
+    <script>
+        const contentDB = [
+            { 
+                id: "look-at-2026", 
+                title: "Look at!", 
+                year: "2026", 
+                age: 16, 
+                img: "https://i.imgur.com/5YRXD8b.jpeg", 
+                desc: "Fantasía | +16. Un secuestro que sale terriblemente mal. Próximamente más detalles.", 
+                type: "serie", 
+                genres: ["fantasia"],
+                seasons: [
+                    {
+                        name: "Temporada 1",
+                        episodes: [
+                            { 
+                                id: "lookat_s1e1",
+                                title: "1. El Secuestro (Piloto)", 
+                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20%28PILOTO%29%20%281%29.mp4",
+                                tracks: [
+                                    { label: "Español CC", src: "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=teqmd2pm&raw=1", lang: "es" }
+                                ]
+                            },
+                            { 
+                                id: "lookat_s1e2",
+                                title: "2. Borracho", 
+                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/look%20at%20cap%202%20audiio%20reparado.mp4" 
+                            }
+                        ]
+                    }
+                ]
+            },
+            { 
+                id: "lumera-intro", 
+                title: "Lumera Intro", 
+                year: "2026", 
+                age: 0, 
+                img: "https://i.imgur.com/KcIAK4D.png", 
+                desc: "Clásico | Todos. El video de introducción oficial para la apertura del ecosistema de Lumera Play.", 
+                type: "pelicula", 
+                genres: ["accion", "kids"],
+                url: "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1"
+            }
+        ];
+
+        const staticAvatars = [
+            "https://i.imgur.com/vHbcYFf.png",
+            "https://i.imgur.com/39N9rU2.png",
+            "https://i.imgur.com/Z4wbyZ2.png",
+            "https://i.imgur.com/R8Xy7M7.png"
+        ];
+
+        const i18n = {
+            es: {
+                select_profile: "SELECCIONA UN PERFIL",
+                menu_home: "Inicio", menu_series: "Series", menu_movies: "Películas", menu_kids: "Kids", menu_profiles: "Perfiles",
+                row_continue: "Continuar Viendo", row_featured: "Destacados", row_series: "Series", row_movies: "Películas", row_kids: "Infantil", row_action: "Acción", row_comedy: "Comedia", row_drama: "Drama",
+                no_results: "No se encontraron resultados."
+            },
+            en: {
+                select_profile: "CHOOSE A PROFILE",
+                menu_home: "Home", menu_series: "Series", menu_movies: "Movies", menu_kids: "Kids", menu_profiles: "Profiles",
+                row_continue: "Continue Watching", row_featured: "Featured", row_series: "Series", row_movies: "Movies", row_kids: "Kids Content", row_action: "Action", row_comedy: "Comedy", row_drama: "Drama",
+                no_results: "No results found."
+            }
+        };
+
+        let currentLang = localStorage.getItem("lumera_lang") || "es";
+        let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
+        let activeProfile = null;
+        let currentIdx = null;
+        let selectedAvatar = "LETTER";
+        let currentViewingItem = null;
+        let currentViewingEpisode = null;
+        
+        let controlsTimeout = null;
+        let isSeeking = false;
+
+        const video = document.getElementById('mainVid');
+        const player = document.getElementById('lumeraPlayer');
+        const controls = document.getElementById('pControls');
+
+        function applyLanguage() {
+            const dict = i18n[currentLang];
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if(dict[key]) el.textContent = dict[key];
+            });
+            document.getElementById("searchInput").placeholder = currentLang === "es" ? "Buscar series, películas..." : "Search movies, series...";
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem("lumera_lang", lang);
+            applyLanguage();
+        }
+
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            const navbar = document.querySelector('.navbar');
+            const menuBtn = document.querySelector('.menuBtn');
+            const searchBtn = document.querySelector('.search-nav-btn');
+            
+            if (pageId === 'profiles' || pageId === 'settingsPage') {
+                menuBtn.style.display = 'none';
+                searchBtn.style.display = 'none';
+                navbar.style.background = '#0b0b0b';
+            } else {
+                menuBtn.style.display = 'flex';
+                searchBtn.style.display = 'flex';
+                navbar.style.background = '#0b0b0b';
+            }
+            
+            if(document.getElementById('menu').classList.contains('active')) toggleMenu();
+            window.scrollTo(0,0);
+        }
+
+        function openSpark() {
+            navigate('spark');
+            const sVid = document.getElementById('sparkVid');
+            sVid.currentTime = 0;
+            sVid.play().catch(()=>{});
+            toggleMenu();
+        }
+
+        function closeSparkToHome() {
+            document.getElementById('sparkVid').pause();
+            navigate('home');
+        }
+
+        function openSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').innerHTML = '';
+            document.getElementById('noResults').style.display = 'none';
+            navigate('searchPage');
+            setTimeout(() => document.getElementById('searchInput').focus(), 150);
+        }
+
+        function executeSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+            const noResults = document.getElementById('noResults');
+            resultsContainer.innerHTML = '';
+            
+            if(!q) { noResults.style.display = 'none'; return; }
+
+            let filtered = contentDB.filter(item => {
+                if(activeProfile && activeProfile.mode === "KIDS" && item.age > 0) return false;
+                return item.title.toLowerCase().includes(q) || item.genres.some(g => g.toLowerCase().includes(q));
+            });
+
+            if(filtered.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                filtered.forEach(item => {
+                    let card = document.createElement('div');
+                    card.className = 'card';
+                    if(item.genres.includes('kids')) card.classList.add('card-kids');
+                    card.onclick = () => showDetail(item.id);
+                    card.innerHTML = `<img src="${item.img}">`;
+                    resultsContainer.appendChild(card);
+                });
+            }
+        }
+
+        function renderProfiles() {
+            const container = document.getElementById('profilesContainer');
+            container.innerHTML = '';
+            
+            profiles.forEach((p, idx) => {
+                let div = document.createElement('div');
+                div.className = `profile ${p.mode === 'KIDS' ? 'profile-kids' : (p.mode === 'ANIME' ? 'profile-anime' : 'profile-normal')}`;
+                
+                let avatarHtml = '';
+                if(p.avatar === "LETTER") {
+                    avatarHtml = `<div class="profile-img avatar-letter">${p.name ? p.name[0].toUpperCase() : '?'}</div>`;
+                } else {
+                    avatarHtml = `<img src="${p.avatar}">`;
+                }
+                
+                div.innerHTML = `
+                    ${avatarHtml}
+                    <div style="margin-top:10px; font-size:12px; font-weight:600; letter-spacing:0.5px;">${p.name.toUpperCase()}</div>
+                    <div class="edit" onclick="event.stopPropagation(); openModal(${idx})">✏️</div>
+                `;
+                div.onclick = () => selectProfile(idx);
+                container.appendChild(div);
+            });
+
+            if(profiles.length < 5) {
+                let addDiv = document.createElement('div');
+                addDiv.className = 'profile';
+                addDiv.innerHTML = `
+                    <div class="add">+</div>
+                    <div style="margin-top:10px; font-size:12px; font-weight:600; color:#555;">AÑADIR</div>
+                `;
+                addDiv.onclick = () => openModal(null);
+                container.appendChild(addDiv);
+            }
+        }
+
+        function selectProfile(idx) {
+            activeProfile = profiles[idx];
+            buildRows();
+            navigate('home');
+        }
+
+        function openModal(idx = null) {
+            currentIdx = idx;
+            const modal = document.getElementById('modal');
+            modal.style.display = 'block';
+            
+            if(idx !== null) {
+                document.getElementById('modalTitle').textContent = "EDITAR PERFIL";
+                document.getElementById('profileName').value = profiles[idx].name;
+                document.getElementById('profileMode').value = profiles[idx].mode;
+                selectedAvatar = profiles[idx].avatar;
+                document.getElementById('btn-delete-profile').style.display = 'block';
+            } else {
+                document.getElementById('modalTitle').textContent = "CREAR PERFIL";
+                document.getElementById('profileName').value = '';
+                document.getElementById('profileMode').value = 'NORMAL';
+                selectedAvatar = "LETTER";
+                document.getElementById('btn-delete-profile').style.display = 'none';
+            }
+            renderAvatarGrid();
+        }
+
+        function renderAvatarGrid() {
+            const grid = document.getElementById('avatarGrid');
+            grid.innerHTML = '';
+            
+            let nameInput = document.getElementById('profileName').value.trim();
+            let letter = nameInput ? nameInput[0].toUpperCase() : "?";
+            
+            let letOpt = document.createElement('div');
+            letOpt.className = `av-item avatar-letter ${selectedAvatar === 'LETTER' ? 'selected' : ''}`;
+            letOpt.textContent = letter;
+            letOpt.onclick = () => { selectedAvatar = "LETTER"; renderAvatarGrid(); };
+            grid.appendChild(letOpt);
+            
+            staticAvatars.forEach(url => {
+                let img = document.createElement('img');
+                img.className = `av-item ${selectedAvatar === url ? 'selected' : ''}`;
+                img.src = url;
+                img.onclick = () => { selectedAvatar = url; renderAvatarGrid(); };
+                grid.appendChild(img);
+            });
+        }
+
+        function updateLetterAvatar() {
+            if(selectedAvatar === "LETTER") renderAvatarGrid();
+        }
+
+        function saveProfile() {
+            let name = document.getElementById('profileName').value.trim();
+            if(!name) return;
+            
+            let p = { name, mode: document.getElementById('profileMode').value, avatar: selectedAvatar };
+            
+            if(currentIdx !== null) {
+                profiles[currentIdx] = p;
+            } else {
+                profiles.push(p);
+            }
+            
+            localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
+            closeModal();
+            renderProfiles();
+        }
+
+        function deleteProfile() {
+            if(currentIdx !== null) {
+                profiles.splice(currentIdx, 1);
+                localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
+            }
+            closeModal();
+            renderProfiles();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function getTrackingKey() {
+            return `lumera_progress_${activeProfile ? activeProfile.name : 'global'}`;
+        }
+
+        function getTrackedProgress(itemId) {
+            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
+            return tracking[itemId] || null;
+        }
+
+        function saveTrackedProgress(itemId, time, duration) {
+            if(!activeProfile) return;
+            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
+            if (time > 5 && (duration - time) > 10) {
+                tracking[itemId] = { time, duration, percent: (time / duration) * 100 };
+            } else {
+                delete tracking[itemId];
+            }
+            localStorage.setItem(getTrackingKey(), JSON.stringify(tracking));
+        }
+
+        function buildRows() {
+            const sections = ['home', 'series', 'pelis', 'kids'];
+            sections.forEach(s => {
+                let r = document.getElementById(`row-${s}`);
+                if(r) r.innerHTML = '';
+                let cont = document.getElementById(`row-continue-${s}`);
+                if(cont) cont.innerHTML = '';
+                let cHome = document.getElementById(`container-continue-${s}`);
+                if(cHome) cHome.style.display = 'none';
+                
+                let genres = ['fantasia', 'accion', 'comedia', 'drama'];
+                genres.forEach(g => {
+                    let gRow = document.getElementById(`row-${g}-${s}`);
+                    if(gRow) gRow.innerHTML = '';
+                    let gCont = document.getElementById(`container-${g}-${s}`);
+                    if(gCont) gCont.style.display = 'none';
+                });
+            });
+
+            if(!activeProfile) return;
+
+            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
+            let trackingIds = Object.keys(tracking);
+
+            sections.forEach(pageId => {
+                if(activeProfile.mode === "KIDS" && pageId !== 'kids') return;
+                if(activeProfile.mode !== "KIDS" && pageId === 'kids') return;
+
+                let trackingItemsInThisPage = [];
+
+                contentDB.forEach(item => {
+                    if(activeProfile.mode === "KIDS" && !item.genres.includes('kids')) return;
+                    
+                    if(pageId === 'series' && item.type !== 'serie') return;
+                    if(pageId === 'pelis' && item.type !== 'pelicula') return;
+
+                    let card = document.createElement('div');
+                    card.className = 'card';
+                    if(item.genres.includes('kids')) {
+                        card.classList.add('card-kids');
+                        card.innerHTML = `<img src="${item.img}"><img class="kids-badge" src="https://i.imgur.com/vHbcYFf.png">`;
+                    } else {
+                        card.innerHTML = `<img src="${item.img}">`;
+                    }
+                    card.onclick = () => showDetail(item.id);
+
+                    if(trackingIds.includes(item.id)) {
+                        let prog = tracking[item.id];
+                        let progressClone = card.cloneNode(true);
+                        progressClone.onclick = card.onclick;
+                        let barBg = document.createElement('div');
+                        barBg.className = 'progress-bar-bg';
+                        let barFill = document.createElement('div');
+                        barFill.className = 'progress-bar-fill';
+                        barFill.style.width = `${prog.percent}%`;
+                        barBg.appendChild(barFill);
+                        progressClone.appendChild(barBg);
+                        trackingItemsInThisPage.push(progressClone);
+                    }
+
+                    let mainRow = document.getElementById(`row-${pageId}`);
+                    if(mainRow) mainRow.appendChild(card);
+
+                    item.genres.forEach(g => {
+                        let gRow = document.getElementById(`row-${g}-${pageId}`);
+                        if(gRow) {
+                            gRow.appendChild(card.cloneNode(true));
+                            let gCont = document.getElementById(`container-${g}-${pageId}`);
+                            if(gCont) gCont.style.display = 'block';
+                        }
+                    });
+                });
+
+                if(trackingItemsInThisPage.length > 0) {
+                    let contRow = document.getElementById(`row-continue-${pageId}`);
+                    let contBox = document.getElementById(`container-continue-${pageId}`);
+                    if(contRow && contBox) {
+                        trackingItemsInThisPage.forEach(c => contRow.appendChild(c));
+                        contBox.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        function showDetail(id) {
+            let item = contentDB.find(c => c.id === id);
+            if(!item) return;
+            
+            currentViewingItem = item;
+            document.getElementById('detailImg').src = item.img;
+            document.getElementById('detailTitle').textContent = item.title.toUpperCase();
+            document.getElementById('detailMeta').textContent = `${item.year}  |  +${item.age}  |  ${item.type.toUpperCase()}`;
+            document.getElementById('detailDesc').textContent = item.desc;
+            
+            let area = document.getElementById('detailPlayerArea');
+            area.innerHTML = '';
+            
+            if(item.type === 'serie') {
+                let html = `<div class="season-selector">`;
+                item.seasons.forEach((s, idx) => {
+                    html += `<button class="season-tab-btn ${idx===0?'active':''}" onclick="selectSeason(this, ${idx})">${s.name.toUpperCase()}</button>`;
+                });
+                html += `</div><div class="ep-list" id="detailEpList"></div>`;
+                area.innerHTML = html;
+                renderEpisodes(0);
+            } else {
+                let prog = getTrackedProgress(item.id);
+                let label = prog ? "CONTINUAR VIENDO" : "REPRODUCIR";
+                area.innerHTML = `<div class="btn-play-main" onclick="startVideo(null)">${label}</div>`;
+            }
+            
+            document.getElementById('cardDetail').style.display = 'block';
+        }
+
+        function selectSeason(btn, idx) {
+            document.querySelectorAll('.season-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderEpisodes(idx);
+        }
+
+        function renderEpisodes(seasonIdx) {
+            const list = document.getElementById('detailEpList');
+            list.innerHTML = '';
+            let s = currentViewingItem.seasons[seasonIdx];
+            s.episodes.forEach(ep => {
+                let prog = getTrackedProgress(ep.id);
+                let label = prog ? "Continuar" : "Ver";
+                let div = document.createElement('div');
+                div.className = 'ep-btn';
+                div.onclick = () => startVideo(ep);
+                div.innerHTML = `<span>${ep.title.toUpperCase()}</span><div class="ep-btn-play">${label}</div>`;
+                list.appendChild(div);
+            });
+        }
+
+        function closeDetail() {
+            document.getElementById('cardDetail').style.display = 'none';
+            buildRows();
+        }
+
+        function startVideo(episodeObj) {
+            currentViewingEpisode = episodeObj;
+            let target = episodeObj ? episodeObj : currentViewingItem;
+            
+            document.getElementById('pTitle').textContent = target.title.toUpperCase();
+            video.src = target.url;
+            
+            // ASIGNAR PISTAS DE SUBTÍTULOS ORIGINALES DEL REPRODUCTOR INTELIGENTE
+            let tracksArea = video.querySelectorAll('track');
+            tracksArea.forEach(t => t.remove());
+            
+            if(target.tracks) {
+                target.tracks.forEach(tData => {
+                    let track = document.createElement('track');
+                    track.kind = 'subtitles';
+                    track.label = tData.label;
+                    track.srclang = tData.lang;
+                    track.src = tData.src;
+                    video.appendChild(track);
+                });
+            }
+
+            let prog = getTrackedProgress(target.id);
+            video.load();
+            
+            if(prog) {
+                video.currentTime = prog.time;
+            } else {
+                video.currentTime = 0;
+            }
+
+            player.style.display = 'block';
+            video.play().catch(()=>{});
+            showControls();
+            buildCCTracks();
+        }
+
+        function buildCCTracks() {
+            const menu = document.getElementById('ccTrackOptions');
+            menu.innerHTML = '';
+            
+            let offBtn = document.createElement('button');
+            offBtn.className = 'cc-opt-btn active';
+            offBtn.textContent = 'Desactivados';
+            offBtn.onclick = () => selectCCTrack(-1, offBtn);
+            menu.appendChild(offBtn);
+
+            for (let i = 0; i < video.textTracks.length; i++) {
+                let t = video.textTracks[i];
+                t.mode = 'hidden';
+                let btn = document.createElement('button');
+                btn.className = 'cc-opt-btn';
+                btn.textContent = t.label;
+                btn.onclick = () => selectCCTrack(i, btn);
+                menu.appendChild(btn);
+            }
+        }
+
+        function selectCCTrack(idx, btn) {
+            document.querySelectorAll('#ccTrackOptions .cc-opt-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            for (let i = 0; i < video.textTracks.length; i++) {
+                video.textTracks[i].mode = (i === idx) ? 'showing' : 'hidden';
+            }
+        }
+
+        function toggleCCMenu() {
+            document.getElementById('ccMenu').classList.toggle('active');
+        }
+
+        function togglePlay() {
+            if(video.paused) {
+                video.play();
+                document.getElementById('pPlayIcon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+            } else {
+                video.pause();
+                document.getElementById('pPlayIcon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+            }
+            showControls();
+        }
+
+        function skipVideo(secs) {
+            video.currentTime += secs;
+            showControls();
+        }
+
+        function seekingVideo(val) {
+            isSeeking = true;
+            video.currentTime = (val / 100) * video.duration;
+        }
+
+        function formatTime(secs) {
+            if(isNaN(secs)) return "00:00";
+            let m = Math.floor(secs / 60);
+            let s = Math.floor(secs % 60);
+            return `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+        }
+
+        video.addEventListener('timeupdate', () => {
+            if(!isSeeking) {
+                let pct = (video.currentTime / video.duration) * 100;
+                document.getElementById('pProgress').value = pct || 0;
+            }
+            document.getElementById('pCurrent').textContent = formatTime(video.currentTime);
+            
+            let target = currentViewingEpisode ? currentViewingEpisode : currentViewingItem;
+            if(target) saveTrackedProgress(target.id, video.currentTime, video.duration);
+        });
+
+        video.addEventListener('durationchange', () => {
+            document.getElementById('pDuration').textContent = formatTime(video.duration);
+        });
+
+        video.addEventListener('play', () => {
+            document.getElementById('pPlayIcon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        });
+
+        video.addEventListener('pause', () => {
+            document.getElementById('pPlayIcon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+        });
+
+        document.getElementById('pProgress').addEventListener('touchend', () => { isSeeking = false; });
+        document.getElementById('pProgress').addEventListener('mouseup', () => { isSeeking = false; });
+
+        function showControls() {
+            controls.classList.add('active');
+            player.classList.add('show-cursor');
+            clearTimeout(controlsTimeout);
+            if(!video.paused) {
+                controlsTimeout = setTimeout(() => {
+                    controls.classList.remove('active');
+                    player.classList.remove('show-cursor');
+                    document.getElementById('ccMenu').classList.remove('active');
+                }, 3500);
+            }
+        }
+
+        player.addEventListener('mousemove', showControls);
+        player.addEventListener('touchstart', showControls);
+
+        function exitPlayer() {
+            video.pause();
+            player.style.display = 'none';
+            document.getElementById('ccMenu').classList.remove('active');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                player.requestFullscreen().catch(()=>{});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        document.getElementById('btn-settings').onclick = () => {
+            document.getElementById('settingLang').value = currentLang;
+            navigate('settingsPage');
+        };
+
+        // --- INICIALIZACIÓN DE LA APLICACIÓN ORIGINAL ---
+        const initMenuBtn = document.querySelector('.menuBtn');
+        const initSearchBtn = document.querySelector('.search-nav-btn');
+        if(initMenuBtn) initMenuBtn.style.display = 'none';
+        if(initSearchBtn) initSearchBtn.style.display = 'none';
+        
+        applyLanguage();
+        renderProfiles();
+    </script>
+</body>
+</html>
