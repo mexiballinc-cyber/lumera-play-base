@@ -272,36 +272,13 @@
             overflow: hidden; 
             background: #1a1a1a; 
             border: 1px solid #222; 
-            position: relative;
         }
         
-        .banner img:not(.hero-square img) { 
+        .banner img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
             opacity: 0.8; 
-        }
-
-        /* EL PUTO CUADRADO DEL HERO QUE PIDIÓ */
-        .hero-square {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 130px;
-            height: 130px;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 12px;
-            overflow: hidden;
-            z-index: 10;
-        }
-
-        .hero-square img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            opacity: 1 !important;
         }
         
         .rowTitle { 
@@ -340,6 +317,7 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
+            display: block;
         }
         
         .card::after { 
@@ -373,6 +351,7 @@
             filter: grayscale(0.2); 
         }
         
+        /* BARRA DE "CONTINUAR VIENDO" */
         .progress-bar-bg { 
             position: absolute; 
             bottom: 0; 
@@ -494,11 +473,6 @@
             transform: scale(1.05); 
         }
         
-        .ep-list { 
-            display: flex; 
-            flex-direction: column; 
-        }
-        
         .ep-btn { 
             background: #1a1a1a; 
             border: 1px solid #333; 
@@ -533,7 +507,7 @@
         }
 
         /* =========================================
-           9. REPRODUCTOR DE VIDEO CUSTOMIZADO
+           9. REPRODUCTOR DE VIDEO
         ========================================= */
         #lumeraPlayer { 
             display: none; 
@@ -570,17 +544,6 @@
             pointer-events: all; 
         }
         
-        .p-top { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .p-title { 
-            font-size: 16px; 
-            font-weight: 600; 
-        }
-        
         .p-center { 
             display: flex; 
             justify-content: center; 
@@ -607,35 +570,11 @@
             background: white; 
         }
         
-        .p-bottom { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-        }
-        
-        .p-time-row { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-        }
-        
-        .p-time { 
-            font-size: 12px; 
-            font-weight: 600; 
-            min-width: 45px; 
-        }
-        
         input[type=range] { 
             width: 100%; 
             accent-color: white; 
             height: 4px; 
             border-radius: 2px; 
-        }
-        
-        .p-actions { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
         }
 
         /* =========================================
@@ -705,7 +644,7 @@
         }
 
         /* =========================================
-           11. SECCIÓN DE PERFILES (CÍRCULOS)
+           11. SECCIÓN DE PERFILES (DISEÑO ORIGINAL)
         ========================================= */
         .grid { 
             display: grid; 
@@ -977,761 +916,820 @@
     </div>
 
     <div id="home" class="page">
-        <div class="banner">
-            <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square">
-                <img id="hero-img-home" src="https://i.imgur.com/5YRXD8b.jpeg">
-            </div>
-        </div>
-        <div id="container-continue-home" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-home"></div></div> 
-        <div class="rowTitle" data-i18n="row_featured">Destacados</div><div class="row" id="row-home"></div> 
-        <div id="container-fantasia-home" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-home"></div></div> 
-        <div id="container-accion-home" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-home"></div></div> 
-        <div id="container-comedia-home" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-home"></div></div> 
-        <div id="container-drama-home" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-home"></div></div> 
+        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+        <div id="container-continue-home" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-home"></div></div>
+        <div class="rowTitle" data-i18n="row_featured">Destacados</div><div class="row" id="row-home"></div>
+        <div id="container-fantasia-home" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-home"></div></div>
+        <div id="container-accion-home" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-home"></div></div>
+        <div id="container-comedia-home" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-home"></div></div>
+        <div id="container-drama-home" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-home"></div></div>
     </div>
 
     <div id="series" class="page">
-        <div class="banner">
-            <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square">
-                <img id="hero-img-series" src="https://i.imgur.com/5YRXD8b.jpeg">
-            </div>
-        </div>
-        <div id="container-continue-series" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-series"></div></div> 
-        <div class="rowTitle" data-i18n="row_series">Series</div><div class="row" id="row-series"></div> 
-        <div id="container-fantasia-series" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-series"></div></div> 
-        <div id="container-accion-series" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-series"></div></div> 
-        <div id="container-comedia-series" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-series"></div></div> 
-        <div id="container-drama-series" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-series"></div></div> 
+        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+        <div id="container-continue-series" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-series"></div></div>
+        <div class="rowTitle" data-i18n="row_series">Series</div><div class="row" id="row-series"></div>
+        <div id="container-fantasia-series" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-series"></div></div>
+        <div id="container-accion-series" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-series"></div></div>
+        <div id="container-comedia-series" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-series"></div></div>
+        <div id="container-drama-series" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-series"></div></div>
     </div>
 
     <div id="pelis" class="page">
-        <div class="banner">
-            <img src="https://i.imgur.com/yLRcdd7.png">
-            <div class="hero-square">
-                <img id="hero-img-pelis" src="https://i.imgur.com/KcIAK4D.png">
-            </div>
-        </div>
-        <div id="container-continue-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-pelis"></div></div> 
-        <div class="rowTitle" data-i18n="row_movies">Películas</div><div class="row" id="row-pelis"></div> 
-        <div id="container-fantasia-pelis" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-pelis"></div></div> 
-        <div id="container-accion-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-pelis"></div></div> 
-        <div id="container-comedia-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-pelis"></div></div> 
-        <div id="container-drama-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-pelis"></div></div> 
+        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+        <div id="container-continue-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-pelis"></div></div>
+        <div class="rowTitle" data-i18n="row_movies">Películas</div><div class="row" id="row-pelis"></div>
+        <div id="container-fantasia-pelis" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-pelis"></div></div>
+        <div id="container-accion-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-pelis"></div></div>
+        <div id="container-comedia-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-pelis"></div></div>
+        <div id="container-drama-pelis" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-pelis"></div></div>
     </div>
 
     <div id="kids" class="page">
-        <div class="rowTitle" data-i18n="row_kids">Infantil</div><div class="row" id="row-kids"></div> 
+        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+        <div id="container-continue-kids" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-kids"></div></div>
+        <div class="rowTitle" data-i18n="row_kids">Zona Kids</div><div class="row" id="row-kids"></div>
+        <div id="container-fantasia-kids" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-kids"></div></div>
+        <div id="container-accion-kids" style="display:none;"><div class="rowTitle" data-i18n="row_action">Acción</div><div class="row" id="row-accion-kids"></div></div>
+        <div id="container-comedia-kids" style="display:none;"><div class="rowTitle" data-i18n="row_comedy">Comedia</div><div class="row" id="row-comedia-kids"></div></div>
+        <div id="container-drama-kids" style="display:none;"><div class="rowTitle" data-i18n="row_drama">Drama</div><div class="row" id="row-drama-kids"></div></div>
     </div>
 
     <div id="cardDetail">
         <div class="close-detail" onclick="closeDetail()">✕</div>
         <img id="detailImg" class="detail-img">
         <div class="detail-content">
-            <div id="detailTitle" class="detail-title"></div>
-            <div id="detailMeta" class="detail-meta"></div>
-            <div id="detailDesc" class="detail-desc"></div>
-            <div id="detailPlayerArea"></div>
+            <div class="detail-title" id="detailTitle">TITULO</div>
+            <div id="detailMeta" class="detail-meta">0+ • 2026 • GENERO</div>
+            <div id="detailDesc" class="detail-desc">Descripción.</div>
+            <div id="seriesUI" style="display:none; margin-top: 25px;"></div>
+            <div class="btn-play-main" id="playMainBtn" onclick="playMainVideo()" data-i18n="btn_play">REPRODUCIR</div>
         </div>
     </div>
 
-    <div id="lumeraPlayer">
-        <video id="mainVid" playsinline></video>
-        <div class="p-controls" id="pControls">
-            <div class="p-top">
-                <button class="p-btn" onclick="exitPlayer()">✕</button>
-                <div class="p-title" id="pTitle">Lumera Video</div>
-                <button class="p-btn" onclick="toggleCCMenu()">CC</button>
+    <div id="lumeraPlayer" onmousemove="resetTimer()" onclick="resetTimer()">
+        
+        <video id="v" playsinline style="width:100%; height:100%; object-fit:contain;"></video>
+        
+        <div id="ccMenu" class="cc-menu" onclick="event.stopPropagation()">
+            <div id="audioSection" style="display:none;">
+                <div class="cc-section-title" data-i18n="audio_dub">AUDIO / DOBLAJE</div>
+                <div class="cc-options" id="audioOptions"></div>
             </div>
-            <div class="p-center">
-                <button class="p-btn" onclick="skipVideo(-10)">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12.5 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.31 2.69-6 6-6s6 2.69 6 6-2.69 6-6 6c-1.66 0-3.17-.67-4.28-1.76L6.26 17.7C7.75 19.14 9.77 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8h-1.5z"/></svg>
-                </button>
-                <button class="p-btn p-play" onclick="togglePlay()" id="pPlayBtn">
-                    <svg viewBox="0 0 24 24" width="32" height="32" fill="black" id="pPlayIcon"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <button class="p-btn" onclick="skipVideo(10)">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M10 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c1.66 0 3.17-.67 4.28-1.76l1.46 1.46C14.25 19.14 12.23 20 10 20c-4.97 0-9-4.03-9-9s4.03-9 9-9c4.97 0 9 4.03 9 9h2.5L17.6 14.1l-.09-.14L13 18h3c0-3.31-2.69-6-6-6zm1-4v5l-4.25 2.52-.77-1.28 3.52-2.09V2h1.5z"/></svg>
-                </button>
-            </div>
-            <div class="p-bottom">
-                <div class="p-time-row">
-                    <span class="p-time" id="pCurrent">00:00</span>
-                    <input type="range" id="pProgress" min="0" max="100" value="0" step="0.1" oninput="seekingVideo(this.value)">
-                    <span class="p-time" id="pDuration">00:00</span>
-                </div>
-                <div class="p-actions">
-                    <div></div>
-                    <button class="p-btn" onclick="toggleFullscreen()">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                    </button>
+            <div id="subsSection" style="display:none;">
+                <div class="cc-section-title" data-i18n="subtitles">SUBTÍTULOS</div>
+                <div class="cc-options" id="subsOptions">
+                    <div class="cc-opt-btn active" id="sub-off" onclick="setSubtitle(-1)" data-i18n="sub_off">Desactivados</div>
                 </div>
             </div>
         </div>
 
-        <div class="cc-menu" id="ccMenu">
-            <div class="cc-section-title">Subtítulos</div>
-            <div class="cc-options" id="ccTrackOptions"></div>
-            <div class="cc-section-title" style="margin-top:10px;">Audio</div>
-            <div class="cc-options" id="ccAudioOptions">
-                <button class="cc-opt-btn active">Predeterminado</button>
+        <div id="ctrls" class="p-controls">
+            <div class="p-top" style="display: flex; justify-content: space-between; width: 100%;">
+                <button class="p-btn" onclick="closePlayer(event)">✕</button>
+                <button class="p-btn" id="ccBtn" onclick="toggleCCMenu(event)" style="font-weight: bold; font-size: 16px; display: none; font-family: 'Poppins', sans-serif;">CC</button>
             </div>
-            <button class="btn" onclick="toggleCCMenu()" style="margin-top:15px; padding:8px;">Cerrar</button>
+            
+            <div class="p-center">
+                <button class="p-btn" onclick="v.currentTime -= 10; event.stopPropagation();">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg>
+                </button>
+                <button class="p-btn p-play" onclick="v.paused ? v.play() : v.pause(); event.stopPropagation();">
+                    <svg id="p-icon" viewBox="0 0 24 24" width="32" height="32" fill="black"><path d="M8 5v14l11-7z"></path></svg>
+                </button>
+                <button class="p-btn" onclick="v.currentTime += 10; event.stopPropagation();">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-bottom" onclick="event.stopPropagation()">
+                <input type="range" id="sk" value="0" oninput="v.currentTime = (this.value/100)*v.duration">
+            </div>
         </div>
     </div>
 
     <div id="modal" class="modal">
         <div class="modalContent">
-            <h3 id="modalTitle" style="text-align:center; margin-top:0; font-weight:600; font-size:16px;">CREAR PERFIL</h3>
-            <input type="text" id="profileName" placeholder="Nombre" maxlength="12" oninput="updateLetterAvatar()">
-            
-            <div style="font-size:11px; font-weight:600; color:#888; margin-top:15px; letter-spacing:1px;">MODO DE EDAD</div>
-            <select id="profileMode">
-                <option value="NORMAL">Normal (+16)</option>
-                <option value="KIDS">Kids (Infantil)</option>
-                <option value="ANIME">Anime</option>
-            </select>
-            
-            <div style="font-size:11px; font-weight:600; color:#888; margin-top:15px; letter-spacing:1px;">SELECCIONAR AVATAR</div>
+            <h3 style="margin-top:0" data-i18n="edit_profile">Editar Perfil</h3>
+            <input id="profileName" placeholder="Nombre" oninput="updateLetterAvatar()">
+            <div style="display:flex; gap:10px; margin: 20px 0;">
+                <div class="btn" id="optNormal" onclick="setMode('normal')" style="flex:1; border:none; color:black; background: white; margin-top:0;">Normal</div>
+                <div class="btn" id="optKids" onclick="setMode('kids')" style="flex:1; border:1px solid white; color:white; background: transparent; margin-top:0;">Kids</div>
+            </div>
             <div class="avatarGrid" id="avatarGrid"></div>
-            
-            <button class="btn btn-save" onclick="saveProfile()">GUARDAR</button>
-            <button id="btn-delete-profile" class="btn" style="background:#401010; border-color:#601515; display:none;" onclick="deleteProfile()">ELIMINAR PERFIL</button>
-            <button class="btn" onclick="closeModal()">CANCELAR</button>
+            <div class="btn btn-save" onclick="saveProfile()" data-i18n="btn_save">GUARDAR</div>
+            <div class="btn" onclick="deleteProfile()" style="border:none; color:#ff4444; margin-top:20px;" data-i18n="btn_delete">Eliminar Perfil</div>
+            <div class="btn" onclick="closeModal()" style="border:none; color:#888;" data-i18n="btn_cancel">Cancelar</div>
         </div>
     </div>
 
-    <div id="settingsPage" class="page">
-        <div style="padding:25px;">
-            <h3 style="font-weight:600; font-size:18px; margin-top:0; border-bottom:1px solid #222; padding-bottom:10px;">CONFIGURACIÓN</h3>
-            <div style="font-size:13px; font-weight:600; color:#888; margin-top:20px; text-transform:uppercase;">Idioma de la Interfaz</div>
-            <select id="settingLang" onchange="changeLanguage(this.value)">
-                <option value="es">Español</option>
-                <option value="en">English</option>
-            </select>
-            <button class="btn btn-save" style="margin-top:30px;" onclick="navigate('profiles')">VOLVER</button>
+    <div id="settingsModal" class="modal">
+        <div class="modalContent" style="max-width: 400px; margin: 100px auto; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 15px; margin-bottom: 25px;">
+                <h3 style="margin:0; font-size: 20px; letter-spacing: 1px;" data-i18n="settings_title">AJUSTES</h3>
+                <div onclick="closeSettingsModal()" style="cursor: pointer; font-size: 22px; color: #888; transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #1a1a1a;" onmouseover="this.style.color='#fff'; this.style.background='#333'" onmouseout="this.style.color='#888'; this.style.background='#1a1a1a'">✕</div>
+            </div>
+            <label data-i18n="language" style="display:block; margin-bottom:12px; font-weight:600; color:#888; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Idioma / Language</label>
+            <div style="position: relative;">
+                <select id="languageSelector" style="appearance: none; -webkit-appearance: none; cursor: pointer; font-weight: 600; font-size: 15px; padding: 16px 20px; border-radius: 12px; background-color: #151515; border: 1px solid #333; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); width: 100%; color: white; outline: none; font-family: 'Poppins', sans-serif;">
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="en">🇺🇸 English</option>
+                </select>
+                <svg viewBox="0 0 24 24" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; fill: #888; pointer-events: none;"><path d="M7 10l5 5 5-5z"></path></svg>
+            </div>
+            <label style="display:block; margin-top:25px; font-weight:600; color:#888; font-size:12px; text-transform:uppercase; letter-spacing:1px; opacity:0.3;">Vincular cuenta (QR):</label>
+            <div class="btn" style="border: 2px dashed #333; color:#555; background: transparent; cursor: not-allowed; margin-bottom: 20px;" data-i18n="qr_soon">Próximamente</div>
+            <div class="btn btn-save" onclick="closeSettingsModal()" style="margin-top: 35px; width: 100%; box-sizing: border-box; letter-spacing: 1px; padding: 16px; font-size: 15px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255,255,255,0.1);" data-i18n="btn_close">Cerrar</div>
         </div>
     </div>
 
     <script>
+        // --- Traducciones y Configuración de Idioma ---
+        const translations = {
+            es: { select_profile: "SELECCIONA UN PERFIL", menu_home: "Inicio", menu_series: "Series", menu_movies: "Películas", menu_kids: "Kids", menu_profiles: "Perfiles", row_featured: "Destacados", row_series: "Series", row_movies: "Películas", row_kids: "Zona Kids", row_continue: "Continuar Viendo", row_fantasy: "Fantasía", row_action: "Acción", row_comedy: "Comedia", row_drama: "Drama", btn_play: "REPRODUCIR", edit_profile: "Editar Perfil", btn_save: "GUARDAR", btn_delete: "Eliminar Perfil", btn_cancel: "Cancelar", settings_title: "AJUSTES", language: "Idioma de la App:", btn_close: "Cerrar", qr_soon: "Próximamente", audio_dub: "AUDIO / DOBLAJE", subtitles: "SUBTÍTULOS", sub_off: "Desactivados", search_placeholder: "Buscar series, películas...", no_results: "No se encontraron resultados." },
+            en: { select_profile: "SELECT A PROFILE", menu_home: "Home", menu_series: "Series", menu_movies: "Movies", menu_kids: "Kids", menu_profiles: "Profiles", row_featured: "Featured", row_series: "Series", row_movies: "Movies", row_kids: "Kids Zone", row_continue: "Continue Watching", row_fantasy: "Fantasy", row_action: "Action", row_comedy: "Comedy", row_drama: "Drama", btn_play: "PLAY", edit_profile: "Edit Profile", btn_save: "SAVE", btn_delete: "Delete Profile", btn_cancel: "Cancel", settings_title: "SETTINGS", language: "App Language:", btn_close: "Close", qr_soon: "Coming Soon", audio_dub: "AUDIO / DUB", subtitles: "SUBTITLES", sub_off: "Off", search_placeholder: "Search movies, series...", no_results: "No results found." }
+        };
+
+        let currentLang = localStorage.getItem('lumera_lang') || 'es';
+        const langSelector = document.getElementById('languageSelector');
+        langSelector.value = currentLang;
+
+        function applyTranslations(lang) {
+            currentLang = lang;
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+            document.getElementById('profileName').placeholder = lang === 'en' ? "Profile Name" : "Nombre del Perfil";
+            document.getElementById('searchInput').placeholder = translations[lang].search_placeholder;
+            langSelector.value = lang;
+        }
+
+        langSelector.addEventListener('change', (e) => {
+            const newLang = e.target.value;
+            localStorage.setItem('lumera_lang', newLang);
+            applyTranslations(newLang);
+        });
+
+        document.getElementById('btn-settings').addEventListener('click', () => { 
+            document.getElementById('settingsModal').style.display = 'block'; 
+        });
+        
+        function closeSettingsModal() { 
+            document.getElementById('settingsModal').style.display = 'none'; 
+        }
+        
+        applyTranslations(currentLang);
+
+        // --- Variables Globales del Reproductor ---
+        const v = document.getElementById('v');
+        const ctrls = document.getElementById('ctrls');
+        const pIcon = document.getElementById('p-icon');
+        const player = document.getElementById('lumeraPlayer');
+        
+        let hideTimer;
+        let currentItemGlobal = null;
+        let currentAudioUrl = "";
+        let currentPlayKey = "";
+
+        // --- Base de Datos Principal ---
         const contentDB = [
             { 
-                id: "look-at-2026", 
-                title: "Look at!", 
+                id: "lumera_intro_01",
+                title: "Lumera Intro", 
                 year: "2026", 
+                age: 0, 
+                img: "https://i.imgur.com/KcIAK4D.png", 
+                desc: "Bienvenido a Lumera Play.", 
+                type: "ambos", 
+                genres: ["accion"], 
+                url: "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1",
+                isSeries: false
+            },
+            {
+                id: "look-at-2026",
+                title: "Look at!",
+                year: "2026",
                 age: 16, 
-                img: "https://i.imgur.com/5YRXD8b.jpeg", 
-                desc: "Fantasía | +16. Un secuestro que sale terriblemente mal. Próximamente más detalles.", 
+                img: "https://i.imgur.com/5YRXD8b.jpeg",
+                desc: "Fantasía | +16. Un secuestro que sale terriblemente mal. Próximamente más detalles.",
                 type: "serie", 
-                genres: ["fantasia"],
+                genres: ["fantasia"], 
+                isSeries: true,
                 seasons: [
                     {
                         name: "Temporada 1",
                         episodes: [
                             { 
-                                id: "lookat_s1e1",
-                                title: "1. El Secuestro (Piloto)", 
-                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/EL%20SECUESTRO%20CAPITULO%201%20%28PILOTO%29%20%281%29.mp4",
+                                id: "cap-1", 
+                                title: "1. Secuestro", 
+                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto_202606/El%20%20Secuestro%20%20%20%20%20Capitulo%201%20%20%20%20Piloto.mp4",
                                 tracks: [
-                                    { label: "Español CC", src: "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=teqmd2pm&raw=1", lang: "es" }
+                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=lhkvu829&raw=1" },
+                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/1nr6pvo8mge9f3zr13f1l/EL-SECUESTRO-CAPITULO-1-PILOTO.vtt?rlkey=5377pxatgbe3c082kt6pu4rwy&st=dp1qhkp1&raw=1" }
                                 ]
                             },
                             { 
-                                id: "lookat_s1e2",
+                                id: "cap-2", 
                                 title: "2. Borracho", 
-                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto-1_202606/look%20at%20cap%202%20audiio%20reparado.mp4" 
+                                url: "https://archive.org/download/borracho-capitulo-2_202606/Borracho%20%20%20%20Capitulo%202.mp4",
+                                tracks: [
+                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=jdihp8qt&raw=1" },
+                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=u0hqq6hg&raw=1" }
+                                ]
                             }
+                        ]
+                    },
+                    {
+                        name: "Temporada Cortos",
+                        episodes: [
+                            { id: "corto-1", title: "Corto 1: Supermercado", url: "https://archive.org/download/supermecado-corto-1_202606/Supermecado%20%20%20%20%20Corto%201.mp4" },
+                            { id: "corto-2", title: "Corto 2: Cartulina", url: "https://archive.org/download/cartulina-corto-2_202606/Cartulina%20%20%20%20Corto%202.mp4" },
+                            { id: "corto-3", title: "Corto 3: Flores", url: "https://i.imgur.com/ilO9ROa.mp4" },
+                            { id: "corto-4", title: "Corto 4: Vivir para siempre", url: "https://i.imgur.com/snkMhv5.mp4" }
                         ]
                     }
                 ]
-            },
-            { 
-                id: "lumera-intro", 
-                title: "Lumera Intro", 
-                year: "2026", 
-                age: 0, 
-                img: "https://i.imgur.com/KcIAK4D.png", 
-                desc: "Clásico | Todos. El video de introducción oficial para la apertura del ecosistema de Lumera Play.", 
-                type: "pelicula", 
-                genres: ["accion", "kids"],
-                url: "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1"
             }
         ];
 
-        const staticAvatars = [
-            "https://i.imgur.com/vHbcYFf.png",
-            "https://i.imgur.com/39N9rU2.png",
-            "https://i.imgur.com/Z4wbyZ2.png",
-            "https://i.imgur.com/R8Xy7M7.png"
-        ];
-
-        const i18n = {
-            es: {
-                select_profile: "SELECCIONA UN PERFIL",
-                menu_home: "Inicio", menu_series: "Series", menu_movies: "Películas", menu_kids: "Kids", menu_profiles: "Perfiles",
-                row_continue: "Continuar Viendo", row_featured: "Destacados", row_series: "Series", row_movies: "Películas", row_kids: "Infantil", row_action: "Acción", row_comedy: "Comedia", row_drama: "Drama",
-                no_results: "No se encontraron resultados."
-            },
-            en: {
-                select_profile: "CHOOSE A PROFILE",
-                menu_home: "Home", menu_series: "Series", menu_movies: "Movies", menu_kids: "Kids", menu_profiles: "Profiles",
-                row_continue: "Continue Watching", row_featured: "Featured", row_series: "Series", row_movies: "Movies", row_kids: "Kids Content", row_action: "Action", row_comedy: "Comedy", row_drama: "Drama",
-                no_results: "No results found."
-            }
-        };
-
-        let currentLang = localStorage.getItem("lumera_lang") || "es";
-        let profiles = JSON.parse(localStorage.getItem("lumera_profiles")) || [];
-        let activeProfile = null;
-        let currentIdx = null;
-        let selectedAvatar = "LETTER";
-        let currentViewingItem = null;
-        let currentViewingEpisode = null;
-        
-        let controlsTimeout = null;
-        let isSeeking = false;
-
-        const video = document.getElementById('mainVid');
-        const player = document.getElementById('lumeraPlayer');
-        const controls = document.getElementById('pControls');
-
-        function applyLanguage() {
-            const dict = i18n[currentLang];
-            document.querySelectorAll("[data-i18n]").forEach(el => {
-                const key = el.getAttribute("data-i18n");
-                if(dict[key]) el.textContent = dict[key];
-            });
-            document.getElementById("searchInput").placeholder = currentLang === "es" ? "Buscar series, películas..." : "Search movies, series...";
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem("lumera_lang", lang);
-            applyLanguage();
-        }
-
-        function toggleMenu() {
-            document.getElementById('menu').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            
-            const navbar = document.querySelector('.navbar');
-            const menuBtn = document.querySelector('.menuBtn');
-            const searchBtn = document.querySelector('.search-nav-btn');
-            
-            if (pageId === 'profiles' || pageId === 'settingsPage') {
-                menuBtn.style.display = 'none';
-                searchBtn.style.display = 'none';
-                navbar.style.background = '#0b0b0b';
-            } else {
-                menuBtn.style.display = 'flex';
-                searchBtn.style.display = 'flex';
-                navbar.style.background = '#0b0b0b';
-            }
-            
-            if(document.getElementById('menu').classList.contains('active')) toggleMenu();
-            window.scrollTo(0,0);
-        }
-
-        function openSpark() {
-            navigate('spark');
-            const sVid = document.getElementById('sparkVid');
-            sVid.currentTime = 0;
-            sVid.play().catch(()=>{});
-            toggleMenu();
-        }
-
-        function closeSparkToHome() {
-            document.getElementById('sparkVid').pause();
-            navigate('home');
-        }
-
-        function openSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('searchResults').innerHTML = '';
-            document.getElementById('noResults').style.display = 'none';
-            navigate('searchPage');
-            setTimeout(() => document.getElementById('searchInput').focus(), 150);
+        // --- Funciones de Navegación y Búsqueda ---
+        function openSearch() { 
+            navigate('searchPage'); 
+            document.getElementById('searchInput').focus(); 
         }
 
         function executeSearch() {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-            const resultsContainer = document.getElementById('searchResults');
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const container = document.getElementById('searchResults');
             const noResults = document.getElementById('noResults');
-            resultsContainer.innerHTML = '';
             
-            if(!q) { noResults.style.display = 'none'; return; }
-
-            let filtered = contentDB.filter(item => {
-                if(activeProfile && activeProfile.mode === "KIDS" && item.age > 0) return false;
-                return item.title.toLowerCase().includes(q) || item.genres.some(g => g.toLowerCase().includes(q));
-            });
-
-            if(filtered.length === 0) {
-                noResults.style.display = 'block';
-            } else {
-                noResults.style.display = 'none';
-                filtered.forEach(item => {
-                    let card = document.createElement('div');
+            container.innerHTML = "";
+            
+            if(!query) { 
+                noResults.style.display = 'none'; 
+                return; 
+            }
+            
+            let found = false;
+            contentDB.forEach(item => {
+                if(item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
+                    found = true;
+                    const card = document.createElement('div'); 
                     card.className = 'card';
-                    if(item.genres.includes('kids')) card.classList.add('card-kids');
-                    card.onclick = () => showDetail(item.id);
                     card.innerHTML = `<img src="${item.img}">`;
-                    resultsContainer.appendChild(card);
-                });
+                    card.onclick = () => openDetail(item);
+                    container.appendChild(card);
+                }
+            });
+            
+            noResults.style.display = found ? 'none' : 'block';
+        }
+
+        function toggleMenu() { 
+            document.getElementById('menu').classList.toggle('active'); 
+            document.getElementById('overlay').classList.toggle('active'); 
+        }
+        
+        function navigate(id) { 
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+            
+            if(id !== 'spark') {
+                const sVid = document.getElementById('sparkVid');
+                if(sVid) sVid.pause();
+            }
+
+            document.getElementById(id).classList.add('active'); 
+            
+            if(document.getElementById('menu').classList.contains('active')) {
+                toggleMenu(); 
+            }
+            
+            const mBtn = document.querySelector('.menuBtn');
+            const sBtn = document.querySelector('.search-nav-btn');
+            
+            if(mBtn && sBtn) {
+                if(id === 'profiles') {
+                    mBtn.style.display = 'none';
+                    sBtn.style.display = 'none';
+                } else {
+                    mBtn.style.display = 'flex';
+                    sBtn.style.display = 'flex';
+                }
+            }
+
+            if(id !== 'profiles' && id !== 'spark' && id !== 'searchPage') {
+                renderContent(id);
             }
         }
 
-        function renderProfiles() {
-            const container = document.getElementById('profilesContainer');
-            container.innerHTML = '';
+        // --- Renderizado de Contenido Dinámico ---
+        function renderContent(pageId) {
+            document.querySelectorAll(`#${pageId} .row`).forEach(row => row.innerHTML = "");
+            document.querySelectorAll(`#${pageId} div[id^="container-"]`).forEach(el => el.style.display = 'none');
             
-            profiles.forEach((p, idx) => {
-                let div = document.createElement('div');
-                div.className = `profile ${p.mode === 'KIDS' ? 'profile-kids' : (p.mode === 'ANIME' ? 'profile-anime' : 'profile-normal')}`;
+            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
+
+            contentDB.forEach(item => {
+                if (pageId === 'kids' && item.age > 7) return;
+                if (pageId === 'pelis' && item.type === 'serie') return;
+                if (pageId === 'series' && item.type === 'peli') return;
+
+                const isHome = (pageId === 'home');
+                const isKidsPage = (pageId === 'kids'); 
+                const isPeli = (pageId === 'pelis' && (item.type === 'peli' || item.type === 'ambos'));
+                const isSerie = (pageId === 'series' && (item.type === 'serie' || item.type === 'ambos'));
+
+                if(isHome || isKidsPage || isPeli || isSerie) {
+                    
+                    const buildCard = () => {
+                        const card = document.createElement('div');
+                        card.className = pageId === 'kids' ? 'card card-kids' : 'card';
+                        let badgeHtml = pageId === 'kids' ? '<img src="https://i.imgur.com/NSHOJFK.png" class="kids-badge">' : '';
+                        card.innerHTML = `<img src="${item.img}">${badgeHtml}`;
+                        card.onclick = () => openDetail(item);
+                        return card;
+                    };
+
+                    let mainContainer = document.getElementById(`row-${pageId}`);
+
+                    if (item.id === 'look-at-2026' && pageId === 'series') {
+                        mainContainer = null;
+                    }
+
+                    if(mainContainer) {
+                        mainContainer.appendChild(buildCard());
+                    }
+
+                    if(history[item.id] && history[item.id].time > 1) {
+                        const contContainer = document.getElementById(`row-continue-${pageId}`);
+                        if(contContainer) {
+                            document.getElementById(`container-continue-${pageId}`).style.display = 'block';
+                            let progress = (history[item.id].time / history[item.id].duration) * 100;
+                            if (progress > 100) progress = 100;
+                            const cCard = buildCard();
+                            cCard.innerHTML += `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${progress}%;"></div></div>`;
+                            contContainer.appendChild(cCard);
+                        }
+                    }
+
+                    if(item.genres) {
+                        item.genres.forEach(genre => {
+                            const genreRow = document.getElementById(`row-${genre}-${pageId}`);
+                            if(genreRow) {
+                                document.getElementById(`container-${genre}-${pageId}`).style.display = 'block';
+                                genreRow.appendChild(buildCard());
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        // --- Spark (Videos Cortos) ---
+        function openSpark() { 
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('spark').classList.add('active'); 
+            const sVid = document.getElementById('sparkVid'); 
+            
+            if(sVid) { 
+                sVid.currentTime = 0; 
+                sVid.play(); 
+            }
+            if(document.getElementById('menu').classList.contains('active')) {
+                toggleMenu(); 
+            }
+        }
+
+        function closeSparkToHome() { 
+            const sVid = document.getElementById('sparkVid');
+            if(sVid) sVid.pause(); 
+            navigate('home'); 
+        }
+
+        // --- Pantalla de Detalle y Lista de Episodios ---
+        function openDetail(item) {
+            currentItemGlobal = item;
+            document.getElementById('detailTitle').innerText = item.title.toUpperCase();
+            document.getElementById('detailImg').src = item.img;
+            
+            let generoTexto = item.genres && item.genres.length > 0 ? item.genres[0].toUpperCase() : 'CONTENIDO';
+            let ageText = item.age !== undefined ? item.age + '+' : '0+';
+            document.getElementById('detailMeta').innerText = `${ageText} • ${item.year} • ${generoTexto}`;
+            
+            document.getElementById('detailDesc').innerText = item.desc;
+            
+            const seriesUI = document.getElementById('seriesUI');
+            const playMainBtn = document.getElementById('playMainBtn');
+
+            v.pause(); 
+            v.innerHTML = ''; 
+            document.getElementById('ccBtn').style.display = 'none';
+
+            if(item.isSeries) {
+                playMainBtn.style.display = 'none';
+                seriesUI.style.display = 'block';
+                seriesUI.innerHTML = ''; 
                 
-                let avatarHtml = '';
-                if(p.avatar === "LETTER") {
-                    avatarHtml = `<div class="profile-img avatar-letter">${p.name ? p.name[0].toUpperCase() : '?'}</div>`;
+                let seasonSelector = document.createElement('div');
+                seasonSelector.className = 'season-selector';
+                
+                let episodesContainer = document.createElement('div');
+                episodesContainer.id = 'episodesContainer';
+
+                const renderEpisodes = (seasonIndex) => {
+                    episodesContainer.innerHTML = ''; 
+                    
+                    Array.from(seasonSelector.children).forEach((btn, idx) => {
+                        if(idx === seasonIndex) btn.classList.add('active');
+                        else btn.classList.remove('active');
+                    });
+
+                    let season = item.seasons[seasonIndex];
+                    season.episodes.forEach(ep => {
+                        let tracksStr = ep.tracks ? encodeURIComponent(JSON.stringify(ep.tracks)) : '';
+                        let epBtn = document.createElement('div');
+                        epBtn.className = 'ep-btn';
+                        epBtn.innerHTML = `<span>${ep.title}</span><div class="ep-btn-play">▶</div>`;
+                        epBtn.onclick = () => playEpisode(ep.url, tracksStr, ep.id);
+                        episodesContainer.appendChild(epBtn);
+                    });
+                };
+
+                item.seasons.forEach((season, index) => {
+                    let sBtn = document.createElement('div');
+                    sBtn.innerHTML = `<strong style="font-size:14px;">${season.name.toUpperCase()}</strong><br><span style="font-size:11px; opacity:0.6;">${season.episodes.length} episodios</span>`;
+                    sBtn.className = 'season-tab-btn';
+                    sBtn.onclick = () => renderEpisodes(index);
+                    seasonSelector.appendChild(sBtn);
+                });
+
+                seriesUI.appendChild(seasonSelector);
+                seriesUI.appendChild(episodesContainer);
+
+                if(item.seasons.length > 0) renderEpisodes(0);
+
+            } else {
+                playMainBtn.style.display = 'block';
+                seriesUI.style.display = 'none';
+                prepareSingleMedia(item);
+            }
+            document.getElementById('cardDetail').style.display = 'block';
+        }
+
+        // --- Lógica de Reproducción de Películas (Sin Subtítulos Extra) ---
+        function prepareSingleMedia(item) {
+            let hasAudios = item.audios && item.audios.length > 0;
+            let urlToPlay = hasAudios ? item.audios[0].url : item.url;
+            currentAudioUrl = urlToPlay;
+            currentPlayKey = item.id;
+            
+            v.src = urlToPlay; 
+            v.load();
+
+            if (hasAudios) {
+                let aHtml = '';
+                item.audios.forEach((a, idx) => {
+                    let active = idx === 0 ? 'active' : '';
+                    aHtml += `<div class="cc-opt-btn ${active}" id="aud-${idx}" onclick="setAudio(${idx}, '${a.url}')">${a.label}</div>`;
+                });
+                document.getElementById('audioOptions').innerHTML = aHtml;
+                document.getElementById('audioSection').style.display = 'block';
+                document.getElementById('ccBtn').style.display = 'block';
+            } else { 
+                document.getElementById('audioSection').style.display = 'none'; 
+            }
+            
+            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
+            v.addEventListener('loadedmetadata', function restoreTime() {
+                if(history[currentPlayKey] && history[currentPlayKey].time > 0) {
+                    v.currentTime = history[currentPlayKey].time;
+                }
+                v.removeEventListener('loadedmetadata', restoreTime);
+            });
+        }
+
+        function playMainVideo() { 
+            player.style.display = 'block'; 
+            v.play(); 
+            resetTimer(); 
+        }
+
+        // --- MOTOR DE SUBTÍTULOS CON BYPASS PARA DROPBOX ---
+        async function playEpisode(url, tracksStr, epId) {
+            v.pause(); 
+            
+            // Vaciar completamente el video de subtítulos anteriores
+            while (v.firstChild) {
+                v.removeChild(v.firstChild);
+            }
+            
+            document.getElementById('ccMenu').classList.remove('active');
+            
+            let tracks = tracksStr ? JSON.parse(decodeURIComponent(tracksStr)) : [];
+            let hasSubs = tracks && tracks.length > 0;
+            
+            document.getElementById('subsOptions').innerHTML = `<div class="cc-opt-btn" id="sub-off" onclick="setSubtitle(-1)" data-i18n="sub_off">Desactivados</div>`;
+            
+            if (hasSubs) {
+                document.getElementById('ccBtn').style.display = 'block';
+                document.getElementById('subsSection').style.display = 'block';
+                
+                // Procesar cada subtítulo asincrónicamente para saltar el bloqueo
+                for (let i = 0; i < tracks.length; i++) {
+                    let t = tracks[i];
+                    
+                    // TRUCO PRO: Transformar link de Dropbox a un enlace de descarga directa en crudo.
+                    let directUrl = t.src.replace("www.dropbox.com", "dl.dropboxusercontent.com").replace("?dl=0", "").replace("&dl=0", "").replace("?raw=1", "");
+                    
+                    try {
+                        let res = await fetch(directUrl);
+                        let text = await res.text();
+                        
+                        // Validar formato VTT por si Dropbox devuelve basura
+                        if (!text.trim().startsWith("WEBVTT")) {
+                            text = "WEBVTT\n\n" + text.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, "$1.$2");
+                        }
+                        
+                        // Crear archivo virtual seguro para inyectar al video
+                        let blob = new Blob([text], { type: 'text/vtt' });
+                        let blobUrl = URL.createObjectURL(blob);
+                        
+                        let tr = document.createElement('track'); 
+                        tr.kind = 'subtitles'; 
+                        tr.label = t.label; 
+                        tr.srclang = t.srclang; 
+                        tr.src = blobUrl; 
+                        
+                        v.appendChild(tr);
+                        
+                        // Añadir botón visual al menú CC
+                        document.getElementById('subsOptions').innerHTML += `<div class="cc-opt-btn" id="sub-${i}" onclick="setSubtitle(${i})">${t.label}</div>`;
+                    } catch(e) {
+                        console.error("No se pudo cargar el subtítulo:", e);
+                    }
+                }
+            } else {
+                document.getElementById('ccBtn').style.display = 'none';
+                document.getElementById('subsSection').style.display = 'none';
+            }
+            
+            document.getElementById('audioSection').style.display = 'none';
+            currentPlayKey = currentItemGlobal.id;
+            
+            v.src = url; 
+            v.load();
+            
+            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
+            v.addEventListener('loadedmetadata', function restoreTime() {
+                if(history[currentPlayKey] && history[currentPlayKey].time > 0) {
+                    v.currentTime = history[currentPlayKey].time;
+                }
+                v.removeEventListener('loadedmetadata', restoreTime);
+            });
+
+            player.style.display = 'block'; 
+            v.play(); 
+            resetTimer();
+            
+            // TRUCO PRO 2: ¡Activar el primer subtítulo (Español) automáticamente!
+            if (hasSubs) {
+                setTimeout(() => setSubtitle(0), 400);
+            } else {
+                setSubtitle(-1);
+            }
+        }
+        
+        function closePlayer(e) { 
+            e.stopPropagation(); 
+            v.pause(); 
+            player.style.display = 'none'; 
+            document.getElementById('ccMenu').classList.remove('active'); 
+            
+            if(currentPlayKey && v.currentTime > 0) {
+                let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
+                
+                if(v.currentTime >= v.duration - 2) {
+                    delete history[currentPlayKey];
                 } else {
-                    avatarHtml = `<img src="${p.avatar}">`;
+                    history[currentPlayKey] = { time: v.currentTime, duration: v.duration };
                 }
                 
-                div.innerHTML = `
-                    ${avatarHtml}
-                    <div style="margin-top:10px; font-size:12px; font-weight:600; letter-spacing:0.5px;">${p.name.toUpperCase()}</div>
-                    <div class="edit" onclick="event.stopPropagation(); openModal(${idx})">✏️</div>
-                `;
-                div.onclick = () => selectProfile(idx);
+                localStorage.setItem('lumera_history', JSON.stringify(history));
+                
+                const activePage = document.querySelector('.page.active').id;
+                if(activePage !== 'profiles' && activePage !== 'spark' && activePage !== 'searchPage') {
+                    renderContent(activePage);
+                }
+            }
+        }
+
+        function closeDetail() { 
+            document.getElementById('cardDetail').style.display = 'none'; 
+            v.pause(); 
+        }
+
+        function toggleCCMenu(e) { 
+            e.stopPropagation(); 
+            document.getElementById('ccMenu').classList.toggle('active'); 
+        }
+
+        function setSubtitle(index) {
+            let tracks = v.textTracks;
+            
+            // 1. Apagar todos los subtítulos primero
+            for (let i = 0; i < tracks.length; i++) {
+                tracks[i].mode = 'disabled';
+            }
+            
+            // 2. Limpiar botones visuales
+            document.querySelectorAll('#subsSection .cc-opt-btn').forEach(el => el.classList.remove('active'));
+            
+            // 3. Activar el correcto
+            if (index === -1) {
+                document.getElementById('sub-off').classList.add('active');
+            } else if (tracks[index]) { 
+                tracks[index].mode = 'showing'; 
+                let btn = document.getElementById(`sub-${index}`);
+                if(btn) btn.classList.add('active'); 
+                
+                // Micro reinicio para forzar que el navegador pinte el subtitulo
+                if (v.currentTime < 0.5) v.currentTime = 0; 
+            }
+            
+            document.getElementById('ccMenu').classList.remove('active');
+        }
+
+        function resetTimer() { 
+            ctrls.classList.add('active'); 
+            player.classList.add('show-cursor'); 
+            clearTimeout(hideTimer); 
+            
+            hideTimer = setTimeout(() => { 
+                if (!v.paused && !document.getElementById('ccMenu').classList.contains('active')) { 
+                    ctrls.classList.remove('active'); 
+                    player.classList.remove('show-cursor'); 
+                } 
+            }, 2000); 
+        }
+        
+        v.onplay = () => {
+            pIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>';
+        };
+        
+        v.onpause = () => { 
+            pIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>'; 
+            ctrls.classList.add('active'); 
+        };
+        
+        v.ontimeupdate = () => { 
+            document.getElementById('sk').value = (v.currentTime / v.duration) * 100; 
+        };
+
+        // --- SISTEMA DE PERFILES (IMÁGENES DE IMGUR ORIGINALES) ---
+        let profiles = JSON.parse(localStorage.getItem("lumera_profiles") || "[]");
+        let currentIdx = null;
+        let selectedMode = "normal";
+        let selectedAvatar = "";
+        
+        const avs = [
+            "https://i.imgur.com/6VytJCb.png", 
+            "https://i.imgur.com/NIkYcmK.png", 
+            "https://i.imgur.com/GZWJWQM.png", 
+            "https://i.imgur.com/7bkfL6Q.png", 
+            "https://i.imgur.com/bznECbR.png", 
+            "https://i.imgur.com/lSu4KPx.png", 
+            "LETTER"
+        ];
+
+        function renderProfiles() {
+            let container = document.getElementById("profilesContainer"); 
+            container.innerHTML = "";
+            
+            profiles.forEach((p, i) => {
+                let div = document.createElement("div"); 
+                div.className = `profile ${p.mode === 'kids' ? 'profile-kids' : 'profile-normal'}`;
+                
+                let content = p.avatar === "LETTER" 
+                    ? `<div class="profile-img">${p.name[0]}</div>` 
+                    : `<img src="${p.avatar}">`;
+                    
+                div.innerHTML = `${content}<div style="margin-top:10px;">${p.name.toUpperCase()}</div><div class="edit" onclick="openEdit(event,${i})">✎</div>`;
+                div.onclick = () => { 
+                    selectedMode = p.mode; 
+                    navigate(p.mode === 'kids' ? 'kids' : 'home'); 
+                }; 
                 container.appendChild(div);
             });
-
-            if(profiles.length < 5) {
-                let addDiv = document.createElement('div');
-                addDiv.className = 'profile';
-                addDiv.innerHTML = `
-                    <div class="add">+</div>
-                    <div style="margin-top:10px; font-size:12px; font-weight:600; color:#555;">AÑADIR</div>
-                `;
-                addDiv.onclick = () => openModal(null);
-                container.appendChild(addDiv);
-            }
-        }
-
-        function selectProfile(idx) {
-            activeProfile = profiles[idx];
-            buildRows();
-            navigate('home');
-        }
-
-        function openModal(idx = null) {
-            currentIdx = idx;
-            const modal = document.getElementById('modal');
-            modal.style.display = 'block';
             
-            if(idx !== null) {
-                document.getElementById('modalTitle').textContent = "EDITAR PERFIL";
-                document.getElementById('profileName').value = profiles[idx].name;
-                document.getElementById('profileMode').value = profiles[idx].mode;
-                selectedAvatar = profiles[idx].avatar;
-                document.getElementById('btn-delete-profile').style.display = 'block';
-            } else {
-                document.getElementById('modalTitle').textContent = "CREAR PERFIL";
-                document.getElementById('profileName').value = '';
-                document.getElementById('profileMode').value = 'NORMAL';
-                selectedAvatar = "LETTER";
-                document.getElementById('btn-delete-profile').style.display = 'none';
+            let add = document.createElement("div"); 
+            add.className = "add"; 
+            add.innerText = "+"; 
+            add.onclick = () => openEdit(null, null); 
+            container.appendChild(add);
+        }
+
+        function openEdit(e, i) {
+            if(e) e.stopPropagation();
+            currentIdx = i;
+            
+            if(i !== null) { 
+                document.getElementById('profileName').value = profiles[i].name; 
+                selectedMode = profiles[i].mode; 
+                selectedAvatar = profiles[i].avatar; 
+            } else { 
+                document.getElementById('profileName').value = ""; 
+                selectedMode = "normal"; 
+                selectedAvatar = avs[0]; 
             }
-            renderAvatarGrid();
+            
+            setMode(selectedMode); 
+            renderAvatarGrid(); 
+            document.getElementById('modal').style.display = 'block';
         }
 
         function renderAvatarGrid() {
             const grid = document.getElementById('avatarGrid');
-            grid.innerHTML = '';
+            const name = document.getElementById('profileName').value || "?";
+            grid.innerHTML = "";
             
-            let nameInput = document.getElementById('profileName').value.trim();
-            let letter = nameInput ? nameInput[0].toUpperCase() : "?";
-            
-            let letOpt = document.createElement('div');
-            letOpt.className = `av-item avatar-letter ${selectedAvatar === 'LETTER' ? 'selected' : ''}`;
-            letOpt.textContent = letter;
-            letOpt.onclick = () => { selectedAvatar = "LETTER"; renderAvatarGrid(); };
-            grid.appendChild(letOpt);
-            
-            staticAvatars.forEach(url => {
-                let img = document.createElement('img');
-                img.className = `av-item ${selectedAvatar === url ? 'selected' : ''}`;
-                img.src = url;
-                img.onclick = () => { selectedAvatar = url; renderAvatarGrid(); };
-                grid.appendChild(img);
-            });
-        }
-
-        function updateLetterAvatar() {
-            if(selectedAvatar === "LETTER") renderAvatarGrid();
-        }
-
-        function saveProfile() {
-            let name = document.getElementById('profileName').value.trim();
-            if(!name) return;
-            
-            let p = { name, mode: document.getElementById('profileMode').value, avatar: selectedAvatar };
-            
-            if(currentIdx !== null) {
-                profiles[currentIdx] = p;
-            } else {
-                profiles.push(p);
-            }
-            
-            localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
-            closeModal();
-            renderProfiles();
-        }
-
-        function deleteProfile() {
-            if(currentIdx !== null) {
-                profiles.splice(currentIdx, 1);
-                localStorage.setItem("lumera_profiles", JSON.stringify(profiles));
-            }
-            closeModal();
-            renderProfiles();
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        function getTrackingKey() {
-            return `lumera_progress_${activeProfile ? activeProfile.name : 'global'}`;
-        }
-
-        function getTrackedProgress(itemId) {
-            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
-            return tracking[itemId] || null;
-        }
-
-        function saveTrackedProgress(itemId, time, duration) {
-            if(!activeProfile) return;
-            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
-            if (time > 5 && (duration - time) > 10) {
-                tracking[itemId] = { time, duration, percent: (time / duration) * 100 };
-            } else {
-                delete tracking[itemId];
-            }
-            localStorage.setItem(getTrackingKey(), JSON.stringify(tracking));
-        }
-
-        function buildRows() {
-            const sections = ['home', 'series', 'pelis', 'kids'];
-            sections.forEach(s => {
-                let r = document.getElementById(`row-${s}`);
-                if(r) r.innerHTML = '';
-                let cont = document.getElementById(`row-continue-${s}`);
-                if(cont) cont.innerHTML = '';
-                let cHome = document.getElementById(`container-continue-${s}`);
-                if(cHome) cHome.style.display = 'none';
+            avs.forEach(url => {
+                let item = url === "LETTER" ? document.createElement('div') : document.createElement('img');
+                item.className = "av-item" + (url === "LETTER" ? " avatar-letter" : "");
                 
-                let genres = ['fantasia', 'accion', 'comedia', 'drama'];
-                genres.forEach(g => {
-                    let gRow = document.getElementById(`row-${g}-${s}`);
-                    if(gRow) gRow.innerHTML = '';
-                    let gCont = document.getElementById(`container-${g}-${s}`);
-                    if(gCont) gCont.style.display = 'none';
-                });
-            });
-
-            if(!activeProfile) return;
-
-            let tracking = JSON.parse(localStorage.getItem(getTrackingKey())) || {};
-            let trackingIds = Object.keys(tracking);
-
-            sections.forEach(pageId => {
-                if(activeProfile.mode === "KIDS" && pageId !== 'kids') return;
-                if(activeProfile.mode !== "KIDS" && pageId === 'kids') return;
-
-                let trackingItemsInThisPage = [];
-
-                contentDB.forEach(item => {
-                    if(activeProfile.mode === "KIDS" && !item.genres.includes('kids')) return;
-                    
-                    if(pageId === 'series' && item.type !== 'serie') return;
-                    if(pageId === 'pelis' && item.type !== 'pelicula') return;
-
-                    let card = document.createElement('div');
-                    card.className = 'card';
-                    if(item.genres.includes('kids')) {
-                        card.classList.add('card-kids');
-                        card.innerHTML = `<img src="${item.img}"><img class="kids-badge" src="https://i.imgur.com/vHbcYFf.png">`;
-                    } else {
-                        card.innerHTML = `<img src="${item.img}">`;
-                    }
-                    card.onclick = () => showDetail(item.id);
-
-                    if(trackingIds.includes(item.id)) {
-                        let prog = tracking[item.id];
-                        let progressClone = card.cloneNode(true);
-                        progressClone.onclick = card.onclick;
-                        let barBg = document.createElement('div');
-                        barBg.className = 'progress-bar-bg';
-                        let barFill = document.createElement('div');
-                        barFill.className = 'progress-bar-fill';
-                        barFill.style.width = `${prog.percent}%`;
-                        barBg.appendChild(barFill);
-                        progressClone.appendChild(barBg);
-                        trackingItemsInThisPage.push(progressClone);
-                    }
-
-                    let mainRow = document.getElementById(`row-${pageId}`);
-                    if(mainRow) mainRow.appendChild(card);
-
-                    item.genres.forEach(g => {
-                        let gRow = document.getElementById(`row-${g}-${pageId}`);
-                        if(gRow) {
-                            gRow.appendChild(card.cloneNode(true));
-                            let gCont = document.getElementById(`container-${g}-${pageId}`);
-                            if(gCont) gCont.style.display = 'block';
-                        }
-                    });
-                });
-
-                if(trackingItemsInThisPage.length > 0) {
-                    let contRow = document.getElementById(`row-continue-${pageId}`);
-                    let contBox = document.getElementById(`container-continue-${pageId}`);
-                    if(contRow && contBox) {
-                        trackingItemsInThisPage.forEach(c => contRow.appendChild(c));
-                        contBox.style.display = 'block';
-                    }
+                if(url === "LETTER") {
+                    item.innerText = name[0].toUpperCase(); 
+                } else {
+                    item.src = url;
                 }
+                
+                if(url === selectedAvatar) {
+                    item.classList.add('selected');
+                }
+                
+                item.onclick = () => { 
+                    selectedAvatar = url; 
+                    renderAvatarGrid(); 
+                };
+                grid.appendChild(item);
             });
         }
-
-        function showDetail(id) {
-            let item = contentDB.find(c => c.id === id);
-            if(!item) return;
+        
+        function setMode(m) {
+            selectedMode = m; 
             
-            currentViewingItem = item;
-            document.getElementById('detailImg').src = item.img;
-            document.getElementById('detailTitle').textContent = item.title.toUpperCase();
-            document.getElementById('detailMeta').textContent = `${item.year}  |  +${item.age}  |  ${item.type.toUpperCase()}`;
-            document.getElementById('detailDesc').textContent = item.desc;
+            document.getElementById('optNormal').style.background = m === 'normal' ? 'white' : 'transparent';
+            document.getElementById('optNormal').style.color = m === 'normal' ? 'black' : 'white'; 
+            document.getElementById('optNormal').style.border = m === 'normal' ? 'none' : '1px solid white';
             
-            let area = document.getElementById('detailPlayerArea');
-            area.innerHTML = '';
+            document.getElementById('optKids').style.background = m === 'kids' ? 'white' : 'transparent'; 
+            document.getElementById('optKids').style.color = m === 'kids' ? 'black' : 'white';
+            document.getElementById('optKids').style.border = m === 'kids' ? 'none' : '1px solid white';
+        }
+        
+        function updateLetterAvatar() { 
+            if(selectedAvatar === "LETTER") renderAvatarGrid(); 
+        }
+        
+        function saveProfile() {
+            let name = document.getElementById('profileName').value.trim(); 
+            if(!name) return; 
             
-            if(item.type === 'serie') {
-                let html = `<div class="season-selector">`;
-                item.seasons.forEach((s, idx) => {
-                    html += `<button class="season-tab-btn ${idx===0?'active':''}" onclick="selectSeason(this, ${idx})">${s.name.toUpperCase()}</button>`;
-                });
-                html += `</div><div class="ep-list" id="detailEpList"></div>`;
-                area.innerHTML = html;
-                renderEpisodes(0);
+            let p = { name, mode: selectedMode, avatar: selectedAvatar };
+            
+            if(currentIdx !== null) {
+                profiles[currentIdx] = p; 
             } else {
-                let prog = getTrackedProgress(item.id);
-                let label = prog ? "CONTINUAR VIENDO" : "REPRODUCIR";
-                area.innerHTML = `<div class="btn-play-main" onclick="startVideo(null)">${label}</div>`;
+                profiles.push(p); 
             }
             
-            document.getElementById('cardDetail').style.display = 'block';
+            localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
+            closeModal(); 
+            renderProfiles();
         }
-
-        function selectSeason(btn, idx) {
-            document.querySelectorAll('.season-tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderEpisodes(idx);
+        
+        function deleteProfile() { 
+            if(currentIdx !== null) { 
+                profiles.splice(currentIdx, 1); 
+                localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
+            } 
+            closeModal(); 
+            renderProfiles(); 
         }
-
-        function renderEpisodes(seasonIdx) {
-            const list = document.getElementById('detailEpList');
-            list.innerHTML = '';
-            let s = currentViewingItem.seasons[seasonIdx];
-            s.episodes.forEach(ep => {
-                let prog = getTrackedProgress(ep.id);
-                let label = prog ? "Continuar" : "Ver";
-                let div = document.createElement('div');
-                div.className = 'ep-btn';
-                div.onclick = () => startVideo(ep);
-                div.innerHTML = `<span>${ep.title.toUpperCase()}</span><div class="ep-btn-play">${label}</div>`;
-                list.appendChild(div);
-            });
+        
+        function closeModal() { 
+            document.getElementById('modal').style.display = 'none'; 
         }
-
-        function closeDetail() {
-            document.getElementById('cardDetail').style.display = 'none';
-            buildRows();
-        }
-
-        function startVideo(episodeObj) {
-            currentViewingEpisode = episodeObj;
-            let target = episodeObj ? episodeObj : currentViewingItem;
-            
-            document.getElementById('pTitle').textContent = target.title.toUpperCase();
-            video.src = target.url;
-            
-            // ASIGNAR PISTAS DE SUBTÍTULOS ORIGINALES DEL REPRODUCTOR INTELIGENTE
-            let tracksArea = video.querySelectorAll('track');
-            tracksArea.forEach(t => t.remove());
-            
-            if(target.tracks) {
-                target.tracks.forEach(tData => {
-                    let track = document.createElement('track');
-                    track.kind = 'subtitles';
-                    track.label = tData.label;
-                    track.srclang = tData.lang;
-                    track.src = tData.src;
-                    video.appendChild(track);
-                });
-            }
-
-            let prog = getTrackedProgress(target.id);
-            video.load();
-            
-            if(prog) {
-                video.currentTime = prog.time;
-            } else {
-                video.currentTime = 0;
-            }
-
-            player.style.display = 'block';
-            video.play().catch(()=>{});
-            showControls();
-            buildCCTracks();
-        }
-
-        function buildCCTracks() {
-            const menu = document.getElementById('ccTrackOptions');
-            menu.innerHTML = '';
-            
-            let offBtn = document.createElement('button');
-            offBtn.className = 'cc-opt-btn active';
-            offBtn.textContent = 'Desactivados';
-            offBtn.onclick = () => selectCCTrack(-1, offBtn);
-            menu.appendChild(offBtn);
-
-            for (let i = 0; i < video.textTracks.length; i++) {
-                let t = video.textTracks[i];
-                t.mode = 'hidden';
-                let btn = document.createElement('button');
-                btn.className = 'cc-opt-btn';
-                btn.textContent = t.label;
-                btn.onclick = () => selectCCTrack(i, btn);
-                menu.appendChild(btn);
-            }
-        }
-
-        function selectCCTrack(idx, btn) {
-            document.querySelectorAll('#ccTrackOptions .cc-opt-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            for (let i = 0; i < video.textTracks.length; i++) {
-                video.textTracks[i].mode = (i === idx) ? 'showing' : 'hidden';
-            }
-        }
-
-        function toggleCCMenu() {
-            document.getElementById('ccMenu').classList.toggle('active');
-        }
-
-        function togglePlay() {
-            if(video.paused) {
-                video.play();
-                document.getElementById('pPlayIcon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-            } else {
-                video.pause();
-                document.getElementById('pPlayIcon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-            }
-            showControls();
-        }
-
-        function skipVideo(secs) {
-            video.currentTime += secs;
-            showControls();
-        }
-
-        function seekingVideo(val) {
-            isSeeking = true;
-            video.currentTime = (val / 100) * video.duration;
-        }
-
-        function formatTime(secs) {
-            if(isNaN(secs)) return "00:00";
-            let m = Math.floor(secs / 60);
-            let s = Math.floor(secs % 60);
-            return `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-        }
-
-        video.addEventListener('timeupdate', () => {
-            if(!isSeeking) {
-                let pct = (video.currentTime / video.duration) * 100;
-                document.getElementById('pProgress').value = pct || 0;
-            }
-            document.getElementById('pCurrent').textContent = formatTime(video.currentTime);
-            
-            let target = currentViewingEpisode ? currentViewingEpisode : currentViewingItem;
-            if(target) saveTrackedProgress(target.id, video.currentTime, video.duration);
-        });
-
-        video.addEventListener('durationchange', () => {
-            document.getElementById('pDuration').textContent = formatTime(video.duration);
-        });
-
-        video.addEventListener('play', () => {
-            document.getElementById('pPlayIcon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-        });
-
-        video.addEventListener('pause', () => {
-            document.getElementById('pPlayIcon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-        });
-
-        document.getElementById('pProgress').addEventListener('touchend', () => { isSeeking = false; });
-        document.getElementById('pProgress').addEventListener('mouseup', () => { isSeeking = false; });
-
-        function showControls() {
-            controls.classList.add('active');
-            player.classList.add('show-cursor');
-            clearTimeout(controlsTimeout);
-            if(!video.paused) {
-                controlsTimeout = setTimeout(() => {
-                    controls.classList.remove('active');
-                    player.classList.remove('show-cursor');
-                    document.getElementById('ccMenu').classList.remove('active');
-                }, 3500);
-            }
-        }
-
-        player.addEventListener('mousemove', showControls);
-        player.addEventListener('touchstart', showControls);
-
-        function exitPlayer() {
-            video.pause();
-            player.style.display = 'none';
-            document.getElementById('ccMenu').classList.remove('active');
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                player.requestFullscreen().catch(()=>{});
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        document.getElementById('btn-settings').onclick = () => {
-            document.getElementById('settingLang').value = currentLang;
-            navigate('settingsPage');
-        };
-
-        // --- INICIALIZACIÓN DE LA APLICACIÓN ORIGINAL ---
+        
+        // --- INICIALIZACIÓN ---
         const initMenuBtn = document.querySelector('.menuBtn');
         const initSearchBtn = document.querySelector('.search-nav-btn');
         if(initMenuBtn) initMenuBtn.style.display = 'none';
         if(initSearchBtn) initSearchBtn.style.display = 'none';
         
-        applyLanguage();
         renderProfiles();
     </script>
 </body>
