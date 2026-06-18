@@ -1694,7 +1694,7 @@
             if(selectedAvatar === "LETTER") renderAvatarGrid(); 
         }
         
-      function saveProfile() {
+    function saveProfile() {
             let name = document.getElementById('profileName').value.trim(); 
             if(!name) return; 
             
@@ -1789,71 +1789,6 @@
         
         renderProfiles();
         loadCatalogAndBanner();
-        }
-
-        // --- MOTOR DEL BANNER HERO ADAPTADO AL JSON REAL (CADA 10 SEGUNDOS) ---
-        let heroData = [];
-        let currentHeroIndex = 0;
-        let heroInterval = null;
-
-        function loadHero() {
-            fetch('hero.json')
-                .then(response => response.json())
-                .then(data => {
-                    heroData = data;
-                    if (heroData && heroData.length > 0) {
-                        renderHero();
-                        startHeroTimer();
-                    }
-                })
-                .catch(error => {
-                    console.warn("Aviso: No se encontró hero.json", error);
-                });
-        }
-
-        function renderHero() {
-            if (!heroData || heroData.length === 0) return;
-            const hero = heroData[currentHeroIndex];
-            const heroSection = document.querySelector('.hero');
-            const heroTitle = document.querySelector('.hero-content h1');
-            const heroDesc = document.querySelector('.hero-content p');
-            
-            if (heroSection && hero.imagen_banner) {
-                heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.imagen_banner}')`;
-            }
-            if (heroTitle && hero.titulo) heroTitle.textContent = hero.titulo;
-            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
-        }
-
-        function startHeroTimer() {
-            if (heroInterval) clearInterval(heroInterval);
-            heroInterval = setInterval(() => {
-                if (heroData && heroData.length > 0) {
-                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
-                    renderHero();
-                }
-            }, 10000);
-        }
-        function deleteProfile() { 
-            if(currentIdx !== null) { 
-                profiles.splice(currentIdx, 1); 
-                localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
-            } 
-            closeModal(); 
-            renderProfiles(); 
-        }
-        
-        function closeModal() { 
-            document.getElementById('modal').style.display = 'none'; 
-        }
-        
-        // --- INICIALIZACIÓN ---
-        const initMenuBtn = document.querySelector('.menuBtn');
-        const initSearchBtn = document.querySelector('.search-nav-btn');
-        if(initMenuBtn) initMenuBtn.style.display = 'none';
-        if(initSearchBtn) initSearchBtn.style.display = 'none';
-        
-        renderProfiles();
     </script>
 </body>
 </html>
