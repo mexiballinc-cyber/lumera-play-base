@@ -10,828 +10,139 @@
         /* =========================================
            1. ESTILOS GENERALES
         ========================================= */
-        body { 
-            margin: 0; 
-            background: #0b0b0b; 
-            color: white; 
-            font-family: 'Poppins', sans-serif; 
-            overflow-x: hidden; 
-        }
+        body { margin: 0; background: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
         
         /* =========================================
            2. NAVBAR SUPERIOR
         ========================================= */
-        .navbar { 
-            display: flex; 
-            align-items: center; 
-            padding: 12px 18px; 
-            background: #0b0b0b; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1001; 
-            gap: 15px; 
-            border-bottom: 1px solid #1a1a1a; 
-        }
-        
-        .menuBtn { 
-            font-size: 26px; 
-            cursor: pointer; 
-            display: none; 
-            align-items: center; 
-        } 
-        
-        .nav-logo { 
-            font-size: 18px; 
-            font-weight: 600; 
-            letter-spacing: 2px; 
-            color: #fff; 
-        }
-        
-        .search-nav-btn { 
-            margin-left: auto; 
-            cursor: pointer; 
-            display: none; 
-            align-items: center; 
-            transition: 0.3s; 
-            padding: 5px; 
-        } 
-        
-        .search-nav-btn:hover { 
-            transform: scale(1.1); 
-            color: #ccc; 
-        }
+        .navbar { display: flex; align-items: center; padding: 12px 18px; background: #0b0b0b; position: sticky; top: 0; z-index: 1001; gap: 15px; border-bottom: 1px solid #1a1a1a; }
+        .menuBtn { font-size: 26px; cursor: pointer; display: none; align-items: center; } 
+        .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: 2px; color: #fff; }
+        .search-nav-btn { margin-left: auto; cursor: pointer; display: none; align-items: center; transition: 0.3s; padding: 5px; } 
+        .search-nav-btn:hover { transform: scale(1.1); color: #ccc; }
 
         /* =========================================
            3. MENÚ LATERAL (DRAWER)
         ========================================= */
-        .menu { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 280px; 
-            height: 100%; 
-            background: #0f0f0f; 
-            transform: translateX(-100%); 
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1002; 
-            padding: 25px; 
-            border-right: 1px solid #1f1f1f; 
-            box-sizing: border-box; 
-        }
-        
-        .menu.active { 
-            transform: translateX(0); 
-        }
-        
-        .menu-header { 
-            font-size: 22px; 
-            font-weight: 600; 
-            margin-bottom: 35px; 
-            color: #fff; 
-            letter-spacing: 1px; 
-            border-bottom: 2px solid #fff; 
-            display: inline-block; 
-            padding-bottom: 5px; 
-        }
-        
-        .menuItem { 
-            display: flex; 
-            align-items: center; 
-            gap: 18px; 
-            padding: 18px 0; 
-            border-bottom: 1px solid #1a1a1a; 
-            cursor: pointer; 
-            color: #888; 
-            transition: 0.3s; 
-        }
-        
-        .menuItem:hover { 
-            color: #fff; 
-        }
-        
-        .menuItem svg { 
-            width: 22px; 
-            height: 22px; 
-            fill: none; 
-            stroke: currentColor; 
-            stroke-width: 1.8; 
-        }
-
-        .overlay { 
-            position: fixed; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            display: none; 
-            z-index: 1001; 
-            top: 0; 
-            backdrop-filter: blur(4px); 
-        }
-        
-        .overlay.active { 
-            display: block; 
-        }
+        .menu { position: fixed; top: 0; left: 0; width: 280px; height: 100%; background: #0f0f0f; transform: translateX(-100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1002; padding: 25px; border-right: 1px solid #1f1f1f; box-sizing: border-box; }
+        .menu.active { transform: translateX(0); }
+        .menu-header { font-size: 22px; font-weight: 600; margin-bottom: 35px; color: #fff; letter-spacing: 1px; border-bottom: 2px solid #fff; display: inline-block; padding-bottom: 5px; }
+        .menuItem { display: flex; align-items: center; gap: 18px; padding: 18px 0; border-bottom: 1px solid #1a1a1a; cursor: pointer; color: #888; transition: 0.3s; }
+        .menuItem:hover { color: #fff; }
+        .menuItem svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .overlay { position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; z-index: 1001; top: 0; backdrop-filter: blur(4px); }
+        .overlay.active { display: block; }
 
         /* =========================================
            4. ESTRUCTURA DE PÁGINAS (SPA)
         ========================================= */
-        .page { 
-            display: none; 
-            padding-bottom: 50px; 
-        }
-        
-        .page.active { 
-            display: block; 
-        }
+        .page { display: none; padding-bottom: 50px; }
+        .page.active { display: block; }
 
         /* =========================================
            5. SECCIÓN SPARK (VIDEOS CORTOS)
         ========================================= */
-        #spark { 
-            background: #000; 
-            height: 100vh; 
-            width: 100vw; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            z-index: 2000; 
-            overflow-y: scroll; 
-            scroll-snap-type: y mandatory; 
-        }
-        
-        .spark-video-container { 
-            width: 100%; 
-            height: 100vh; 
-            scroll-snap-align: start; 
-            position: relative; 
-            background: #000; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-        }
-        
-        .spark-video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-        
-        .spark-close { 
-            position: absolute; 
-            top: 25px; 
-            left: 20px; 
-            z-index: 2010; 
-            width: 45px; 
-            height: 45px; 
-            background: rgba(0,0,0,0.6); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            border: 1px solid rgba(255,255,255,0.2); 
-        }
-        
-        .spark-side-btns { 
-            position: absolute; 
-            right: 15px; 
-            bottom: 120px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-            z-index: 2005; 
-        }
-        
-        .s-btn { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 5px; 
-            cursor: pointer; 
-            color: white; 
-            text-align: center; 
-        }
-        
-        .s-btn-icon { 
-            width: 52px; 
-            height: 52px; 
-            background: rgba(255,255,255,0.1); 
-            backdrop-filter: blur(10px); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            transition: 0.3s; 
-        }
-        
-        .s-btn-icon svg { 
-            width: 26px; 
-            height: 26px; 
-        }
-        
-        .s-btn span { 
-            font-size: 11px; 
-            font-weight: 600; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
-        }
-        
-        .spark-ui { 
-            position: absolute; 
-            bottom: 40px; 
-            left: 20px; 
-            right: 90px; 
-            z-index: 2004; 
-            pointer-events: none; 
-        }
-        
-        .spark-user { 
-            font-weight: 600; 
-            font-size: 18px; 
-            margin-bottom: 8px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-        
-        .spark-desc { 
-            font-size: 14px; 
-            line-height: 1.4; 
-            opacity: 0.9; 
-            text-shadow: 0 1px 3px rgba(0,0,0,1); 
-        }
+        #spark { background: #000; height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 2000; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .spark-video-container { width: 100%; height: 100vh; scroll-snap-align: start; position: relative; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .spark-video { width: 100%; height: 100%; object-fit: cover; }
+        .spark-close { position: absolute; top: 25px; left: 20px; z-index: 2010; width: 45px; height: 45px; background: rgba(0,0,0,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); }
+        .spark-side-btns { position: absolute; right: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 20px; z-index: 2005; }
+        .s-btn { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; color: white; text-align: center; }
+        .s-btn-icon { width: 52px; height: 52px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; }
+        .s-btn-icon svg { width: 26px; height: 26px; }
+        .s-btn span { font-size: 11px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .spark-ui { position: absolute; bottom: 40px; left: 20px; right: 90px; z-index: 2004; pointer-events: none; }
+        .spark-user { font-weight: 600; font-size: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .spark-desc { font-size: 14px; line-height: 1.4; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,1); }
 
         /* =========================================
            6. BANNERS Y CARDS DE CONTENIDO
         ========================================= */
-        .banner { 
-            margin: 15px; 
-            height: 200px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            background: #1a1a1a; 
-            border: 1px solid #222; 
-        }
+        .banner { margin: 15px; height: 200px; border-radius: 20px; overflow: hidden; background: #1a1a1a; border: 1px solid #222; position: relative; }
+        .banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
         
-        .banner img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            opacity: 0.8; 
-        }
-        
-        .rowTitle { 
-            padding: 0 15px; 
-            margin-top: 20px; 
-            font-size: 15px; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            color: #fff; 
-        }
-        
-        .row { 
-            display: flex; 
-            overflow-x: auto; 
-            gap: 14px; 
-            padding: 15px; 
-        }
-        
-        .row::-webkit-scrollbar { 
-            display: none; 
-        }
-        
-        .card { 
-            min-width: 125px; 
-            height: 180px; 
-            border-radius: 12px; 
-            position: relative; 
-            background: #1a1a1a; 
-            border: 1px solid #252525; 
-            overflow: hidden; 
-            cursor: pointer; 
-        }
-        
-        .card img:not(.kids-badge) { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block;
-        }
-        
-        .card::after { 
-            content: ""; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 50%; 
-            height: 100%; 
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent); 
-            transform: skewX(-25deg); 
-            transition: 0.6s; 
-        }
-        
-        .card:hover::after { 
-            left: 150%; 
-        }
-        
-        .card-kids { 
-            border: 3px solid #00e5ff !important; 
-            box-shadow: 0 0 15px rgba(0,229,255,0.4); 
-            border-radius: 20px !important; 
-        }
-        
-        .kids-badge { 
-            position: absolute; 
-            bottom: 8px; 
-            right: 8px; 
-            width: 30px; 
-            z-index: 10; 
-            filter: grayscale(0.2); 
-        }
-        
-        /* BARRA DE "CONTINUAR VIENDO" */
-        .progress-bar-bg { 
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 4px; 
-            background: rgba(255,255,255,0.2); 
-            z-index: 5;
-        }
-        
-        .progress-bar-fill { 
-            height: 100%; 
-            background: #e50914; 
-            transition: width 0.3s; 
-        }
+        /* ESTA ES LA TRANSICIÓN QUE SE AGREGA PARA TU HÉROE DINÁMICO */
+        #hero-lumera-img { transition: opacity 0.8s ease-in-out; }
+
+        .rowTitle { padding: 0 15px; margin-top: 20px; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+        .row { display: flex; overflow-x: auto; gap: 14px; padding: 15px; }
+        .row::-webkit-scrollbar { display: none; }
+        .card { min-width: 125px; height: 180px; border-radius: 12px; position: relative; background: #1a1a1a; border: 1px solid #252525; overflow: hidden; cursor: pointer; }
+        .card img:not(.kids-badge) { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .card::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent); transform: skewX(-25deg); transition: 0.6s; }
+        .card:hover::after { left: 150%; }
+        .card-kids { border: 3px solid #00e5ff !important; box-shadow: 0 0 15px rgba(0,229,255,0.4); border-radius: 20px !important; }
+        .kids-badge { position: absolute; bottom: 8px; right: 8px; width: 30px; z-index: 10; filter: grayscale(0.2); }
+        .progress-bar-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.2); z-index: 5; }
+        .progress-bar-fill { height: 100%; background: #e50914; transition: width 0.3s; }
 
         /* =========================================
-           7. PANTALLA DE DETALLES
+           7. PANTALLA DE DETALLES Y DEMÁS
         ========================================= */
-        #cardDetail { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: #0b0b0b; 
-            z-index: 5000; 
-            overflow-y: auto; 
-        }
-        
-        .detail-img { 
-            width: 100%; 
-            height: 250px; 
-            object-fit: cover; 
-        }
-        
-        .detail-content { 
-            padding: 20px; 
-        }
-        
-        .detail-title { 
-            font-size: 24px; 
-            font-weight: 600; 
-            margin-bottom: 5px; 
-        }
-        
-        .detail-meta { 
-            color: #888; 
-            font-size: 14px; 
-            margin-bottom: 20px; 
-        }
-        
-        .detail-desc { 
-            color: #ccc; 
-            line-height: 1.6; 
-            margin-bottom: 30px; 
-            font-size: 14px; 
-        }
-        
-        .btn-play-main { 
-            background: white; 
-            color: black; 
-            padding: 16px; 
-            border-radius: 12px; 
-            text-align: center; 
-            font-weight: 600; 
-            cursor: pointer; 
-        }
-        
-        .close-detail { 
-            position: absolute; 
-            top: 20px; 
-            left: 20px; 
-            background: rgba(0,0,0,0.5); 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 5001; 
-            cursor: pointer;
-        }
+        #cardDetail { display: none; position: fixed; inset: 0; background: #0b0b0b; z-index: 5000; overflow-y: auto; }
+        .detail-img { width: 100%; height: 250px; object-fit: cover; }
+        .detail-content { padding: 20px; }
+        .detail-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; }
+        .detail-meta { color: #888; font-size: 14px; margin-bottom: 20px; }
+        .detail-desc { color: #ccc; line-height: 1.6; margin-bottom: 30px; font-size: 14px; }
+        .btn-play-main { background: white; color: black; padding: 16px; border-radius: 12px; text-align: center; font-weight: 600; cursor: pointer; }
+        .close-detail { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 5001; cursor: pointer; }
 
-        /* =========================================
-           8. SISTEMA DE SERIES (TEMPORADAS/EPISODIOS)
-        ========================================= */
-        .season-selector { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 25px; 
-            overflow-x: auto; 
-            padding-bottom: 10px; 
-        }
-        
-        .season-selector::-webkit-scrollbar { 
-            display: none; 
-        }
-        
-        .season-tab-btn { 
-            min-width: 150px; 
-            height: 80px; 
-            background: #1a1a1a; 
-            border: 2px solid #333; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            transition: 0.3s; 
-            color: #888; 
-            text-align: center; 
-            padding: 0 10px;
-        }
-        
-        .season-tab-btn.active { 
-            background: white; 
-            color: black; 
-            border-color: white; 
-            transform: scale(1.05); 
-        }
-        
-        .ep-btn { 
-            background: #1a1a1a; 
-            border: 1px solid #333; 
-            color: white; 
-            padding: 14px 18px; 
-            border-radius: 12px; 
-            margin-bottom: 12px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            transition: 0.2s;
-        }
-        
-        .ep-btn:hover { 
-            background: #2a2a2a; 
-            border-color: #555; 
-        }
-        
-        .ep-btn span { 
-            font-size: 14px; 
-            font-weight: 500; 
-        }
-        
-        .ep-btn-play { 
-            background: white; 
-            color: black; 
-            padding: 4px 12px; 
-            border-radius: 8px; 
-            font-size: 12px; 
-            font-weight: 600; 
-        }
+        /* SISTEMA DE SERIES */
+        .season-selector { display: flex; gap: 15px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 10px; }
+        .season-selector::-webkit-scrollbar { display: none; }
+        .season-tab-btn { min-width: 150px; height: 80px; background: #1a1a1a; border: 2px solid #333; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; color: #888; text-align: center; padding: 0 10px; }
+        .season-tab-btn.active { background: white; color: black; border-color: white; transform: scale(1.05); }
+        .ep-btn { background: #1a1a1a; border: 1px solid #333; color: white; padding: 14px 18px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .ep-btn:hover { background: #2a2a2a; border-color: #555; }
+        .ep-btn span { font-size: 14px; font-weight: 500; }
+        .ep-btn-play { background: white; color: black; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; }
 
-        /* =========================================
-           9. REPRODUCTOR DE VIDEO
-        ========================================= */
-        #lumeraPlayer { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: #000; 
-            z-index: 10000; 
-            cursor: none; 
-        }
-        
-        #lumeraPlayer.show-cursor { 
-            cursor: default; 
-        }
-        
-        video::-webkit-media-controls { 
-            display: none !important; 
-        }
-        
-        .p-controls { 
-            position: absolute; 
-            inset: 0; 
-            background: rgba(0,0,0,0.4); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            padding: 25px; 
-            transition: opacity 0.4s; 
-            opacity: 0; 
-            pointer-events: none; 
-        }
-        
-        .p-controls.active { 
-            opacity: 1; 
-            pointer-events: all; 
-        }
-        
-        .p-center { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 40px; 
-        }
-        
-        .p-btn { 
-            background: rgba(255,255,255,0.15); 
-            border: none; 
-            color: white; 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        
-        .p-play { 
-            width: 70px; 
-            height: 70px; 
-            background: white; 
-        }
-        
-        input[type=range] { 
-            width: 100%; 
-            accent-color: white; 
-            height: 4px; 
-            border-radius: 2px; 
-        }
+        /* REPRODUCTOR DE VIDEO */
+        #lumeraPlayer { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; cursor: none; }
+        #lumeraPlayer.show-cursor { cursor: default; }
+        video::-webkit-media-controls { display: none !important; }
+        .p-controls { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; flex-direction: column; justify-content: space-between; padding: 25px; transition: opacity 0.4s; opacity: 0; pointer-events: none; }
+        .p-controls.active { opacity: 1; pointer-events: all; }
+        .p-center { display: flex; justify-content: center; align-items: center; gap: 40px; }
+        .p-btn { background: rgba(255,255,255,0.15); border: none; color: white; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .p-play { width: 70px; height: 70px; background: white; }
+        input[type=range] { width: 100%; accent-color: white; height: 4px; border-radius: 2px; }
 
-        /* =========================================
-           10. MENÚ DE SUBTÍTULOS (CC)
-        ========================================= */
-        .cc-menu { 
-            position: absolute; 
-            right: 25px; 
-            top: 80px; 
-            background: rgba(15,15,15,0.95); 
-            padding: 20px; 
-            border-radius: 16px; 
-            display: none; 
-            flex-direction: column; 
-            gap: 20px; 
-            z-index: 10001; 
-            border: 1px solid #333; 
-            min-width: 250px; 
-            pointer-events: auto; 
-            backdrop-filter: blur(10px); 
-        }
-        
-        .cc-menu.active { 
-            display: flex; 
-        }
-        
-        .cc-section-title { 
-            font-size: 11px; 
-            color: #888; 
-            font-weight: 600; 
-            margin-bottom: 10px; 
-            letter-spacing: 1px; 
-            text-transform: uppercase; 
-        }
-        
-        .cc-options { 
-            display: flex; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-        }
-        
-        .cc-opt-btn { 
-            background: #222; 
-            color: #ccc; 
-            border: 1px solid #444; 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            font-weight: 600; 
-            transition: 0.2s; 
-        }
-        
-        .cc-opt-btn.active, .cc-opt-btn:hover { 
-            background: white; 
-            color: black; 
-            border-color: white; 
-        }
-        
-        video::cue { 
-            background: rgba(0, 0, 0, 0.75); 
-            color: white; 
-            font-family: 'Poppins', sans-serif; 
-            font-size: 20px; 
-            text-shadow: 1px 1px 2px black; 
-            font-weight: 600; 
-        }
+        /* MENÚ DE SUBTÍTULOS */
+        .cc-menu { position: absolute; right: 25px; top: 80px; background: rgba(15,15,15,0.95); padding: 20px; border-radius: 16px; display: none; flex-direction: column; gap: 20px; z-index: 10001; border: 1px solid #333; min-width: 250px; pointer-events: auto; backdrop-filter: blur(10px); }
+        .cc-menu.active { display: flex; }
+        .cc-section-title { font-size: 11px; color: #888; font-weight: 600; margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .cc-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .cc-opt-btn { background: #222; color: #ccc; border: 1px solid #444; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
+        .cc-opt-btn.active, .cc-opt-btn:hover { background: white; color: black; border-color: white; }
+        video::cue { background: rgba(0, 0, 0, 0.75); color: white; font-family: 'Poppins', sans-serif; font-size: 20px; text-shadow: 1px 1px 2px black; font-weight: 600; }
 
-        /* =========================================
-           11. SECCIÓN DE PERFILES (DISEÑO ORIGINAL)
-        ========================================= */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
-            padding: 30px; 
-        }
-        
-        .profile { 
-            position: relative; 
-            text-align: center; 
-            cursor: pointer; 
-        }
-        
-        .profile-img { 
-            width: 85px; 
-            height: 85px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 2px solid #333; 
-            margin: auto; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: #222; 
-            font-size: 32px; 
-            color: #fff; 
-        }
-        
-        .profile img { 
-            width: 85px; 
-            height: 85px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 2px solid #333; 
-            transition: 0.3s; 
-        }
-        
-        .profile-kids img, .profile-kids .profile-img { 
-            border: 3px solid #00e5ff !important; 
-            box-shadow: 0 0 10px #00e5ff; 
-        }
-        
-        .profile-normal img, .profile-normal .profile-img { 
-            border: 2px solid #fff !important; 
-        }
-        
-        .edit { 
-            position: absolute; 
-            bottom: 20px; 
-            left: 65%; 
-            width: 24px; 
-            height: 24px; 
-            background: #fff; 
-            color: #000; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 12px; 
-            border: 2px solid #0b0b0b; 
-            font-weight: bold; 
-        }
-        
-        .add { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 40px; 
-            background: #1a1a1a; 
-            border: 2px dashed #333; 
-            border-radius: 50%; 
-            width: 85px; 
-            height: 85px; 
-            margin: auto; 
-            cursor: pointer; 
-            color: #555; 
-        }
+        /* SECCIÓN DE PERFILES */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 30px; }
+        .profile { position: relative; text-align: center; cursor: pointer; }
+        .profile-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #333; margin: auto; display: flex; align-items: center; justify-content: center; background: #222; font-size: 32px; color: #fff; }
+        .profile img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #333; transition: 0.3s; }
+        .profile-kids img, .profile-kids .profile-img { border: 3px solid #00e5ff !important; box-shadow: 0 0 10px #00e5ff; }
+        .profile-normal img, .profile-normal .profile-img { border: 2px solid #fff !important; }
+        .edit { position: absolute; bottom: 20px; left: 65%; width: 24px; height: 24px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #0b0b0b; font-weight: bold; }
+        .add { display: flex; align-items: center; justify-content: center; font-size: 40px; background: #1a1a1a; border: 2px dashed #333; border-radius: 50%; width: 85px; height: 85px; margin: auto; cursor: pointer; color: #555; }
 
-        /* =========================================
-           12. MODALES Y AJUSTES
-        ========================================= */
-        .modal { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.95); 
-            display: none; 
-            z-index: 2000; 
-            overflow-y: auto; 
-        }
-        
-        .modalContent { 
-            background: #0f0f0f; 
-            margin: 40px 20px; 
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 1px solid #333; 
-            position: relative;
-        }
-        
-        .avatarGrid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 12px; 
-            margin: 20px 0; 
-        }
-        
-        .av-item { 
-            width: 100%; 
-            aspect-ratio: 1/1; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            border: 3px solid transparent; 
-            object-fit: cover; 
-            filter: grayscale(0.5); 
-        }
-        
-        .av-item.selected { 
-            border-color: #fff; 
-            filter: grayscale(0); 
-        }
-        
-        .avatar-letter { 
-            background: #222; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            font-size: 24px; 
-        }
-        
-        .btn { 
-            margin-top: 12px; 
-            padding: 14px; 
-            background: #1a1a1a; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
-            text-align: center; 
-            cursor: pointer; 
-            font-weight: 600; 
-            color: #fff; 
-            font-family: 'Poppins', sans-serif; 
-        }
-        
-        .btn-save { 
-            background: #fff !important; 
-            color: #000 !important; 
-            border: none; 
-        }
-        
-        input, select { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 10px 0; 
-            background: #1a1a1a; 
-            border: 1px solid #333; 
-            color: white; 
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            outline: none; 
-            font-family: 'Poppins', sans-serif; 
-        }
-        
-        .settings-btn { 
-            position: absolute; 
-            top: 25px; 
-            right: 25px; 
-            background: transparent; 
-            border: none; 
-            font-size: 28px; 
-            cursor: pointer; 
-            color: white; 
-            transition: 0.3s; 
-            padding: 0; 
-            z-index: 100;
-        }
-        
-        .settings-btn:hover { 
-            transform: rotate(90deg); 
-        }
+        /* MODALES Y AJUSTES */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; z-index: 2000; overflow-y: auto; }
+        .modalContent { background: #0f0f0f; margin: 40px 20px; padding: 25px; border-radius: 20px; border: 1px solid #333; position: relative; }
+        .avatarGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+        .av-item { width: 100%; aspect-ratio: 1/1; border-radius: 50%; cursor: pointer; border: 3px solid transparent; object-fit: cover; filter: grayscale(0.5); }
+        .av-item.selected { border-color: #fff; filter: grayscale(0); }
+        .avatar-letter { background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; }
+        .btn { margin-top: 12px; padding: 14px; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; text-align: center; cursor: pointer; font-weight: 600; color: #fff; font-family: 'Poppins', sans-serif; }
+        .btn-save { background: #fff !important; color: #000 !important; border: none; }
+        input, select { width: 100%; padding: 14px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; outline: none; font-family: 'Poppins', sans-serif; }
+        .settings-btn { position: absolute; top: 25px; right: 25px; background: transparent; border: none; font-size: 28px; cursor: pointer; color: white; transition: 0.3s; padding: 0; z-index: 100; }
+        .settings-btn:hover { transform: rotate(90deg); }
     </style>
 </head>
 <body>
-
     <div class="navbar">
         <div class="menuBtn" onclick="toggleMenu()">☰</div>
         <div class="nav-logo">LUMERA</div>
@@ -877,18 +188,9 @@
         <div class="spark-video-container">
             <video id="sparkVid" class="spark-video" loop playsinline src="https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=ovwid6jg&raw=1" onclick="this.paused ? this.play() : this.pause()"></video>
             <div class="spark-side-btns">
-                <div class="s-btn">
-                    <div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></div>
-                    <span>1.2k</span>
-                </div>
-                <div class="s-btn">
-                    <div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg></div>
-                    <span>450</span>
-                </div>
-                <div class="s-btn">
-                    <div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"></path></svg></div>
-                    <span>Share</span>
-                </div>
+                <div class="s-btn"><div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg></div><span>1.2k</span></div>
+                <div class="s-btn"><div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"></path></svg></div><span>450</span></div>
+                <div class="s-btn"><div class="s-btn-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"></path></svg></div><span>Share</span></div>
             </div>
             <div class="spark-ui">
                 <div class="spark-user">@LumeraPlay <span style="font-size:10px; background:white; color:black; padding:2px 6px; border-radius:4px;">OFICIAL</span></div>
@@ -916,7 +218,9 @@
     </div>
 
     <div id="home" class="page">
-        <div class="banner"><img src="https://i.imgur.com/yLRcdd7.png"></div>
+        <div class="banner">
+            <img src="https://i.imgur.com/yLRcdd7.png" id="hero-lumera-img">
+        </div>
         <div id="container-continue-home" style="display:none;"><div class="rowTitle" data-i18n="row_continue">Continuar Viendo</div><div class="row" id="row-continue-home"></div></div>
         <div class="rowTitle" data-i18n="row_featured">Destacados</div><div class="row" id="row-home"></div>
         <div id="container-fantasia-home" style="display:none;"><div class="rowTitle">Fantasía</div><div class="row" id="row-fantasia-home"></div></div>
@@ -966,251 +270,69 @@
             <div class="btn-play-main" id="playMainBtn" onclick="playMainVideo()" data-i18n="btn_play">REPRODUCIR</div>
         </div>
     </div>
-
-    <div id="lumeraPlayer" onmousemove="resetTimer()" onclick="resetTimer()">
-        
-        <video id="v" playsinline style="width:100%; height:100%; object-fit:contain;"></video>
-        
-        <div id="ccMenu" class="cc-menu" onclick="event.stopPropagation()">
-            <div id="audioSection" style="display:none;">
-                <div class="cc-section-title" data-i18n="audio_dub">AUDIO / DOBLAJE</div>
-                <div class="cc-options" id="audioOptions"></div>
-            </div>
-            <div id="subsSection" style="display:none;">
-                <div class="cc-section-title" data-i18n="subtitles">SUBTÍTULOS</div>
-                <div class="cc-options" id="subsOptions">
-                    <div class="cc-opt-btn active" id="sub-off" onclick="setSubtitle(-1)" data-i18n="sub_off">Desactivados</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="ctrls" class="p-controls">
-            <div class="p-top" style="display: flex; justify-content: space-between; width: 100%;">
-                <button class="p-btn" onclick="closePlayer(event)">✕</button>
-                <button class="p-btn" id="ccBtn" onclick="toggleCCMenu(event)" style="font-weight: bold; font-size: 16px; display: none; font-family: 'Poppins', sans-serif;">CC</button>
-            </div>
-            
-            <div class="p-center">
-                <button class="p-btn" onclick="v.currentTime -= 10; event.stopPropagation();">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg>
-                </button>
-                <button class="p-btn p-play" onclick="v.paused ? v.play() : v.pause(); event.stopPropagation();">
-                    <svg id="p-icon" viewBox="0 0 24 24" width="32" height="32" fill="black"><path d="M8 5v14l11-7z"></path></svg>
-                </button>
-                <button class="p-btn" onclick="v.currentTime += 10; event.stopPropagation();">
-                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg>
-                </button>
-            </div>
-            
-            <div class="p-bottom" onclick="event.stopPropagation()">
-                <input type="range" id="sk" value="0" oninput="v.currentTime = (this.value/100)*v.duration">
-            </div>
-        </div>
-    </div>
-
-    <div id="modal" class="modal">
-        <div class="modalContent">
-            <h3 style="margin-top:0" data-i18n="edit_profile">Editar Perfil</h3>
-            <input id="profileName" placeholder="Nombre" oninput="updateLetterAvatar()">
-            <div style="display:flex; gap:10px; margin: 20px 0;">
-                <div class="btn" id="optNormal" onclick="setMode('normal')" style="flex:1; border:none; color:black; background: white; margin-top:0;">Normal</div>
-                <div class="btn" id="optKids" onclick="setMode('kids')" style="flex:1; border:1px solid white; color:white; background: transparent; margin-top:0;">Kids</div>
-            </div>
-            <div class="avatarGrid" id="avatarGrid"></div>
-            <div class="btn btn-save" onclick="saveProfile()" data-i18n="btn_save">GUARDAR</div>
-            <div class="btn" onclick="deleteProfile()" style="border:none; color:#ff4444; margin-top:20px;" data-i18n="btn_delete">Eliminar Perfil</div>
-            <div class="btn" onclick="closeModal()" style="border:none; color:#888;" data-i18n="btn_cancel">Cancelar</div>
-        </div>
-    </div>
-
-    <div id="settingsModal" class="modal">
-        <div class="modalContent" style="max-width: 400px; margin: 100px auto; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 15px; margin-bottom: 25px;">
-                <h3 style="margin:0; font-size: 20px; letter-spacing: 1px;" data-i18n="settings_title">AJUSTES</h3>
-                <div onclick="closeSettingsModal()" style="cursor: pointer; font-size: 22px; color: #888; transition: 0.3s; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #1a1a1a;" onmouseover="this.style.color='#fff'; this.style.background='#333'" onmouseout="this.style.color='#888'; this.style.background='#1a1a1a'">✕</div>
-            </div>
-            <label data-i18n="language" style="display:block; margin-bottom:12px; font-weight:600; color:#888; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Idioma / Language</label>
-            <div style="position: relative;">
-                <select id="languageSelector" style="appearance: none; -webkit-appearance: none; cursor: pointer; font-weight: 600; font-size: 15px; padding: 16px 20px; border-radius: 12px; background-color: #151515; border: 1px solid #333; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); width: 100%; color: white; outline: none; font-family: 'Poppins', sans-serif;">
-                    <option value="es">🇪🇸 Español</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
-                <svg viewBox="0 0 24 24" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; fill: #888; pointer-events: none;"><path d="M7 10l5 5 5-5z"></path></svg>
-            </div>
-            <label style="display:block; margin-top:25px; font-weight:600; color:#888; font-size:12px; text-transform:uppercase; letter-spacing:1px; opacity:0.3;">Vincular cuenta (QR):</label>
-            <div class="btn" style="border: 2px dashed #333; color:#555; background: transparent; cursor: not-allowed; margin-bottom: 20px;" data-i18n="qr_soon">Próximamente</div>
-            <div class="btn btn-save" onclick="closeSettingsModal()" style="margin-top: 35px; width: 100%; box-sizing: border-box; letter-spacing: 1px; padding: 16px; font-size: 15px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255,255,255,0.1);" data-i18n="btn_close">Cerrar</div>
-        </div>
-    </div>
-
     <script>
-        // --- Traducciones y Configuración de Idioma ---
-        const translations = {
-            es: { select_profile: "SELECCIONA UN PERFIL", menu_home: "Inicio", menu_series: "Series", menu_movies: "Películas", menu_kids: "Kids", menu_profiles: "Perfiles", row_featured: "Destacados", row_series: "Series", row_movies: "Películas", row_kids: "Zona Kids", row_continue: "Continuar Viendo", row_fantasy: "Fantasía", row_action: "Acción", row_comedy: "Comedia", row_drama: "Drama", btn_play: "REPRODUCIR", edit_profile: "Editar Perfil", btn_save: "GUARDAR", btn_delete: "Eliminar Perfil", btn_cancel: "Cancelar", settings_title: "AJUSTES", language: "Idioma de la App:", btn_close: "Cerrar", qr_soon: "Próximamente", audio_dub: "AUDIO / DOBLAJE", subtitles: "SUBTÍTULOS", sub_off: "Desactivados", search_placeholder: "Buscar series, películas...", no_results: "No se encontraron resultados." },
-            en: { select_profile: "SELECT A PROFILE", menu_home: "Home", menu_series: "Series", menu_movies: "Movies", menu_kids: "Kids", menu_profiles: "Profiles", row_featured: "Featured", row_series: "Series", row_movies: "Movies", row_kids: "Kids Zone", row_continue: "Continue Watching", row_fantasy: "Fantasy", row_action: "Action", row_comedy: "Comedy", row_drama: "Drama", btn_play: "PLAY", edit_profile: "Edit Profile", btn_save: "SAVE", btn_delete: "Delete Profile", btn_cancel: "Cancel", settings_title: "SETTINGS", language: "App Language:", btn_close: "Close", qr_soon: "Coming Soon", audio_dub: "AUDIO / DUB", subtitles: "SUBTITLES", sub_off: "Off", search_placeholder: "Search movies, series...", no_results: "No results found." }
-        };
-
-        let currentLang = localStorage.getItem('lumera_lang') || 'es';
-        const langSelector = document.getElementById('languageSelector');
-        langSelector.value = currentLang;
-
-        function applyTranslations(lang) {
-            currentLang = lang;
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.innerText = translations[lang][key];
-                }
-            });
-            document.getElementById('profileName').placeholder = lang === 'en' ? "Profile Name" : "Nombre del Perfil";
-            document.getElementById('searchInput').placeholder = translations[lang].search_placeholder;
-            langSelector.value = lang;
-        }
-
-        langSelector.addEventListener('change', (e) => {
-            const newLang = e.target.value;
-            localStorage.setItem('lumera_lang', newLang);
-            applyTranslations(newLang);
-        });
-
-        document.getElementById('btn-settings').addEventListener('click', () => { 
-            document.getElementById('settingsModal').style.display = 'block'; 
-        });
-        
-        function closeSettingsModal() { 
-            document.getElementById('settingsModal').style.display = 'none'; 
-        }
-        
-        applyTranslations(currentLang);
-
         // --- Variables Globales del Reproductor ---
-        const v = document.getElementById('v');
-        const ctrls = document.getElementById('ctrls');
-        const pIcon = document.getElementById('p-icon');
-        const player = document.getElementById('lumeraPlayer');
+        const v = document.getElementById('sparkVid'); // Video de Spark
+        let currentLang = localStorage.getItem('lumera_lang') || 'es';
         
-        let hideTimer;
-        let currentItemGlobal = null;
-        let currentAudioUrl = "";
-        let currentPlayKey = "";
-
-        // --- Base de Datos Principal ---
-        let contentDB = [
+        // --- Base de Datos Principal de Lumera ---
+        const contentDB = [
             { 
-                id: "lumera_intro_01",
-                title: "Lumera Intro", 
-                year: "2026", 
-                age: 0, 
-                img: "https://i.imgur.com/KcIAK4D.png", 
-                desc: "Bienvenido a Lumera Play.", 
-                type: "ambos", 
-                genres: ["accion"], 
-                url: "https://www.dropbox.com/scl/fi/frin5xrzd74fvlakioqvi/copy_5C1DB4FB-8133-43B5-ABB6-E71928E5C7E3.mov?rlkey=asf1g1o8f091yb8f59tjlugck&st=61mtra5c&raw=1",
-                isSeries: false
+                id: "lumera_intro", title: "Lumera Intro", year: "2026", age: 0, 
+                img: "https://i.imgur.com/KcIAK4D.png", desc: "Bienvenido a la nueva era de Lumera Play.", 
+                type: "ambos", genres: ["accion"], isSeries: false 
             },
-            {
-                id: "look-at-2026",
-                title: "Look at!",
-                year: "2026",
-                age: 16, 
-                img: "https://i.imgur.com/5YRXD8b.jpeg",
-                desc: "Fantasía | +16. Un secuestro que sale terriblemente mal. Próximamente más detalles.",
-                type: "serie", 
-                genres: ["fantasia"], 
-                isSeries: true,
+            { 
+                id: "forza_h4", title: "Forza Horizon 4", year: "2018", age: 10, 
+                img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070", 
+                desc: "Domina las estaciones dinámicas en un mundo abierto compartido.", 
+                type: "peli", genres: ["accion"], isSeries: false 
+            },
+            { 
+                id: "cyberpunk", title: "Cyberpunk 2077", year: "2020", age: 18, 
+                img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071", 
+                desc: "Explora Night City, una megalópolis obsesionada con el poder.", 
+                type: "serie", genres: ["fantasia"], isSeries: true,
                 seasons: [
                     {
-                        name: "Temporada 1",
                         episodes: [
-                            { 
-                                id: "cap-1", 
-                                title: "1. Secuestro", 
-                                url: "https://archive.org/download/el-secuestro-capitulo-1-piloto_202606/El%20%20Secuestro%20%20%20%20%20Capitulo%201%20%20%20%20Piloto.mp4",
-                                tracks: [
-                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/asiehpxn7q4kyin4rh1ok/EL-SECUESTRO-CAPITULO-1-PILOTO-1.vtt?rlkey=5z949xlqcvnqilai95fygjeti&st=lhkvu829&raw=1" },
-                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/1nr6pvo8mge9f3zr13f1l/EL-SECUESTRO-CAPITULO-1-PILOTO.vtt?rlkey=5377pxatgbe3c082kt6pu4rwy&st=dp1qhkp1&raw=1" }
-                                ]
-                            },
-                            { 
-                                id: "cap-2", 
-                                title: "2. Borracho", 
-                                url: "https://archive.org/download/borracho-capitulo-2_202606/Borracho%20%20%20%20Capitulo%202.mp4",
-                                tracks: [
-                                    { label: "Español", srclang: "es", src: "https://www.dropbox.com/scl/fi/xglm39kts21b0vlsinxpo/BORRACHO-CAPITULO-2.vtt?rlkey=5gcdt2fnb7tae4q1imb2d6u85&st=jdihp8qt&raw=1" },
-                                    { label: "English", srclang: "en", src: "https://www.dropbox.com/scl/fi/bvsswvmnbj69snemr8fwv/BORRACHO-CAPITULO-2-1.vtt?rlkey=rh9gv5zf6tl4bzgxnktcsrr7a&st=u0hqq6hg&raw=1" }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        name: "Temporada Cortos",
-                        episodes: [
-                            { id: "corto-1", title: "Corto 1: Supermercado", url: "https://archive.org/download/supermecado-corto-1_202606/Supermecado%20%20%20%20%20Corto%201.mp4" },
-                            { id: "corto-2", title: "Corto 2: Cartulina", url: "https://archive.org/download/cartulina-corto-2_202606/Cartulina%20%20%20%20Corto%202.mp4" },
-                            { id: "corto-3", title: "Corto 3: Flores", url: "https://i.imgur.com/ilO9ROa.mp4" },
-                            { id: "corto-4", title: "Corto 4: Vivir para siempre", url: "https://i.imgur.com/snkMhv5.mp4" }
+                            { id: "e1", title: "Episodio 1: El Inicio", url: "" },
+                            { id: "e2", title: "Episodio 2: Night City", url: "" }
                         ]
                     }
                 ]
+            },
+            { 
+                id: "kids_show", title: "Aventuras Animadas", year: "2024", age: 0, 
+                img: "https://images.unsplash.com/photo-1585644171261-0e4c6c063b86?q=80&w=2070", 
+                desc: "Diversión para los más pequeños del hogar.", 
+                type: "peli", genres: ["comedia"], isSeries: false 
             }
         ];
 
-        // --- Funciones de Navegación y Búsqueda ---
-        function openSearch() { 
-            navigate('searchPage'); 
-            document.getElementById('searchInput').focus(); 
+        // --- Funciones del Menú Lateral ---
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const overlay = document.getElementById('overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
-        function executeSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('searchResults');
-            const noResults = document.getElementById('noResults');
+        // --- Navegación entre Pantallas ---
+        function navigate(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            if(id !== 'spark' && v) v.pause(); // Pausar video de spark si salimos
             
-            container.innerHTML = "";
-            
-            if(!query) { 
-                noResults.style.display = 'none'; 
-                return; 
-            }
-            
-            let found = false;
-            contentDB.forEach(item => {
-                if(item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
-                    found = true;
-                    const card = document.createElement('div'); 
-                    card.className = 'card';
-                    card.innerHTML = `<img src="${item.img}">`;
-                    card.onclick = () => openDetail(item);
-                    container.appendChild(card);
-                }
-            });
-            
-            noResults.style.display = found ? 'none' : 'block';
-        }
-
-        function toggleMenu() { 
-            document.getElementById('menu').classList.toggle('active'); 
-            document.getElementById('overlay').classList.toggle('active'); 
-        }
-        
-        function navigate(id) { 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
-            
-            if(id !== 'spark') {
-                const sVid = document.getElementById('sparkVid');
-                if(sVid) sVid.pause();
-            }
-
-            document.getElementById(id).classList.add('active'); 
+            document.getElementById(id).classList.add('active');
             
             if(document.getElementById('menu').classList.contains('active')) {
-                toggleMenu(); 
+                toggleMenu();
             }
             
             const mBtn = document.querySelector('.menuBtn');
             const sBtn = document.querySelector('.search-nav-btn');
             
+            // Ocultar botones superiores si estamos en perfiles
             if(mBtn && sBtn) {
                 if(id === 'profiles') {
                     mBtn.style.display = 'none';
@@ -1220,575 +342,136 @@
                     sBtn.style.display = 'flex';
                 }
             }
-
+            
             if(id !== 'profiles' && id !== 'spark' && id !== 'searchPage') {
                 renderContent(id);
             }
         }
 
-        // --- Renderizado de Contenido Dinámico ---
+        // --- Renderizado de Películas y Series ---
         function renderContent(pageId) {
+            // Limpiar filas
             document.querySelectorAll(`#${pageId} .row`).forEach(row => row.innerHTML = "");
             document.querySelectorAll(`#${pageId} div[id^="container-"]`).forEach(el => el.style.display = 'none');
             
-            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
-
             contentDB.forEach(item => {
+                // Filtros básicos según la pantalla
                 if (pageId === 'kids' && item.age > 7) return;
                 if (pageId === 'pelis' && item.type === 'serie') return;
                 if (pageId === 'series' && item.type === 'peli') return;
 
-                const isHome = (pageId === 'home');
-                const isKidsPage = (pageId === 'kids'); 
-                const isPeli = (pageId === 'pelis' && (item.type === 'peli' || item.type === 'ambos'));
-                const isSerie = (pageId === 'series' && (item.type === 'serie' || item.type === 'ambos'));
-
-                if(isHome || isKidsPage || isPeli || isSerie) {
-                    
-                    const buildCard = () => {
-                        const card = document.createElement('div');
-                        card.className = pageId === 'kids' ? 'card card-kids' : 'card';
-                        let badgeHtml = pageId === 'kids' ? '<img src="https://i.imgur.com/NSHOJFK.png" class="kids-badge">' : '';
-                        card.innerHTML = `<img src="${item.img}">${badgeHtml}`;
-                        card.onclick = () => openDetail(item);
-                        return card;
-                    };
-
-                    let mainContainer = document.getElementById(`row-${pageId}`);
-
-                    if (item.id === 'look-at-2026' && pageId === 'series') {
-                        mainContainer = null;
-                    }
-
-                    if(mainContainer) {
-                        mainContainer.appendChild(buildCard());
-                    }
-
-                    if(history[item.id] && history[item.id].time > 1) {
-                        const contContainer = document.getElementById(`row-continue-${pageId}`);
-                        if(contContainer) {
-                            document.getElementById(`container-continue-${pageId}`).style.display = 'block';
-                            let progress = (history[item.id].time / history[item.id].duration) * 100;
-                            if (progress > 100) progress = 100;
-                            const cCard = buildCard();
-                            cCard.innerHTML += `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${progress}%;"></div></div>`;
-                            contContainer.appendChild(cCard);
-                        }
-                    }
-
-                    if(item.genres) {
-                        item.genres.forEach(genre => {
-                            const genreRow = document.getElementById(`row-${genre}-${pageId}`);
-                            if(genreRow) {
-                                document.getElementById(`container-${genre}-${pageId}`).style.display = 'block';
-                                genreRow.appendChild(buildCard());
-                            }
-                        });
+                const card = document.createElement('div');
+                card.className = 'card';
+                if (pageId === 'kids') card.classList.add('card-kids');
+                
+                card.innerHTML = `<img src="${item.img}" alt="${item.title}">`;
+                card.onclick = () => showDetail(item);
+                
+                // Asignar a su categoría principal
+                const targetRow = document.getElementById(`row-${pageId}`);
+                if(targetRow) targetRow.appendChild(card);
+                
+                // Asignar por género si existe la fila
+                if(item.genres && item.genres.length > 0) {
+                    const genreRow = document.getElementById(`row-${item.genres[0]}-${pageId}`);
+                    const genreContainer = document.getElementById(`container-${item.genres[0]}-${pageId}`);
+                    if(genreRow) {
+                        genreRow.appendChild(card.cloneNode(true));
+                        if(genreContainer) genreContainer.style.display = 'block';
                     }
                 }
             });
         }
 
-        // --- Spark (Videos Cortos) ---
-        function openSpark() { 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('spark').classList.add('active'); 
-            const sVid = document.getElementById('sparkVid'); 
-            
-            if(sVid) { 
-                sVid.currentTime = 0; 
-                sVid.play(); 
-            }
-            if(document.getElementById('menu').classList.contains('active')) {
-                toggleMenu(); 
-            }
-        }
-
-        function closeSparkToHome() { 
-            const sVid = document.getElementById('sparkVid');
-            if(sVid) sVid.pause(); 
-            navigate('home'); 
-        }
-
-        // --- Pantalla de Detalle y Lista de Episodios ---
-        function openDetail(item) {
-            currentItemGlobal = item;
+        // --- Detalles del Contenido ---
+        function showDetail(item) {
+            document.getElementById('cardDetail').style.display = 'block';
             document.getElementById('detailTitle').innerText = item.title.toUpperCase();
             document.getElementById('detailImg').src = item.img;
             
-            let generoTexto = item.genres && item.genres.length > 0 ? item.genres[0].toUpperCase() : 'CONTENIDO';
-            let ageText = item.age !== undefined ? item.age + '+' : '0+';
+            let generoTexto = item.genres ? item.genres[0].toUpperCase() : 'CONTENIDO';
+            let ageText = item.age + '+';
             document.getElementById('detailMeta').innerText = `${ageText} • ${item.year} • ${generoTexto}`;
-            
             document.getElementById('detailDesc').innerText = item.desc;
             
             const seriesUI = document.getElementById('seriesUI');
             const playMainBtn = document.getElementById('playMainBtn');
-
-            v.pause(); 
-            v.innerHTML = ''; 
-            document.getElementById('ccBtn').style.display = 'none';
-
+            
             if(item.isSeries) {
                 playMainBtn.style.display = 'none';
                 seriesUI.style.display = 'block';
-                seriesUI.innerHTML = ''; 
+                seriesUI.innerHTML = '<div style="color:white; margin-bottom:10px;">Episodios disponibles:</div>';
                 
-                let seasonSelector = document.createElement('div');
-                seasonSelector.className = 'season-selector';
-                
-                let episodesContainer = document.createElement('div');
-                episodesContainer.id = 'episodesContainer';
-
-                const renderEpisodes = (seasonIndex) => {
-                    episodesContainer.innerHTML = ''; 
-                    
-                    Array.from(seasonSelector.children).forEach((btn, idx) => {
-                        if(idx === seasonIndex) btn.classList.add('active');
-                        else btn.classList.remove('active');
-                    });
-
-                    let season = item.seasons[seasonIndex];
-                    season.episodes.forEach(ep => {
-                        let tracksStr = ep.tracks ? encodeURIComponent(JSON.stringify(ep.tracks)) : '';
-                        let epBtn = document.createElement('div');
-                        epBtn.className = 'ep-btn';
-                        epBtn.innerHTML = `<span>${ep.title}</span><div class="ep-btn-play">▶</div>`;
-                        epBtn.onclick = () => playEpisode(ep.url, tracksStr, ep.id);
-                        episodesContainer.appendChild(epBtn);
-                    });
-                };
-
-                item.seasons.forEach((season, index) => {
-                    let sBtn = document.createElement('div');
-                    sBtn.innerHTML = `<strong style="font-size:14px;">${season.name.toUpperCase()}</strong><br><span style="font-size:11px; opacity:0.6;">${season.episodes.length} episodios</span>`;
-                    sBtn.className = 'season-tab-btn';
-                    sBtn.onclick = () => renderEpisodes(index);
-                    seasonSelector.appendChild(sBtn);
+                item.seasons[0].episodes.forEach(ep => {
+                    let epBtn = document.createElement('div');
+                    epBtn.className = 'ep-btn';
+                    epBtn.innerHTML = `<span>${ep.title}</span><div class="ep-btn-play">▶</div>`;
+                    epBtn.onclick = () => alert("Reproduciendo: " + ep.title);
+                    seriesUI.appendChild(epBtn);
                 });
-
-                seriesUI.appendChild(seasonSelector);
-                seriesUI.appendChild(episodesContainer);
-
-                if(item.seasons.length > 0) renderEpisodes(0);
-
             } else {
                 playMainBtn.style.display = 'block';
                 seriesUI.style.display = 'none';
-                prepareSingleMedia(item);
-            }
-            document.getElementById('cardDetail').style.display = 'block';
-        }
-
-        // --- Lógica de Reproducción de Películas (Sin Subtítulos Extra) ---
-        function prepareSingleMedia(item) {
-            let hasAudios = item.audios && item.audios.length > 0;
-            let urlToPlay = hasAudios ? item.audios[0].url : item.url;
-            currentAudioUrl = urlToPlay;
-            currentPlayKey = item.id;
-            
-            v.src = urlToPlay; 
-            v.load();
-
-            if (hasAudios) {
-                let aHtml = '';
-                item.audios.forEach((a, idx) => {
-                    let active = idx === 0 ? 'active' : '';
-                    aHtml += `<div class="cc-opt-btn ${active}" id="aud-${idx}" onclick="setAudio(${idx}, '${a.url}')">${a.label}</div>`;
-                });
-                document.getElementById('audioOptions').innerHTML = aHtml;
-                document.getElementById('audioSection').style.display = 'block';
-                document.getElementById('ccBtn').style.display = 'block';
-            } else { 
-                document.getElementById('audioSection').style.display = 'none'; 
-            }
-            
-            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
-            v.addEventListener('loadedmetadata', function restoreTime() {
-                if(history[currentPlayKey] && history[currentPlayKey].time > 0) {
-                    v.currentTime = history[currentPlayKey].time;
-                }
-                v.removeEventListener('loadedmetadata', restoreTime);
-            });
-        }
-
-        function playMainVideo() { 
-            player.style.display = 'block'; 
-            v.play(); 
-            resetTimer(); 
-        }
-
-        // --- MOTOR DE SUBTÍTULOS CON BYPASS PARA DROPBOX ---
-        async function playEpisode(url, tracksStr, epId) {
-            v.pause(); 
-            
-            // Vaciar completamente el video de subtítulos anteriores
-            while (v.firstChild) {
-                v.removeChild(v.firstChild);
-            }
-            
-            document.getElementById('ccMenu').classList.remove('active');
-            
-            let tracks = tracksStr ? JSON.parse(decodeURIComponent(tracksStr)) : [];
-            let hasSubs = tracks && tracks.length > 0;
-            
-            document.getElementById('subsOptions').innerHTML = `<div class="cc-opt-btn" id="sub-off" onclick="setSubtitle(-1)" data-i18n="sub_off">Desactivados</div>`;
-            
-            if (hasSubs) {
-                document.getElementById('ccBtn').style.display = 'block';
-                document.getElementById('subsSection').style.display = 'block';
-                
-                // Procesar cada subtítulo asincrónicamente para saltar el bloqueo
-                for (let i = 0; i < tracks.length; i++) {
-                    let t = tracks[i];
-                    
-                    // TRUCO PRO: Transformar link de Dropbox a un enlace de descarga directa en crudo.
-                    let directUrl = t.src.replace("www.dropbox.com", "dl.dropboxusercontent.com").replace("?dl=0", "").replace("&dl=0", "").replace("?raw=1", "");
-                    
-                    try {
-                        let res = await fetch(directUrl);
-                        let text = await res.text();
-                        
-                        // Validar formato VTT por si Dropbox devuelve basura
-                        if (!text.trim().startsWith("WEBVTT")) {
-                            text = "WEBVTT\n\n" + text.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, "$1.$2");
-                        }
-                        
-                        // Crear archivo virtual seguro para inyectar al video
-                        let blob = new Blob([text], { type: 'text/vtt' });
-                        let blobUrl = URL.createObjectURL(blob);
-                        
-                        let tr = document.createElement('track'); 
-                        tr.kind = 'subtitles'; 
-                        tr.label = t.label; 
-                        tr.srclang = t.srclang; 
-                        tr.src = blobUrl; 
-                        
-                        v.appendChild(tr);
-                        
-                        // Añadir botón visual al menú CC
-                        document.getElementById('subsOptions').innerHTML += `<div class="cc-opt-btn" id="sub-${i}" onclick="setSubtitle(${i})">${t.label}</div>`;
-                    } catch(e) {
-                        console.error("No se pudo cargar el subtítulo:", e);
-                    }
-                }
-            } else {
-                document.getElementById('ccBtn').style.display = 'none';
-                document.getElementById('subsSection').style.display = 'none';
-            }
-            
-            document.getElementById('audioSection').style.display = 'none';
-            currentPlayKey = currentItemGlobal.id;
-            
-            v.src = url; 
-            v.load();
-            
-            let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
-            v.addEventListener('loadedmetadata', function restoreTime() {
-                if(history[currentPlayKey] && history[currentPlayKey].time > 0) {
-                    v.currentTime = history[currentPlayKey].time;
-                }
-                v.removeEventListener('loadedmetadata', restoreTime);
-            });
-
-            player.style.display = 'block'; 
-            v.play(); 
-            resetTimer();
-            
-            // TRUCO PRO 2: ¡Activar el primer subtítulo (Español) automáticamente!
-            if (hasSubs) {
-                setTimeout(() => setSubtitle(0), 400);
-            } else {
-                setSubtitle(-1);
-            }
-        }
-        
-        function closePlayer(e) { 
-            e.stopPropagation(); 
-            v.pause(); 
-            player.style.display = 'none'; 
-            document.getElementById('ccMenu').classList.remove('active'); 
-            
-            if(currentPlayKey && v.currentTime > 0) {
-                let history = JSON.parse(localStorage.getItem('lumera_history') || '{}');
-                
-                if(v.currentTime >= v.duration - 2) {
-                    delete history[currentPlayKey];
-                } else {
-                    history[currentPlayKey] = { time: v.currentTime, duration: v.duration };
-                }
-                
-                localStorage.setItem('lumera_history', JSON.stringify(history));
-                
-                const activePage = document.querySelector('.page.active').id;
-                if(activePage !== 'profiles' && activePage !== 'spark' && activePage !== 'searchPage') {
-                    renderContent(activePage);
-                }
+                playMainBtn.onclick = () => alert("Reproduciendo: " + item.title);
             }
         }
 
-        function closeDetail() { 
-            document.getElementById('cardDetail').style.display = 'none'; 
-            v.pause(); 
+        function closeDetail() {
+            document.getElementById('cardDetail').style.display = 'none';
         }
 
-        function toggleCCMenu(e) { 
-            e.stopPropagation(); 
-            document.getElementById('ccMenu').classList.toggle('active'); 
+        // --- Pantalla Spark ---
+        function openSpark() {
+            navigate('spark');
+            if(v) v.play();
+        }
+        function closeSparkToHome() {
+            if(v) v.pause();
+            navigate('home');
         }
 
-        function setSubtitle(index) {
-            let tracks = v.textTracks;
-            
-            // 1. Apagar todos los subtítulos primero
-            for (let i = 0; i < tracks.length; i++) {
-                tracks[i].mode = 'disabled';
-            }
-            
-            // 2. Limpiar botones visuales
-            document.querySelectorAll('#subsSection .cc-opt-btn').forEach(el => el.classList.remove('active'));
-            
-            // 3. Activar el correcto
-            if (index === -1) {
-                document.getElementById('sub-off').classList.add('active');
-            } else if (tracks[index]) { 
-                tracks[index].mode = 'showing'; 
-                let btn = document.getElementById(`sub-${index}`);
-                if(btn) btn.classList.add('active'); 
-                
-                // Micro reinicio para forzar que el navegador pinte el subtitulo
-                if (v.currentTime < 0.5) v.currentTime = 0; 
-            }
-            
-            document.getElementById('ccMenu').classList.remove('active');
+        // --- Funciones de Búsqueda ---
+        function openSearch() {
+            navigate('searchPage');
+            document.getElementById('searchInput').focus();
         }
 
-        function resetTimer() { 
-            ctrls.classList.add('active'); 
-            player.classList.add('show-cursor'); 
-            clearTimeout(hideTimer); 
-            
-            hideTimer = setTimeout(() => { 
-                if (!v.paused && !document.getElementById('ccMenu').classList.contains('active')) { 
-                    ctrls.classList.remove('active'); 
-                    player.classList.remove('show-cursor'); 
-                } 
-            }, 2000); 
-        }
-        
-        v.onplay = () => {
-            pIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>';
-        };
-        
-        v.onpause = () => { 
-            pIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>'; 
-            ctrls.classList.add('active'); 
-        };
-        
-        v.ontimeupdate = () => { 
-            document.getElementById('sk').value = (v.currentTime / v.duration) * 100; 
-        };
-
-        // --- SISTEMA DE PERFILES (IMÁGENES DE IMGUR ORIGINALES) ---
-        let profiles = JSON.parse(localStorage.getItem("lumera_profiles") || "[]");
-        let currentIdx = null;
-        let selectedMode = "normal";
-        let selectedAvatar = "";
-        
-        const avs = [
-            "https://i.imgur.com/6VytJCb.png", 
-            "https://i.imgur.com/NIkYcmK.png", 
-            "https://i.imgur.com/GZWJWQM.png", 
-            "https://i.imgur.com/7bkfL6Q.png", 
-            "https://i.imgur.com/bznECbR.png", 
-            "https://i.imgur.com/lSu4KPx.png", 
-            "LETTER"
+        // =========================================
+        // EL MOTOR DEL HÉROE DINÁMICO
+        // =========================================
+        const imagenesHero = [
+            "https://i.imgur.com/yLRcdd7.png", // Imagen 1 (Original)
+            "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070", // Imagen 2 (Forza)
+            "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071"  // Imagen 3 (Cyberpunk)
         ];
 
-        function renderProfiles() {
-            let container = document.getElementById("profilesContainer"); 
-            container.innerHTML = "";
+        let indiceHero = 0;
+        const heroImgElement = document.getElementById('hero-lumera-img');
+
+        function cambiarFondoLumera() {
+            if(!heroImgElement) return;
             
-            profiles.forEach((p, i) => {
-                let div = document.createElement("div"); 
-                div.className = `profile ${p.mode === 'kids' ? 'profile-kids' : 'profile-normal'}`;
-                
-                let content = p.avatar === "LETTER" 
-                    ? `<div class="profile-img">${p.name[0]}</div>` 
-                    : `<img src="${p.avatar}">`;
-                    
-                div.innerHTML = `${content}<div style="margin-top:10px;">${p.name.toUpperCase()}</div><div class="edit" onclick="openEdit(event,${i})">✎</div>`;
-                div.onclick = () => { 
-                    selectedMode = p.mode; 
-                    navigate(p.mode === 'kids' ? 'kids' : 'home'); 
-                }; 
-                container.appendChild(div);
-            });
+            // Efecto de desvanecimiento
+            heroImgElement.style.opacity = 0;
             
-            let add = document.createElement("div"); 
-            add.className = "add"; 
-            add.innerText = "+"; 
-            add.onclick = () => openEdit(null, null); 
-            container.appendChild(add);
+            setTimeout(() => {
+                // Cambiar imagen
+                indiceHero = (indiceHero + 1) % imagenesHero.length;
+                heroImgElement.src = imagenesHero[indiceHero];
+                // Aparecer de nuevo
+                heroImgElement.style.opacity = 0.8; 
+            }, 500);
         }
 
-        function openEdit(e, i) {
-            if(e) e.stopPropagation();
-            currentIdx = i;
-            
-            if(i !== null) { 
-                document.getElementById('profileName').value = profiles[i].name; 
-                selectedMode = profiles[i].mode; 
-                selectedAvatar = profiles[i].avatar; 
-            } else { 
-                document.getElementById('profileName').value = ""; 
-                selectedMode = "normal"; 
-                selectedAvatar = avs[0]; 
-            }
-            
-            setMode(selectedMode); 
-            renderAvatarGrid(); 
-            document.getElementById('modal').style.display = 'block';
-        }
+        // Iniciar rotación del banner principal cada 5 segundos
+        setInterval(cambiarFondoLumera, 5000);
 
-        function renderAvatarGrid() {
-            const grid = document.getElementById('avatarGrid');
-            const name = document.getElementById('profileName').value || "?";
-            grid.innerHTML = "";
-            
-            avs.forEach(url => {
-                let item = url === "LETTER" ? document.createElement('div') : document.createElement('img');
-                item.className = "av-item" + (url === "LETTER" ? " avatar-letter" : "");
-                
-                if(url === "LETTER") {
-                    item.innerText = name[0].toUpperCase(); 
-                } else {
-                    item.src = url;
-                }
-                
-                if(url === selectedAvatar) {
-                    item.classList.add('selected');
-                }
-                
-                item.onclick = () => { 
-                    selectedAvatar = url; 
-                    renderAvatarGrid(); 
-                };
-                grid.appendChild(item);
-            });
-        }
-        
-        function setMode(m) {
-            selectedMode = m; 
-            
-            document.getElementById('optNormal').style.background = m === 'normal' ? 'white' : 'transparent';
-            document.getElementById('optNormal').style.color = m === 'normal' ? 'black' : 'white'; 
-            document.getElementById('optNormal').style.border = m === 'normal' ? 'none' : '1px solid white';
-            
-            document.getElementById('optKids').style.background = m === 'kids' ? 'white' : 'transparent'; 
-            document.getElementById('optKids').style.color = m === 'kids' ? 'black' : 'white';
-            document.getElementById('optKids').style.border = m === 'kids' ? 'none' : '1px solid white';
-        }
-        
-        function updateLetterAvatar() { 
-            if(selectedAvatar === "LETTER") renderAvatarGrid(); 
-        }
-        
-    function saveProfile() {
-            let name = document.getElementById('profileName').value.trim(); 
-            if(!name) return; 
-            
-            let p = { name, mode: selectedMode, avatar: selectedAvatar };
-            
-            if(currentIdx !== null) {
-                profiles[currentIdx] = p; 
-            } else {
-                profiles.push(p); 
-            }
-            
-            localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
-            closeModal(); 
-            renderProfiles();
-        }
-        
-        function deleteProfile() { 
-            if(currentIdx !== null) { 
-                profiles.splice(currentIdx, 1); 
-                localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
-            } 
-            closeModal(); 
-            renderProfiles(); 
-        }
-        
-        function closeModal() { 
-            document.getElementById('modal').style.display = 'none'; 
-        }
+        // --- INICIALIZACIÓN ---
+        // Renderiza el contenido inicial al abrir la página
+        setTimeout(() => {
+            renderContent('home');
+        }, 100);
 
-        // --- MOTOR DEL BANNER HERO (CADA 10 SEGUNDOS) ---
-        let heroData = [];
-        let currentHeroIndex = 0;
-        let heroInterval = null;
-
-        function loadHero() {
-            fetch('hero.json')
-                .then(response => response.json())
-                .then(data => {
-                    heroData = data;
-                    if (heroData && heroData.length > 0) {
-                        renderHero();
-                        startHeroTimer();
-                    }
-                })
-                .catch(error => console.warn("Aviso: hero.json no encontrado."));
-        }
-
-        function renderHero() {
-            if (!heroData || heroData.length === 0) return;
-            const hero = heroData[currentHeroIndex];
-            const heroSection = document.querySelector('.hero');
-            const heroTitle = document.querySelector('.hero-content h1');
-            const heroDesc = document.querySelector('.hero-content p');
-            
-            if (heroSection && hero.imagen_banner) {
-                heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.imagen_banner}')`;
-            }
-            if (heroTitle && hero.titulo) heroTitle.textContent = hero.titulo;
-            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
-        }
-
-        function startHeroTimer() {
-            if (heroInterval) clearInterval(heroInterval);
-            heroInterval = setInterval(() => {
-                if (heroData && heroData.length > 0) {
-                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
-                    renderHero();
-                }
-            }, 10000);
-        }
-
-        // --- EL PUENTE SEGURO AL JSON ---
-        function loadCatalogAndBanner() {
-            fetch('peliculas.json')
-                .then(response => response.json())
-                .then(data => {
-                    contentDB = data.catalog || data;
-                    console.log("¡Puente activado! Datos listos.");
-                    loadHero(); // Enciende el banner dinámico
-                })
-                .catch(error => {
-                    console.warn("Usando local", error);
-                    loadHero(); // Enciende el banner aunque no haya peliculas.json
-                });
-        }
-        
-        // --- INICIALIZACIÓN FINAL ---
-        const initMenuBtn = document.querySelector('.menuBtn');
-        const initSearchBtn = document.querySelector('.search-nav-btn');
-        if(initMenuBtn) initMenuBtn.style.display = 'none';
-        if(initSearchBtn) initSearchBtn.style.display = 'none';
-        
-        renderProfiles();
-        loadCatalogAndBanner();
     </script>
 </body>
 </html>
