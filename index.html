@@ -1096,7 +1096,7 @@
         let currentPlayKey = "";
 
         // --- Base de Datos Principal ---
-        const contentDB = [
+        let contentDB = [
             { 
                 id: "lumera_intro_01",
                 title: "Lumera Intro", 
@@ -1708,6 +1708,17 @@
             
             localStorage.setItem("lumera_profiles", JSON.stringify(profiles)); 
             closeModal(); 
+            // --- EL PUENTE SEGURO AL JSON ---
+        fetch('peliculas.json')
+            .then(response => response.json())
+            .then(data => {
+                // Si el JSON es una lista directa o viene dentro de 'catalog', se acopla solo
+                contentDB = data.catalog || data;
+                console.log("¡Puente activado! Lumera Play leyendo peliculas.json con éxito:", contentDB);
+            })
+            .catch(error => {
+                console.warn("Aviso de seguridad: No se detectó peliculas.json, usando catálogo local incorporado.", error);
+            });
             renderProfiles();
         }
         
