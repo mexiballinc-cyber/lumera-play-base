@@ -1715,13 +1715,202 @@
                 // Si el JSON es una lista directa o viene dentro de 'catalog', se acopla solo
                 contentDB = data.catalog || data;
                 console.log("¡Puente activado! Lumera Play leyendo peliculas.json con éxito:", contentDB);
+                // Encender banner dinámico
+if (typeof loadHero === 'function') loadHero();
             })
+    
             .catch(error => {
                 console.warn("Aviso de seguridad: No se detectó peliculas.json, usando catálogo local incorporado.", error);
             });
+            // --- MOTOR DINÁMICO DEL BANNER HERO (CADA 10 SEGUNDOS) ---
+        let heroData = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
+
+        function loadHero() {
+            fetch('hero.json')
+                .then(response => response.json())
+                .then(data => {
+                    heroData = data.hero || data;
+                    if (heroData && heroData.length > 0) {
+                        renderHero();
+                        startHeroTimer();
+                    }
+                })
+                .catch(error => {
+                    console.warn("Aviso: No se encontró 'hero.json' para el banner, se mantiene estático.", error);
+                });
+        }
+
+        function renderHero() {
+            if (!heroData || heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            
+            // Ubicamos los elementos visuales de tu marco actual en el HTML
+            const heroSection = document.getElementById('heroSection') || document.querySelector('.hero');
+            const heroTitle = document.getElementById('heroTitle') || document.querySelector('.hero-content h1');
+            const heroDesc = document.getElementById('heroDesc') || document.querySelector('.hero-content p');
+            
+            // Reemplazamos la "pared" por el contenido dinámico del JSON
+            if (heroSection && hero.img) heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.img}')`;
+            if (heroTitle && hero.title) heroTitle.textContent = hero.title;
+            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
+        }
+
+        function startHeroTimer() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (heroData && heroData.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
+                    renderHero();
+                }
+            }, 10000); // 10000 milisegundos = 10 segundos exactos
+        }
+
+        function resetHeroTimer() {
+            clearInterval(heroInterval);
+            startHeroTimer();
+        }
+            // --- MOTOR DEL BANNER HERO ADAPTADO AL JSON REAL (CADA 10 SEGUNDOS) ---
+        let heroData = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
+
+        function loadHero() {
+            // Buscamos tu archivo real 'hero.json'
+            fetch('hero.json')
+                .then(response => response.json())
+                .then(data => {
+                    heroData = data;
+                    if (heroData && heroData.length > 0) {
+                        renderHero();
+                        startHeroTimer();
+                    }
+                })
+                .catch(error => {
+                    console.warn("Aviso: No se encontró 'hero.json' para el banner, se mantiene la imagen fija.", error);
+                });
+        }
+
+        function renderHero() {
+            if (!heroData || heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            
+            // Localizamos el marco visual exacto de tu interfaz sin alterar clases ni estilos
+            const heroSection = document.querySelector('.hero');
+            const heroTitle = document.querySelector('.hero-content h1');
+            const heroDesc = document.querySelector('.hero-content p');
+            
+            // El Ventanal: Inyectamos tus datos reales del JSON de forma dinámica
+            if (heroSection && hero.imagen_banner) {
+                heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.imagen_banner}')`;
+            }
+            if (heroTitle && hero.titulo) heroTitle.textContent = hero.titulo;
+            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
+        }
+
+        function startHeroTimer() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (heroData && heroData.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
+                    renderHero();
+                }
+            }, 10000); // 10000 milisegundos = 10 segundos exactos
+        }
+            // --- MOTOR DEL BANNER HERO ADAPTADO AL JSON REAL (CADA 10 SEGUNDOS) ---
+        let heroData = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
+
+        function loadHero() {
+            // Buscamos tu archivo real 'hero.json'
+            fetch('hero.json')
+                .then(response => response.json())
+                .then(data => {
+                    heroData = data;
+                    if (heroData && heroData.length > 0) {
+                        renderHero();
+                        startHeroTimer();
+                    }
+                })
+                .catch(error => {
+                    console.warn("Aviso: No se encontró 'hero.json' para el banner, se mantiene la imagen fija.", error);
+                });
+        }
+
+        function renderHero() {
+            if (!heroData || heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            
+            // Localizamos el marco visual exacto de tu interfaz sin alterar clases ni estilos
+            const heroSection = document.querySelector('.hero');
+            const heroTitle = document.querySelector('.hero-content h1');
+            const heroDesc = document.querySelector('.hero-content p');
+            
+            // El Ventanal: Inyectamos tus datos reales del JSON de forma dinámica
+            if (heroSection && hero.imagen_banner) {
+                heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.imagen_banner}')`;
+            }
+            if (heroTitle && hero.titulo) heroTitle.textContent = hero.titulo;
+            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
+        }
+
+        function startHeroTimer() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (heroData && heroData.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
+                    renderHero();
+                }
+            }, 10000); // 10000 milisegundos = 10 segundos exactos
+        }
             renderProfiles();
         }
-        
+
+        // --- MOTOR DEL BANNER HERO ADAPTADO AL JSON REAL (CADA 10 SEGUNDOS) ---
+        let heroData = [];
+        let currentHeroIndex = 0;
+        let heroInterval = null;
+
+        function loadHero() {
+            fetch('hero.json')
+                .then(response => response.json())
+                .then(data => {
+                    heroData = data;
+                    if (heroData && heroData.length > 0) {
+                        renderHero();
+                        startHeroTimer();
+                    }
+                })
+                .catch(error => {
+                    console.warn("Aviso: No se encontró hero.json", error);
+                });
+        }
+
+        function renderHero() {
+            if (!heroData || heroData.length === 0) return;
+            const hero = heroData[currentHeroIndex];
+            const heroSection = document.querySelector('.hero');
+            const heroTitle = document.querySelector('.hero-content h1');
+            const heroDesc = document.querySelector('.hero-content p');
+            
+            if (heroSection && hero.imagen_banner) {
+                heroSection.style.backgroundImage = `linear-gradient(to top, #0b0b0b 5%, rgba(11,11,11,0.3) 50%, rgba(11,11,11,0.7) 100%), url('${hero.imagen_banner}')`;
+            }
+            if (heroTitle && hero.titulo) heroTitle.textContent = hero.titulo;
+            if (heroDesc && hero.desc) heroDesc.textContent = hero.desc;
+        }
+
+        function startHeroTimer() {
+            if (heroInterval) clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                if (heroData && heroData.length > 0) {
+                    currentHeroIndex = (currentHeroIndex + 1) % heroData.length;
+                    renderHero();
+                }
+            }, 10000);
+        }
         function deleteProfile() { 
             if(currentIdx !== null) { 
                 profiles.splice(currentIdx, 1); 
