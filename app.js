@@ -628,8 +628,7 @@ window.deleteAvatar = function(idx) {
     customAvatars.splice(idx, 1);
     renderAdminAvatarsView();
     renderProfiles(); // Actualiza la vista pública de perfiles
-};
-    
+};    
 
 // ==========================================
 // 8. REPRODUCTOR INTEGRADO
