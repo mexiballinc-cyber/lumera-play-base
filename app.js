@@ -558,25 +558,23 @@ async function loadSparkFeed() {
 // 7. GALERÍA DE AVATARES Y PERFILES
 // ==========================================
 
-// Guardamos los perfiles creados por el usuario en memoria
 let userProfiles = [
     { name: "Usuario 1", avatar: customAvatars[0] },
     { name: "Usuario 2", avatar: customAvatars[1] }
 ];
 
 function renderProfiles() {
-    const container = document.getElementById('profilesContainer');
-    
-    // Si la pantalla de perfiles aún no existe en el DOM, detenemos la ejecución sin fallar
+    // Usamos profilesGrid que es la ID exacta de tu HTML (Línea 88)
+    const container = document.getElementById('profilesGrid');
     if (!container) return;
 
     container.innerHTML = "";
 
-    // 1. Renderizar perfiles creados
+    // Renderizar perfiles existentes
     userProfiles.forEach((profile) => {
         const pCard = document.createElement('div');
         pCard.className = "profile-card-item";
-        pCard.style.cssText = "text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;";
+        pCard.style.cssText = "text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center;";
         pCard.innerHTML = `
             <div style="width: 90px; height: 90px; border-radius: 50%; background-image: url('${profile.avatar}'); background-size: cover; background-position: center; border: 2px solid var(--accent-color, #ffd700); box-shadow: 0 4px 10px rgba(0,0,0,0.5);"></div>
             <p style="margin-top: 8px; font-size: 0.9rem; font-weight: 600; color: #fff;">${profile.name}</p>
@@ -588,9 +586,9 @@ function renderProfiles() {
         container.appendChild(pCard);
     });
 
-    // 2. Botón para añadir un nuevo perfil
+    // Botón + Agregar Perfil
     const addCard = document.createElement('div');
-    addCard.style.cssText = "text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;";
+    addCard.style.cssText = "text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center;";
     addCard.innerHTML = `
         <div style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #fff;">+</div>
         <p style="margin-top: 8px; font-size: 0.9rem; color: #aaa;">Agregar</p>
@@ -598,7 +596,6 @@ function renderProfiles() {
     addCard.onclick = () => {
         const name = prompt("Nombre del nuevo perfil:");
         if (name) {
-            // Asigna un avatar aleatorio de la lista disponible
             const randomAvatar = customAvatars[Math.floor(Math.random() * customAvatars.length)];
             userProfiles.push({ name, avatar: randomAvatar });
             renderProfiles();
@@ -606,29 +603,6 @@ function renderProfiles() {
     };
     container.appendChild(addCard);
 }
-
-function renderAdminAvatarsView() {
-    const grid = document.getElementById('avatarsAdminList');
-    if (!grid) return;
-    grid.innerHTML = "";
-
-    customAvatars.forEach((url, idx) => {
-        const item = document.createElement('div');
-        item.style.cssText = "position: relative; width: 100%; aspect-ratio: 1;";
-        item.innerHTML = `
-            <img src="${url}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 1px solid var(--card-border);">
-            <button onclick="deleteAvatar(${idx})" class="btn-icon-sm btn-delete-sm" style="position: absolute; top: 0; right: 0; border-radius: 50%;">✕</button>
-        `;
-        grid.appendChild(item);
-    });
-}
-
-window.deleteAvatar = function(idx) {
-    if (customAvatars.length <= 1) return alert("Debes mantener al menos un avatar.");
-    customAvatars.splice(idx, 1);
-    renderAdminAvatarsView();
-    renderProfiles(); // Actualiza la vista pública de perfiles
-};    
 
 // ==========================================
 // 8. REPRODUCTOR INTEGRADO
