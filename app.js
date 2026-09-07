@@ -150,15 +150,14 @@ function toggleDrawer() {
 }
 
 function switchPage(pageId) {
-    document.querySelectorAll('.spa-page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    
-    const target = document.getElementById(`page-${pageId}`);
-    if(target) target.classList.add('active');
+    document.querySelectorAll('.spa-view').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.drawer-btn').forEach(i => i.classList.remove('active'));
 
-    if(pageId === 'spark') loadSparkFeed();
+    const target = document.getElementById(`view-${pageId}`);
+    if (target) target.classList.add('active');
+
+    if (pageId === 'spark') loadSparkFeed();
 }
-
 // ==========================================
 // 4. RENDERIZADO DE CONTENIDO (PÁGINAS)
 // ==========================================
