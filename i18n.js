@@ -1,29 +1,41 @@
+// i18n.js - Diccionario y Motor de Idiomas
+
 export const translations = {
-  es: { movies: "Películas", series: "Series", kids: "Kids", settings: "Panel Maestro", selectProfile: "¿Quién está viendo?", addProfile: "Añadir Perfil", profileType: "Tipo de Perfil", save: "Guardar", addSubtitles: "Añadir Subtítulos", selectLang: "Idioma Subtítulo" },
-  en: { movies: "Movies", series: "Series", kids: "Kids", settings: "Master Panel", selectProfile: "Who is watching?", addProfile: "Add Profile", profileType: "Profile Type", save: "Save", addSubtitles: "Add Subtitles", selectLang: "Subtitle Language" },
-  pt: { movies: "Filmes", series: "Séries", kids: "Kids", settings: "Painel Mestre", selectProfile: "Quem está assistindo?", addProfile: "Adicionar Perfil", profileType: "Tipo de Perfil", save: "Salvar", addSubtitles: "Adicionar Legendas", selectLang: "Idioma da Legenda" },
-  fr: { movies: "Films", series: "Séries", kids: "Kids", settings: "Panneau Maître", selectProfile: "Qui regarde ?", addProfile: "Ajouter un profil", profileType: "Type de profil", save: "Enregistrer", addSubtitles: "Ajouter des sous-titres", selectLang: "Langue des sous-titres" },
-  de: { movies: "Filme", series: "Serien", kids: "Kids", settings: "Master-Panel", selectProfile: "Wer schaut zu?", addProfile: "Profil hinzufügen", profileType: "Profiltyp", save: "Speichern", addSubtitles: "Untertitel hinzufügen", selectLang: "Untertitelsprache" },
-  ja: { movies: "映画", series: "シリーズ", kids: "キッズ", settings: "マスターパネル", selectProfile: "閲覧中のユーザー", addProfile: "プロフィールを追加", profileType: "プロフィールの種類", save: "保存", addSubtitles: "字幕を追加", selectLang: "字幕の言語" }
+  es: { home: "Inicio", series: "Series", movies: "Películas", kids: "Niños", config: "Configuración", lang: "Idioma", logout: "Cerrar Sesión" },
+  en: { home: "Home", series: "Series", movies: "Movies", kids: "Kids", config: "Settings", lang: "Language", logout: "Log Out" },
+  pt: { home: "Início", series: "Séries", movies: "Filmes", kids: "Infantil", config: "Configurações", lang: "Idioma", logout: "Sair" },
+  fr: { home: "Accueil", series: "Séries", movies: "Films", kids: "Enfants", config: "Paramètres", lang: "Langue", logout: "Déconnexion" },
+  de: { home: "Start", series: "Serien", movies: "Filme", kids: "Kinder", config: "Einstellungen", lang: "Sprache", logout: "Abmelden" },
+  ja: { home: "ホーム", series: "シリーズ", movies: "映画", kids: "キッズ", config: "設定", lang: "言語", logout: "ログアウト" }
 };
 
-let currentLang = localStorage.getItem('lumera_lang') || 'es';
+export let currentLang = localStorage.getItem('lumera_lang') || 'es';
 
-export function setLanguage(lang) {
-  if (translations[lang]) {
-    currentLang = lang;
-    localStorage.setItem('lumera_lang', lang);
-    applyTranslations();
+export function setLanguage(lang, playerElement = null) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+  localStorage.setItem('lumera_lang', lang);
+
+  // Traducir texto visible con etiquetas data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      element.textContent = translations[lang][key];
+    }
+  });
+
+  // Forzar cambio de audio y subtítulo en el reproductor si está abierto
+  if (playerElement) {
+    aplicarIdiomaReproductor(playerElement, lang);
   }
 }
 
-export function t(key) {
-  return translations[currentLang]?.[key] || translations['es'][key] || key;
-}
-
-export function applyTranslations() {
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (key) el.innerText = t(key);
+function aplicarIdiomaReproductor(player, lang) {
+  // Ajusta la pista de audio y subtítulo coincidente con el idioma activo
+  const audioTracks = player.querySelectorAll('audio source, video track');
+  audioTracks.forEach(track => {
+    if (track.srclang === lang || track.dataset.lang === lang) {
+      track.track.mode = 'showing';
+    }
   });
 }
