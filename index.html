@@ -1,220 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumera Play</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/XSYJlMB.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumera</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-dark-gold">
+<body>
 
-    <!-- 1. PANTALLA DE ACCESO / LOGIN -->
-    <div id="authScreen" class="auth-screen">
-        <div class="auth-box glass-card">
-            <img src="https://i.imgur.com/8puFuwf.png" class="auth-logo" alt="Lumera">
-            <h2 class="auth-heading">Bienvenido a Lumera</h2>
-            
-            <div class="input-group">
-                <input type="email" id="authEmail" placeholder="Correo electrónico" autocomplete="off">
-            </div>
-            <div class="input-group">
-                <input type="password" id="authPass" placeholder="Contraseña">
-            </div>
-            
-            <div class="auth-actions">
-                <button id="btnLogin" class="btn-round btn-gold">Iniciar Sesión</button>
-                <button id="btnRegister" class="btn-round btn-dark">Registrarse</button>
-            </div>
-        </div>
+  <!-- NAVBAR PRINCIPAL (Sin logo central) -->
+  <header class="navbar">
+    <button id="btnOpenDrawer" class="icon-btn" aria-label="Menú">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="nav-right">
+      <select id="langSelector" class="lang-dropdown">
+        <option value="es">ES</option>
+        <option value="en">EN</option>
+        <option value="pt">PT</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="ja">JA</option>
+      </select>
     </div>
+  </header>
 
-    <!-- 2. APPARATUS PRINCIPAL -->
-    <div id="appScreen" style="display: none;">
-
-        <!-- NAVBAR MOBILE COMPACTA -->
-        <header class="navbar-mobile glass-nav">
-            <button id="btnMenuToggle" class="btn-icon-round" aria-label="Menú">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-            </button>
-            
-            <img src="https://i.imgur.com/8puFuwf.png" class="nav-brand-logo" alt="Lumera">
-
-            <div class="nav-right-actions">
-                <!-- BOTÓN LÁPIZ MAESTRO DE ADMINISTRADOR -->
-                <button id="btnMasterAdmin" class="btn-pencil-master" style="display:none;" title="Panel Creador">✏️</button>
-                <button id="btnNavSearch" class="btn-icon-round">🔍</button>
-            </div>
-        </header>
-
-        <!-- DRAWER / MENÚ LATERAL -->
-        <aside id="sideDrawer" class="drawer-panel glass-drawer">
-            <div class="drawer-top">
-                <img src="https://i.imgur.com/8puFuwf.png" class="drawer-logo" alt="Lumera">
-                <button id="btnCloseDrawer" class="btn-icon-round">✕</button>
-            </div>
-            <nav class="drawer-links">
-                <button class="drawer-btn active" data-target="home">
-                    <span>🏠</span> <span class="lbl-home">Inicio</span>
-                </button>
-                <button class="drawer-btn" data-target="spark">
-                    <img src="https://i.imgur.com/459e7dz.png" class="nav-spark-img" alt="Spark"> <span>Spark</span>
-                </button>
-                <button class="drawer-btn" data-target="series">
-                    <span>📺</span> <span class="lbl-series">Series</span>
-                </button>
-                <button class="drawer-btn" data-target="movies">
-                    <span>🎬</span> <span class="lbl-movies">Películas</span>
-                </button>
-                <button class="drawer-btn" data-target="kids">
-                    <span>🎈</span> <span>Kids</span>
-                </button>
-                <button class="drawer-btn" data-target="profiles">
-                    <span>👤</span> <span class="lbl-profiles">Perfiles</span>
-                </button>
-            </nav>
-            <button id="btnLogout" class="btn-round btn-danger">Cerrar Sesión</button>
-        </aside>
-        <div id="drawerBackdrop" class="drawer-backdrop"></div>
-
-        <!-- CONTENEDOR PRINCIPAL DE PÁGINAS (SPA) -->
-        <main class="main-viewport">
-
-            <!-- SECCIÓN: PERFILES -->
-            <section id="view-profiles" class="spa-view active">
-                <div class="profiles-container">
-                    <h2 class="section-title">¿Quién está viendo?</h2>
-                    <div class="profiles-flex-grid" id="profilesGrid"></div>
-                    
-                    <button id="btnOpenSettings" class="btn-round btn-glass-setting">
-                        ⚙️ Configuración
-                    </button>
-                </div>
-            </section>
-
-            <!-- SECCIÓN: INICIO -->
-            <section id="view-home" class="spa-view">
-                <div id="mainHeroBanner" class="hero-card">
-                    <div class="hero-content">
-                        <h1 id="heroTitle">Lumera Original</h1>
-                        <p id="heroDescription">Selecciona un contenido para comenzar a disfrutar.</p>
-                        <button id="btnHeroPlay" class="btn-round btn-gold">▶ Reproducir</button>
-                    </div>
-                </div>
-                <div id="homeRowsContainer" class="rows-stack"></div>
-            </section>
-
-            <!-- SECCIÓN: SERIES -->
-            <section id="view-series" class="spa-view">
-                <h2 class="category-heading">Series</h2>
-                <div id="seriesRowsContainer" class="rows-stack"></div>
-            </section>
-
-            <!-- SECCIÓN: PELÍCULAS -->
-            <section id="view-movies" class="spa-view">
-                <h2 class="category-heading">Películas</h2>
-                <div id="moviesRowsContainer" class="rows-stack"></div>
-            </section>
-
-            <!-- SECCIÓN: KIDS -->
-            <section id="view-kids" class="spa-view">
-                <h2 class="category-heading">Zona Infantil</h2>
-                <div id="kidsRowsContainer" class="rows-stack"></div>
-            </section>
-
-            <!-- SECCIÓN: SPARK (TIKTOK) -->
-            <section id="view-spark" class="spa-view">
-                <div id="sparkFeed" class="spark-wrapper"></div>
-            </section>
-
-        </main>
-
-        <!-- MODAL: CREAR / EDITAR PERFIL -->
-        <div id="profileEditModal" class="modal-backdrop">
-            <div class="modal-card glass-modal">
-                <div class="modal-header">
-                    <h3 id="modalProfileTitle">Editar Perfil</h3>
-                    <button id="btnCloseProfileModal" class="btn-icon-round">✕</button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="profileInputName" placeholder="Nombre del Perfil" maxlength="12">
-                    <p class="modal-label">Selecciona un Avatar:</p>
-                    <div id="avatarPickerGrid" class="avatar-picker-grid"></div>
-                </div>
-                <div class="modal-footer">
-                    <button id="btnDeleteProfile" class="btn-round btn-danger-link" style="display:none;">Borrar Perfil</button>
-                    <button id="btnSaveProfile" class="btn-round btn-gold">Guardar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL: CONFIGURACIÓN Y IDIOMA -->
-        <div id="settingsModal" class="modal-backdrop">
-            <div class="modal-card glass-modal">
-                <div class="modal-header">
-                    <h3>Configuración</h3>
-                    <button id="btnCloseSettingsModal" class="btn-icon-round">✕</button>
-                </div>
-                <div class="modal-body">
-                    <label>Idioma del Sistema:</label>
-                    <select id="selectLang" class="round-select">
-                        <option value="es">Español</option>
-                        <option value="en">English</option>
-                    </select>
-
-                    <label style="margin-top:15px;">Tema de Color:</label>
-                    <select id="selectTheme" class="round-select">
-                        <option value="theme-dark-gold">Dorado / Negro</option>
-                        <option value="theme-disney-blue">Azul Disney</option>
-                        <option value="theme-cyberpunk">Cyberpunk Neón</option>
-                        <option value="theme-obsidian">Obsidian Rojo</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL MAESTRO DE ADMINISTRADOR (LÁPIZ ✏️) -->
-        <div id="adminMasterModal" class="modal-backdrop">
-            <div class="modal-card admin-modal glass-modal">
-                <div class="modal-header">
-                    <h3>PANEL MAESTRO LUMERA</h3>
-                    <button id="btnCloseAdminModal" class="btn-icon-round">✕</button>
-                </div>
-                
-                <div class="admin-tab-nav">
-                    <button class="btn-tab active" data-tab="content">+ Contenido</button>
-                    <button class="btn-tab" data-tab="category">+ Categoría</button>
-                    <button class="btn-tab" data-tab="avatars">+ Avatares</button>
-                    <button class="btn-tab" data-tab="spark">Spark TikTok</button>
-                </div>
-
-                <div id="adminTabContent" class="admin-tab-content">
-                    <!-- Los formularios se cargan desde app.js -->
-                </div>
-            </div>
-        </div>
-
-        <!-- REPRODUCTOR PRO CUSTOM -->
-        <div id="lumeraPlayer" class="fullscreen-player">
-            <video id="vPlayer" playsinline></video>
-            <div id="playerUI" class="player-controls">
-                <div class="p-top-bar">
-                    <button id="btnClosePlayer" class="btn-icon-round">✕</button>
-                    <button id="btnToggleCC" class="btn-round btn-dark">CC Subtítulos</button>
-                </div>
-                <div class="p-center-bar">
-                    <button id="btnPlayPause" class="btn-play-large">▶</button>
-                </div>
-                <div class="p-bottom-bar">
-                    <input type="range" id="seekProgress" value="0" min="0" max="100">
-                </div>
-            </div>
-        </div>
-
+  <!-- DRAWER / MENÚ LATERAL -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+  <aside id="sideDrawer" class="side-drawer">
+    <div class="drawer-header">
+      <img src="https://i.imgur.com/9W9C2TC.png" alt="Lumera Logo" class="drawer-logo">
+      <button id="btnCloseDrawer" class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
+    
+    <nav class="drawer-nav">
+      <button class="nav-item" data-view="home" data-i18n="movies">Películas</button>
+      <button class="nav-item kids-nav-btn" data-view="kids">
+        <img src="https://i.imgur.com/9rDtCyZ.png" alt="Kids Logo" class="kids-nav-logo">
+        <span data-i18n="kids">Kids</span>
+      </button>
+      <button class="nav-item" data-view="admin" data-i18n="settings">Panel Maestro</button>
+    </nav>
+  </aside>
 
-    <!-- FIREBASE SDK V12 MODULAR -->
-    <script type="module" src="app.js"></script>
+  <!-- CONTENEDOR PRINCIPAL REACTIVO -->
+  <main id="appContainer" class="main-content"></main>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
