@@ -169,3 +169,41 @@ body {
   border-color: var(--gold-accent);
   transform: scale(1.05);
 }
+/* --- ESTILOS DE PERFILES Y HERO LUMERA --- */
+
+/* Borde Arcoíris para Perfil Niños */
+.kids-avatar-active {
+  border: 3px solid transparent !important;
+  background-image: linear-gradient(#151515, #151515), 
+                    linear-gradient(45deg, #ff007f, #7f00ff, #00d2ff, #00ff7f, #ff007f);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Scroll Fino para las Filas Horizontal */
+.fila-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #d4af37 transparent;
+}
+
+.fila-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.fila-scroll::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 10px;
+}
+
+/* Glassmorphism para Modales */
+.glass-modal {
+  background: rgba(18, 18, 18, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
