@@ -523,23 +523,41 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
   }
 }
 
-// CONTROL ROBUSTO DEL MENU LATERAL Y OVERLAY
+// CONTROL ROBUSTO Y COMPLETO DEL MENU LATERAL Y OVERLAY
 function conectarMenuDrawer() {
-  const drawerLinks = document.querySelectorAll('.drawer-links .nav-item');
   const drawer = document.getElementById('drawer');
   const overlay = document.getElementById('overlay');
+  const btnMenu = document.querySelector('.btn-menu, #btnMenu, .menu-toggle'); // Detecta tu botón de menú
+  const drawerLinks = document.querySelectorAll('.drawer-links .nav-item, #drawer a');
+
+  const abrirMenu = () => {
+    if (drawer) drawer.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+  };
 
   const cerrarMenu = () => {
     if (drawer) drawer.classList.remove('active');
     if (overlay) overlay.classList.remove('active');
   };
 
+  // Conectar botón para ABRIR menú
+  if (btnMenu) {
+    btnMenu.onclick = (e) => {
+      e.stopPropagation();
+      if (drawer && drawer.classList.contains('active')) {
+        cerrarMenu();
+      } else {
+        abrirMenu();
+      }
+    };
+  }
+
+  // Conectar fondo oscuro para CERRAR menú
   if (overlay) {
     overlay.onclick = cerrarMenu;
   }
 
-  if (!drawerLinks.length) return;
-
+  // Conectar enlaces del menú para CERRAR y NAVEGAR
   drawerLinks.forEach((link) => {
     link.onclick = (e) => {
       e.preventDefault();
@@ -547,16 +565,17 @@ function conectarMenuDrawer() {
 
       const spanText = link.querySelector('span');
       const key = spanText ? spanText.getAttribute('data-i18n') : '';
+      const texto = link.innerText.toLowerCase();
 
-      if (key === 'home' || link.innerText.toLowerCase().includes('inicio')) {
+      if (key === 'home' || texto.includes('inicio')) {
         entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-      } else if (key === 'movies' || link.innerText.toLowerCase().includes('película') || link.innerText.toLowerCase().includes('movies')) {
+      } else if (key === 'movies' || texto.includes('película') || texto.includes('movies')) {
         entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'pelicula' });
-      } else if (key === 'series' || link.innerText.toLowerCase().includes('serie')) {
+      } else if (key === 'series' || texto.includes('serie')) {
         entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'serie' });
-      } else if (key === 'kids' || link.innerText.toLowerCase().includes('niño') || link.innerText.toLowerCase().includes('kids')) {
+      } else if (key === 'kids' || texto.includes('niño') || texto.includes('kids')) {
         entrarPlataforma({ isKids: true, filtroTipo: 'todos' });
-      } else if (key === 'profiles' || link.innerText.toLowerCase().includes('perfil')) {
+      } else if (key === 'profiles' || texto.includes('perfil')) {
         renderProfileSelection(document.getElementById('appContainer'));
       }
     };
