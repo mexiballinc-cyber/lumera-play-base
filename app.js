@@ -1,74 +1,64 @@
-import { translations, currentLang, setLanguage } from './i18n.js';
 // app.js - Lógica Principal del Cascarón
+import { translations, currentLang, setLanguage } from './i18n.js';
 
 // Seleccionar elementos del DOM
 const btnMenu = document.getElementById('btnMenu');
 const drawer = document.getElementById('drawer');
 const overlay = document.getElementById('overlay');
-const appContainer = document.getElementById('appContainer');
+const btnSearch = document.getElementById('btnSearch');
+const btnConfig = document.getElementById('btnConfig');
 
 // Lógica del Menú Lateral (Drawer)
 function toggleMenu() {
-  drawer.classList.toggle('open');
-  overlay.classList.toggle('active');
+  if (drawer && overlay) {
+    drawer.classList.toggle('open');
+    overlay.classList.toggle('active');
+  }
 }
 
-btnMenu.addEventListener('click', toggleMenu);
-overlay.addEventListener('click', toggleMenu);
-// Función para traducir la interfaz
+if (btnMenu) btnMenu.addEventListener('click', toggleMenu);
+if (overlay) overlay.addEventListener('click', toggleMenu);
+
+// Función para traducir la interfaz mediante data-i18n
 export function translateUI(lang) {
-  if (!translations[lang]) return;
-  currentLang = lang;
-  
-  document.querySelectorAll('[data-i18n]').forEach(element => {
-    const key = element.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      element.textContent = translations[lang][key];
-    }
-  });
+  setLanguage(lang);
 }
-
-// Escuchar botones de la barra superior
-document.getElementById('btnSearch').addEventListener('click', () => {
-  console.log("Abrir buscador...");
-  // Aquí inyectaremos la lógica de búsqueda en Firebase más adelante
-});
-
-document.getElementById('btnConfig').addEventListener('click', () => {
-  console.log("Abrir configuración (Cuenta, Idioma, Colores)...");
-  // Aquí llamaremos al modal de configuración
-});
-
-// Al cargar, aplicamos el idioma por defecto
-translateUI(currentLang);
-import { translations, currentLang, setLanguage } from './i18n.js';
 
 // Inicializar idioma guardado al cargar
 document.addEventListener('DOMContentLoaded', () => {
   setLanguage(currentLang);
 });
 
-// Evento del botón Configuración (Icono de la tuerca)
-document.getElementById('btnConfig').addEventListener('click', () => {
-  renderConfigModal();
-});
+// Escuchar evento del Buscador
+if (btnSearch) {
+  btnSearch.addEventListener('click', () => {
+    console.log("Abrir buscador...");
+  });
+}
 
+// Escuchar evento del botón Configuración (Icono de la tuerca)
+if (btnConfig) {
+  btnConfig.addEventListener('click', () => {
+    renderConfigModal();
+  });
+}
+
+// Modal de Configuración e Idioma
 function renderConfigModal() {
-  // Modal de ajustes de idioma y perfil
   let modal = document.getElementById('configModal');
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'configModal';
-    modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:300;";
+    modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:500; backdrop-filter:blur(8px);";
     document.body.appendChild(modal);
   }
 
   modal.innerHTML = `
-    <div style="background:#151515; padding:25px; border-radius:12px; border:1px solid rgba(212,175,55,0.4); width:300px; color:white; text-align:center;">
-      <h3 data-i18n="config">Configuración</h3>
+    <div style="background:#151515; padding:25px; border-radius:16px; border:1px solid rgba(212,175,55,0.4); width:320px; color:white; text-align:center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+      <h3 data-i18n="config" style="color:#d4af37; margin-bottom:15px;">Configuración</h3>
       <div style="margin:20px 0; text-align:left;">
-        <label data-i18n="lang" style="display:block; margin-bottom:8px; color:#aaa;">Idioma</label>
-        <select id="langSelect" style="width:100%; padding:10px; background:#222; color:white; border:1px solid #444; border-radius:6px;">
+        <label data-i18n="lang" style="display:block; margin-bottom:8px; color:#aaa; font-size:14px;">Idioma</label>
+        <select id="langSelect" style="width:100%; padding:10px; background:#222; color:white; border:1px solid #444; border-radius:8px; outline:none;">
           <option value="es" ${currentLang === 'es' ? 'selected' : ''}>Español</option>
           <option value="en" ${currentLang === 'en' ? 'selected' : ''}>English</option>
           <option value="pt" ${currentLang === 'pt' ? 'selected' : ''}>Português</option>
@@ -77,7 +67,7 @@ function renderConfigModal() {
           <option value="ja" ${currentLang === 'ja' ? 'selected' : ''}>日本語</option>
         </select>
       </div>
-      <button id="closeConfig" style="padding:8px 16px; background:#d4af37; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">OK</button>
+      <button id="closeConfig" style="padding:10px 20px; background:#d4af37; border:none; color:black; border-radius:8px; font-weight:bold; cursor:pointer; width:100%;">OK</button>
     </div>
   `;
 
