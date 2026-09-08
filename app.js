@@ -1,3 +1,4 @@
+import { translations, currentLang, setLanguage } from './i18n.js';
 // app.js - Lógica Principal del Cascarón
 
 // Seleccionar elementos del DOM
@@ -53,3 +54,51 @@ document.getElementById('btnConfig').addEventListener('click', () => {
 
 // Al cargar, aplicamos el idioma por defecto
 translateUI(currentLang);
+import { translations, currentLang, setLanguage } from './i18n.js';
+
+// Inicializar idioma guardado al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  setLanguage(currentLang);
+});
+
+// Evento del botón Configuración (Icono de la tuerca)
+document.getElementById('btnConfig').addEventListener('click', () => {
+  renderConfigModal();
+});
+
+function renderConfigModal() {
+  // Modal de ajustes de idioma y perfil
+  let modal = document.getElementById('configModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'configModal';
+    modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:300;";
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div style="background:#151515; padding:25px; border-radius:12px; border:1px solid rgba(212,175,55,0.4); width:300px; color:white; text-align:center;">
+      <h3 data-i18n="config">Configuración</h3>
+      <div style="margin:20px 0; text-align:left;">
+        <label data-i18n="lang" style="display:block; margin-bottom:8px; color:#aaa;">Idioma</label>
+        <select id="langSelect" style="width:100%; padding:10px; background:#222; color:white; border:1px solid #444; border-radius:6px;">
+          <option value="es" ${currentLang === 'es' ? 'selected' : ''}>Español</option>
+          <option value="en" ${currentLang === 'en' ? 'selected' : ''}>English</option>
+          <option value="pt" ${currentLang === 'pt' ? 'selected' : ''}>Português</option>
+          <option value="fr" ${currentLang === 'fr' ? 'selected' : ''}>Français</option>
+          <option value="de" ${currentLang === 'de' ? 'selected' : ''}>Deutsch</option>
+          <option value="ja" ${currentLang === 'ja' ? 'selected' : ''}>日本語</option>
+        </select>
+      </div>
+      <button id="closeConfig" style="padding:8px 16px; background:#d4af37; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">OK</button>
+    </div>
+  `;
+
+  document.getElementById('langSelect').addEventListener('change', (e) => {
+    setLanguage(e.target.value);
+  });
+
+  document.getElementById('closeConfig').addEventListener('click', () => {
+    modal.remove();
+  });
+}
