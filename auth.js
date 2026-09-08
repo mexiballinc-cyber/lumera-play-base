@@ -1,5 +1,6 @@
-// auth.js - Sistema Autenticación y Perfiles Real
+// auth.js - Sistema de Autenticación y Carga Directa del Admin
 import { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, collection, getDocs } from './firebase.js';
+import { renderAdminPanel } from './admin.js';
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
 let isRegistering = false;
@@ -104,14 +105,14 @@ async function entrarPlataforma(isKids) {
   
   contentsSnap.forEach(doc => {
     const item = doc.data();
-    if (isKids && item.is7Plus) return; // Filtro Kids estricto
+    if (isKids && item.is7Plus) return;
 
     html += `
       <div style="width:160px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
         <img src="${item.poster}" style="width:100%; height:220px; object-fit:cover;">
         <div style="padding:10px;">
           <h4 style="color:#fff; font-size:14px; margin-bottom:5px;">${item.title}</h4>
-          <span style="color:#d4af37; font-size:12px;">${item.type.toUpperCase()}</span>
+          <span style="color:#d4af37; font-size:12px;">${(item.type || 'Contenido').toUpperCase()}</span>
         </div>
       </div>
     `;
@@ -128,11 +129,13 @@ function inyectarBotonAdmin() {
     btnAdmin.id = 'btnAdminSecret';
     btnAdmin.className = 'svg-btn';
     btnAdmin.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
+    
+    // Clic directo sin promesas que fallen
     btnAdmin.onclick = () => {
-      import('./admin.js').then(module => {
-        module.renderAdminPanel(document.getElementById('appContainer'));
-      });
+      const container = document.getElementById('appContainer');
+      renderAdminPanel(container);
     };
+
     navRight.prepend(btnAdmin);
   }
 }
