@@ -15,19 +15,6 @@ function toggleMenu() {
 
 btnMenu.addEventListener('click', toggleMenu);
 overlay.addEventListener('click', toggleMenu);
-
-// Diccionario de Traducción (6 idiomas base)
-const translations = {
-  es: { home: "Inicio", series: "Series", movies: "Películas", kids: "Niños" },
-  en: { home: "Home", series: "Series", movies: "Movies", kids: "Kids" },
-  pt: { home: "Início", series: "Séries", movies: "Filmes", kids: "Infantil" },
-  fr: { home: "Accueil", series: "Séries", movies: "Films", kids: "Enfants" },
-  de: { home: "Start", series: "Serien", movies: "Filme", kids: "Kinder" },
-  ja: { home: "ホーム", series: "シリーズ", movies: "映画", kids: "キッズ" }
-};
-
-let currentLang = 'es'; // Idioma por defecto
-
 // Función para traducir la interfaz
 export function translateUI(lang) {
   if (!translations[lang]) return;
