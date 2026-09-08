@@ -1,76 +1,55 @@
-import { setLanguage, applyTranslations } from './i18n.js';
-import { renderProfilesView } from './profiles.js';
-import { renderAdminView } from './admin.js';
+// app.js - Lógica Principal del Cascarón
 
+// Seleccionar elementos del DOM
+const btnMenu = document.getElementById('btnMenu');
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
 const appContainer = document.getElementById('appContainer');
-const sideDrawer = document.getElementById('sideDrawer');
-const drawerOverlay = document.getElementById('drawerOverlay');
 
-// Control de Drawer
-document.getElementById('btnOpenDrawer').onclick = () => {
-  sideDrawer.classList.add('open');
-  drawerOverlay.classList.add('active');
-};
-
-const closeDrawer = () => {
-  sideDrawer.classList.remove('open');
-  drawerOverlay.classList.remove('active');
-};
-
-document.getElementById('btnCloseDrawer').onclick = closeDrawer;
-drawerOverlay.onclick = closeDrawer;
-
-// Cambiar Idioma Global
-document.getElementById('langSelector').onchange = (e) => {
-  setLanguage(e.target.value);
-};
-
-// Navegación Básica
-document.querySelectorAll('.nav-item').forEach(btn => {
-  btn.onclick = () => {
-    const view = btn.getAttribute('data-view');
-    closeDrawer();
-    loadView(view);
-  };
-});
-
-function loadView(view) {
-  if (view === 'kids') {
-    document.body.classList.add('kids-theme-active');
-  } else if (view !== 'kids') {
-    document.body.classList.remove('kids-theme-active');
-  }
-
-  if (view === 'admin') {
-    renderAdminView(appContainer);
-  } else if (view === 'home' || view === 'kids') {
-    renderCatalog(view === 'kids');
-  }
-  applyTranslations();
+// Lógica del Menú Lateral (Drawer)
+function toggleMenu() {
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('active');
 }
 
-function renderCatalog(isKidsOnly = false) {
-  appContainer.innerHTML = `<div class="grid-container" id="mediaGrid"></div>`;
-  const grid = document.getElementById('mediaGrid');
+btnMenu.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
 
-  // Datos Mock de ejemplo
-  const mockItems = [
-    { title: "Contenido 1", isKids: true, poster: "https://i.imgur.com/9rDtCyZ.png" },
-    { title: "Contenido 2", isKids: false, poster: "https://i.imgur.com/9W9C2TC.png" }
-  ];
+// Diccionario de Traducción (6 idiomas base)
+const translations = {
+  es: { home: "Inicio", series: "Series", movies: "Películas", kids: "Niños" },
+  en: { home: "Home", series: "Series", movies: "Movies", kids: "Kids" },
+  pt: { home: "Início", series: "Séries", movies: "Filmes", kids: "Infantil" },
+  fr: { home: "Accueil", series: "Séries", movies: "Films", kids: "Enfants" },
+  de: { home: "Start", series: "Serien", movies: "Filme", kids: "Kinder" },
+  ja: { home: "ホーム", series: "シリーズ", movies: "映画", kids: "キッズ" }
+};
 
-  const filtered = isKidsOnly ? mockItems.filter(i => i.isKids) : mockItems;
+let currentLang = 'es'; // Idioma por defecto
 
-  filtered.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'media-card';
-    card.innerHTML = `
-      ${item.isKids ? '<div class="kids-badge"></div>' : ''}
-      <img src="${item.poster}" alt="${item.title}">
-    `;
-    grid.appendChild(card);
+// Función para traducir la interfaz
+export function translateUI(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+  
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      element.textContent = translations[lang][key];
+    }
   });
 }
 
-// Inicialización: Cargar Vista de Perfiles
-renderProfilesView(appContainer, (selectedView) => loadView(selectedView));
+// Escuchar botones de la barra superior
+document.getElementById('btnSearch').addEventListener('click', () => {
+  console.log("Abrir buscador...");
+  // Aquí inyectaremos la lógica de búsqueda en Firebase más adelante
+});
+
+document.getElementById('btnConfig').addEventListener('click', () => {
+  console.log("Abrir configuración (Cuenta, Idioma, Colores)...");
+  // Aquí llamaremos al modal de configuración
+});
+
+// Al cargar, aplicamos el idioma por defecto
+translateUI(currentLang);
