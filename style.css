@@ -151,3 +151,21 @@ body {
   margin-top: 70px;
   padding: 20px;
 }
+/* BOTONES E ÍCONOS REDONDOS */
+.svg-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.svg-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: var(--gold-accent);
+  transform: scale(1.05);
+}
