@@ -1,55 +1,66 @@
 // app.js - Control Global de Interfaz y Configuración
 import { setLanguage, currentLang } from './auth.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const btnMenu = document.getElementById('btnMenu');
-  const btnConfig = document.getElementById('btnConfig');
+// Cierra el menú lateral y el fondo oscuro
+export function cerrarDrawerGlobal() {
   const drawer = document.getElementById('drawer');
   const overlay = document.getElementById('overlay');
 
-  const cerrarMenu = () => {
-    if (drawer) {
-      drawer.classList.remove('active');
-      drawer.classList.remove('open');
-    }
-    if (overlay) overlay.classList.remove('active');
-  };
+  if (drawer) {
+    drawer.classList.remove('active', 'open');
+  }
+  if (overlay) {
+    overlay.classList.remove('active', 'open');
+  }
+}
 
-  const abrirMenu = () => {
-    if (drawer) {
-      drawer.classList.add('active');
-      drawer.classList.add('open');
-    }
-    if (overlay) overlay.classList.add('active');
-  };
+// Abre el menú lateral y el fondo oscuro
+export function abrirDrawerGlobal() {
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
 
-  // Abrir y cerrar Drawer Lateral con el botón de hamburguesa
+  if (drawer) {
+    drawer.classList.add('active', 'open');
+  }
+  if (overlay) {
+    overlay.classList.add('active', 'open');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnMenu = document.getElementById('btnMenu');
+  const btnConfig = document.getElementById('btnConfig');
+  const overlay = document.getElementById('overlay');
+  const drawer = document.getElementById('drawer');
+
+  // Botón Hamburguesa: Abre o Cierra
   if (btnMenu) {
-    btnMenu.onclick = () => {
+    btnMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = drawer && (drawer.classList.contains('active') || drawer.classList.contains('open'));
       if (isOpen) {
-        cerrarMenu();
+        cerrarDrawerGlobal();
       } else {
-        abrirMenu();
+        abrirDrawerGlobal();
       }
-    };
+    });
   }
 
-  // Cerrar al hacer clic sobre el overlay
+  // Clic en la pantalla/overlay oscuro para cerrar
   if (overlay) {
-    overlay.onclick = cerrarMenu;
+    overlay.addEventListener('click', () => {
+      cerrarDrawerGlobal();
+    });
   }
 
   // Cerrar al presionar la tecla Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') cerrarMenu();
+    if (e.key === 'Escape') cerrarDrawerGlobal();
   });
 
-  // Modal de la Tuerca (Configuración de Idioma)
+  // Modal de Configuración (Tuerca)
   if (btnConfig) {
-    btnConfig.onclick = () => {
-      abrirModalConfiguracion();
-    };
+    btnConfig.onclick = () => abrirModalConfiguracion();
   }
 });
 
@@ -81,15 +92,7 @@ function abrirModalConfiguracion() {
 
   document.body.appendChild(modal);
 
-  document.getElementById('selectLangModal').onchange = (e) => {
-    setLanguage(e.target.value);
-  };
-
-  document.getElementById('btnCerrarConfig').onclick = () => {
-    modal.remove();
-  };
-
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
+  document.getElementById('selectLangModal').onchange = (e) => setLanguage(e.target.value);
+  document.getElementById('btnCerrarConfig').onclick = () => modal.remove();
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 }
