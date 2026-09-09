@@ -1,4 +1,4 @@
-// auth.js - Control Maestro de Lumera
+// auth.js - Autenticación y Flujo de Sesión
 import { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, collection, getDocs, addDoc, doc, setDoc, deleteDoc } from './firebase.js';
 import { renderAdminPanel } from './admin.js';
 import { translations } from './i18n.js';
@@ -26,17 +26,9 @@ export function setLanguage(lang) {
   }
 }
 
-// ESCUCHADORES GLOBALES AL CARGAR
-document.addEventListener('DOMContentLoaded', () => {
-  conectarBotonesHeader();
-  conectarMenuDrawer();
-});
-
-// ESTADO DE AUTENTICACIÓN
+// MONITOREO DE SESIÓN
 onAuthStateChanged(auth, (user) => {
   const container = document.getElementById('appContainer');
-  conectarBotonesHeader();
-  conectarMenuDrawer();
 
   if (user) {
     if (user.email === ADMIN_EMAIL) inyectarBotonAdmin();
@@ -46,66 +38,6 @@ onAuthStateChanged(auth, (user) => {
     renderAuthScreen(container);
   }
 });
-
-// CONTROL DE BOTONES SUPERIORES (HEADER)
-function conectarBotonesHeader() {
-  const btnMenu = document.getElementById('btnMenu');
-  const btnConfig = document.getElementById('btnConfig');
-  const btnSearch = document.getElementById('btnSearch');
-
-  if (btnMenu) {
-    btnMenu.onclick = (e) => {
-      e.stopPropagation();
-      const drawer = document.getElementById('drawer');
-      const overlay = document.getElementById('overlay');
-      if (drawer && overlay) {
-        drawer.classList.toggle('open');
-        overlay.classList.toggle('active');
-      }
-    };
-  }
-
-  if (btnConfig) {
-    btnConfig.onclick = () => abrirModalConfiguracionGlobal();
-  }
-
-  if (btnSearch) {
-    btnSearch.onclick = () => alert("Buscador próximamente disponible.");
-  }
-}
-
-// CONTROL Y CIERRE DEL MENÚ LATERAL (DRAWER)
-function conectarMenuDrawer() {
-  const drawer = document.getElementById('drawer');
-  const overlay = document.getElementById('overlay');
-
-  const cerrarMenu = () => {
-    if (drawer) drawer.classList.remove('open');
-    if (overlay) overlay.classList.remove('active');
-  };
-
-  if (overlay) overlay.onclick = cerrarMenu;
-
-  document.querySelectorAll('.drawer-links .nav-item').forEach((link) => {
-    link.onclick = (e) => {
-      e.preventDefault();
-      cerrarMenu();
-      const texto = link.innerText.toLowerCase();
-
-      if (texto.includes('inicio') || texto.includes('home')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-      } else if (texto.includes('película') || texto.includes('movies')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'pelicula' });
-      } else if (texto.includes('serie')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'serie' });
-      } else if (texto.includes('niño') || texto.includes('kids')) {
-        entrarPlataforma({ isKids: true, filtroTipo: 'todos' });
-      } else if (texto.includes('perfil')) {
-        renderProfileSelection(document.getElementById('appContainer'));
-      }
-    };
-  });
-}
 
 // PANTALLA LOGIN
 function renderAuthScreen(container) {
@@ -154,7 +86,7 @@ function renderAuthScreen(container) {
 }
 
 // SELECCIÓN DE PERFILES
-async function renderProfileSelection(container) {
+export async function renderProfileSelection(container) {
   if (heroInterval) clearInterval(heroInterval);
   const t = translations[currentLang] || translations.es;
   container.innerHTML = `<h2 style="color:var(--gold-accent); text-align:center; margin-top:50px;">Cargando Lumera...</h2>`;
@@ -359,7 +291,6 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
 
     let mainHtml = `
       <div style="padding: 10px 0 40px 0; max-width: 1200px; margin: 0 auto;">
-        
         <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
           <img id="imgHeroActive" src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.8s ease-in-out;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);"></div>
@@ -389,7 +320,7 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
 
         agrupados[catNombre].forEach(item => {
           mainHtml += `
-            <div class="card-item-media" data-json='${JSON.stringify(item)}' style="flex: 0 0 140px; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.2s;">
+            <div class="card-item-media" data-json='${JSON.stringify(item)}' style="flex: 0 0 140px; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;">
               <img src="${item.poster}" style="width: 100%; height: 190px; object-fit: cover;">
               <div style="padding: 8px;">
                 <h4 style="color: #fff; font-size: 13px; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
@@ -399,10 +330,7 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
           `;
         });
 
-        mainHtml += `
-            </div>
-          </div>
-        `;
+        mainHtml += `</div></div>`;
       });
     }
 
@@ -444,42 +372,6 @@ function reproducirContenido(item) {
   document.getElementById('btnVolverFeed').onclick = () => {
     entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
   };
-}
-
-// MODAL CONFIGURACIÓN DE IDIOMA (TUERCA)
-function abrirModalConfiguracionGlobal() {
-  const modalExistente = document.getElementById('modalConfigGlobal');
-  if (modalExistente) modalExistente.remove();
-
-  const modal = document.createElement('div');
-  modal.id = 'modalConfigGlobal';
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(8px); padding:20px;";
-
-  modal.innerHTML = `
-    <div class="glass-modal" style="padding:25px; border-radius:20px; width:100%; max-width:320px; color:white; text-align:center; background:rgba(20,20,20,0.95);">
-      <h3 style="color:#d4af37; margin-bottom:15px; font-size:1.2rem;">🌐 Idioma / Language</h3>
-      
-      <select id="selectLangModal" style="width:100%; padding:12px; background:#222; border:1px solid #d4af37; color:#d4af37; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:20px; cursor:pointer;">
-        <option value="es" ${currentLang === 'es' ? 'selected' : ''}>🇪🇸 Español</option>
-        <option value="en" ${currentLang === 'en' ? 'selected' : ''}>🇺🇸 English</option>
-        <option value="ja" ${currentLang === 'ja' ? 'selected' : ''}>🇯🇵 日本語</option>
-        <option value="fr" ${currentLang === 'fr' ? 'selected' : ''}>🇫🇷 Français</option>
-        <option value="pt" ${currentLang === 'pt' ? 'selected' : ''}>🇧🇷 Português</option>
-        <option value="de" ${currentLang === 'de' ? 'selected' : ''}>🇩🇪 Deutsch</option>
-      </select>
-
-      <button id="btnCerrarConfig" style="padding:10px 25px; background:#d4af37; border:none; color:black; font-weight:bold; border-radius:8px; cursor:pointer; width:100%;">Aceptar</button>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  document.getElementById('selectLangModal').onchange = (e) => {
-    setLanguage(e.target.value);
-  };
-
-  document.getElementById('btnCerrarConfig').onclick = () => modal.remove();
-  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 }
 
 // INYECCIÓN BOTÓN ADMIN
