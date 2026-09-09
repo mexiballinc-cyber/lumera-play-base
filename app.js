@@ -1,5 +1,4 @@
 // app.js - Gestión de Interfaz y Navegación
-import { translations } from './i18n.js';
 import { currentLang, setLanguage, entrarPlataforma, renderProfileSelection } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,7 +55,7 @@ function conectarNavegacionDrawer() {
   document.querySelectorAll('.drawer-links .nav-item').forEach((link) => {
     link.onclick = (e) => {
       e.preventDefault();
-      toggleDrawer(false); // Cierra el menú al hacer clic
+      toggleDrawer(false);
       
       const texto = link.innerText.toLowerCase();
       if (texto.includes('inicio') || texto.includes('home')) {
@@ -74,7 +73,7 @@ function conectarNavegacionDrawer() {
   });
 }
 
-// MODAL CONFIGURACIÓN DE IDIOMA (TUERCA)
+// MODAL CONFIGURACIÓN DE IDIOMA
 function abrirModalConfiguracionGlobal() {
   const modalExistente = document.getElementById('modalConfigGlobal');
   if (modalExistente) modalExistente.remove();
