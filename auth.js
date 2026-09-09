@@ -1,7 +1,18 @@
-// auth.js - Autenticación y Flujo de Sesión
-import { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, collection, getDocs, addDoc, doc, setDoc, deleteDoc } from './firebase.js';
-import { renderAdminPanel } from './admin.js';
-import { translations } from './i18n.js';
+// auth.js - Autenticación y Flujo de Sesión (Lumera)
+import { 
+  auth, 
+  db, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  onAuthStateChanged, 
+  signOut, 
+  collection, 
+  getDocs, 
+  addDoc, 
+  doc, 
+  setDoc, 
+  deleteDoc 
+} from './firebase.js';
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
 let isRegistering = false;
@@ -88,7 +99,6 @@ function renderAuthScreen(container) {
 // SELECCIÓN DE PERFILES
 export async function renderProfileSelection(container) {
   if (heroInterval) clearInterval(heroInterval);
-  const t = translations[currentLang] || translations.es;
   container.innerHTML = `<h2 style="color:var(--gold-accent); text-align:center; margin-top:50px;">Cargando Lumera...</h2>`;
 
   let perfiles = [];
@@ -138,7 +148,7 @@ export async function renderProfileSelection(container) {
         </div>
       </div>
       
-      <button id="btnSignOut" style="margin-top: 40px; padding: 10px 24px; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 8px; cursor: pointer;">${t.logout || 'Cerrar Sesión'}</button>
+      <button id="btnSignOut" style="margin-top: 40px; padding: 10px 24px; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 8px; cursor: pointer;">Cerrar Sesión</button>
     </div>
   `;
 
@@ -265,7 +275,6 @@ async function abrirModalGestionPerfil(perfilExistente = null) {
 // CATÁLOGO PRINCIPAL
 export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
   currentPerfilKids = isKids;
-  const t = translations[currentLang] || translations.es;
   const container = document.getElementById('appContainer');
   container.innerHTML = `<h2 style="color:var(--gold-accent); text-align:center; margin-top:40px;">Cargando...</h2>`;
 
@@ -289,6 +298,11 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
       todosLosContenidos.push(item);
     });
 
+    let tituloSeccion = 'Inicio';
+    if (filtroTipo === 'pelicula') tituloSeccion = 'Películas';
+    else if (filtroTipo === 'serie') tituloSeccion = 'Series';
+    else if (isKids) tituloSeccion = 'Niños';
+
     let mainHtml = `
       <div style="padding: 10px 0 40px 0; max-width: 1200px; margin: 0 auto;">
         <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
@@ -297,7 +311,7 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
         </div>
 
         <h2 style="color:var(--gold-accent); margin-bottom: 20px; font-size: 1.6rem; text-transform: capitalize;">
-          ${filtroTipo === 'todos' ? (isKids ? (t.kids || 'Niños') : (t.home || 'Inicio')) : (filtroTipo === 'pelicula' ? (t.movies || 'Películas') : (t.series || 'Series'))}
+          ${tituloSeccion}
         </h2>
     `;
 
@@ -384,8 +398,15 @@ function inyectarBotonAdmin() {
     btnAdmin.title = 'Panel Maestro';
     btnAdmin.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
     
-    btnAdmin.onclick = () => {
-      renderAdminPanel(document.getElementById('appContainer'));
+    btnAdmin.onclick = async () => {
+      try {
+        const adminModule = await import('./admin.js');
+        if (adminModule && adminModule.renderAdminPanel) {
+          adminModule.renderAdminPanel(document.getElementById('appContainer'));
+        }
+      } catch (err) {
+        alert("No se pudo cargar el panel de administración.");
+      }
     };
 
     navRight.prepend(btnAdmin);
