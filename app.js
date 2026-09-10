@@ -4,21 +4,32 @@ import { setLanguage, entrarPlataforma, currentLang } from './auth.js';
 export function cerrarDrawerGlobal() {
   const drawer = document.getElementById('mainDrawer');
   const overlay = document.getElementById('drawerOverlay');
-  if (drawer) drawer.classList.remove('open');
-  if (overlay) overlay.classList.remove('open');
+  if (drawer) {
+    drawer.classList.remove('open');
+    drawer.classList.remove('active');
+  }
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.classList.remove('active');
+  }
 }
 
 export function abrirDrawerGlobal() {
   const drawer = document.getElementById('mainDrawer');
   const overlay = document.getElementById('drawerOverlay');
-  if (drawer) drawer.classList.add('open');
-  if (overlay) overlay.classList.add('open');
+  if (drawer) {
+    drawer.classList.add('open');
+    drawer.classList.add('active');
+  }
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.classList.add('active');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const btnMenu = document.getElementById('btnMenu');
   const btnCloseDrawer = document.getElementById('btnCloseDrawer');
-  const drawer = document.getElementById('mainDrawer');
   const overlay = document.getElementById('drawerOverlay');
   const langSelect = document.getElementById('langSelect');
 
