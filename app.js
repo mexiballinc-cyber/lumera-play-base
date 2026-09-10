@@ -1,4 +1,4 @@
-// app.js - Shell y Menú Lateral (Drawer)
+// app.js - Shell y Navegación Lateral
 import { setLanguage, entrarPlataforma, currentLang } from './auth.js';
 
 export function cerrarDrawerGlobal() {
