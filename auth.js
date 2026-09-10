@@ -1,329 +1,347 @@
-// auth.js - Flujo de Autenticación y Catálogo
-import { cerrarDrawerGlobal } from './app.js';
-import { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, collection, getDocs, addDoc, doc, deleteDoc } from './firebase.js';
-import { renderAdminPanel } from './admin.js';
+// auth.js - Autenticación Completa, Perfiles, Catálogo, Buscador y Hero Carousel
+import { 
+  db, 
+  auth, 
+  collection, 
+  getDocs, 
+  addDoc, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from './firebase.js';
 import { renderDetailsScreen } from './details.js';
 
-const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
-let isRegistering = false;
-let currentPerfilKids = false;
-let heroInterval = null;
 export let currentLang = 'es';
-
-const i18n = {
-  es: { whoIsWatching: "¿Quién está viendo?", addProfile: "Añadir", signOut: "Cerrar Sesión", editProfiles: "Editar Perfiles", createProfile: "Crear Nuevo Perfil", profileName: "Nombre del Perfil", profileType: "Tipo de Perfil", normalType: "Normal", kidsType: "Niños", selectAvatar: "Selecciona una Foto", cancel: "Cancelar", save: "Guardar", delete: "Borrar", catalogKids: "Sección Infantil", catalogHome: "Inicio", movies: "Películas", series: "Series", noContent: "No hay contenido disponible.", loading: "Cargando Lumera..." },
-  en: { whoIsWatching: "Who's watching?", addProfile: "Add Profile", signOut: "Sign Out", editProfiles: "Edit Profiles", createProfile: "Create Profile", profileName: "Profile Name", profileType: "Profile Type", normalType: "Normal", kidsType: "Kids", selectAvatar: "Select Avatar", cancel: "Cancel", save: "Save", delete: "Delete", catalogKids: "Kids Section", catalogHome: "Home", movies: "Movies", series: "Series", noContent: "No content available.", loading: "Loading Lumera..." },
-  ja: { whoIsWatching: "誰が観ていますか？", addProfile: "追加", signOut: "ログアウト", editProfiles: "編集", createProfile: "新規作成", profileName: "名前", profileType: "タイプ", normalType: "通常", kidsType: "キッズ", selectAvatar: "アバター選択", cancel: "キャンセル", save: "保存", delete: "削除", catalogKids: "キッズ", catalogHome: "ホーム", movies: "映画", series: "シリーズ", noContent: "コンテンツがありません", loading: "読み込み中..." },
-  fr: { whoIsWatching: "Qui regarde ?", addProfile: "Ajouter", signOut: "Déconnexion", editProfiles: "Gérer", createProfile: "Créer", profileName: "Nom", profileType: "Type", normalType: "Normal", kidsType: "Enfants", selectAvatar: "Choisir avatar", cancel: "Annuler", save: "Enregistrer", delete: "Supprimer", catalogKids: "Enfants", catalogHome: "Accueil", movies: "Films", series: "Séries", noContent: "Aucun contenu.", loading: "Chargement..." },
-  pt: { whoIsWatching: "Quem está assistindo?", addProfile: "Adicionar", signOut: "Sair", editProfiles: "Editar", createProfile: "Criar", profileName: "Nome", profileType: "Tipo", normalType: "Normal", kidsType: "Infantil", selectAvatar: "Selecione avatar", cancel: "Cancelar", save: "Salvar", delete: "Excluir", catalogKids: "Infantil", catalogHome: "Início", movies: "Filmes", series: "Séries", noContent: "Nenhum conteúdo.", loading: "Carregando..." },
-  de: { whoIsWatching: "Wer schaut gerade?", addProfile: "Hinzufügen", signOut: "Abmelden", editProfiles: "Bearbeiten", createProfile: "Erstellen", profileName: "Name", profileType: "Typ", normalType: "Normal", kidsType: "Kinder", selectAvatar: "Avatar wählen", cancel: "Abbrechen", save: "Speichern", delete: "Löschen", catalogKids: "Kinder", catalogHome: "Startseite", movies: "Filme", series: "Serien", noContent: "Kein Inhalt.", loading: "Laden..." }
-};
-
-const defaultAvatars = [
-  "https://i.imgur.com/JonRvHX.png",
-  "https://i.imgur.com/sL5WaEy.png",
-  "https://i.imgur.com/HV449p9.png",
-  "https://i.imgur.com/sNakldY.png"
-];
+let allContent = [];
+let heroInterval = null;
+let currentHeroIndex = 0;
+let usuarioActual = null;
 
 export function setLanguage(lang) {
   currentLang = lang;
-  const container = document.getElementById('appContainer');
-  if (document.getElementById('btnEditarPerfilesMode')) {
-    renderProfileSelection(container);
-  } else {
-    entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-  }
+  renderCatalog(allContent);
 }
 
-onAuthStateChanged(auth, (user) => {
-  const container = document.getElementById('appContainer');
-  conectarMenuDrawer();
-  if (user) {
-    if (user.email === ADMIN_EMAIL) inyectarBotonAdmin();
-    renderProfileSelection(container);
-  } else {
-    quitarBotonAdmin();
-    renderAuthScreen(container);
-  }
-});
+// 1. GESTIÓN DE AUTENTICACIÓN REAL CON FIREBASE
+export function inicializarAuth(onUserLogged) {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      usuarioActual = user;
+      await cargarPerfilesUsuario(user.uid, onUserLogged);
+    } else {
+      usuarioActual = null;
+      renderLoginScreen();
+    }
+  });
+}
 
-function renderAuthScreen(container) {
-  if (heroInterval) clearInterval(heroInterval);
+export function renderLoginScreen() {
+  const container = document.getElementById('authContainer');
+  const mainCont = document.getElementById('mainAppContainer');
+  if (mainCont) mainCont.classList.add('hidden');
+  if (!container) return;
+  container.classList.remove('hidden');
+
   container.innerHTML = `
-    <div style="max-width: 400px; margin: 80px auto; background: rgba(20,20,20,0.9); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); text-align: center; backdrop-filter: blur(12px);">
-      <img src="https://i.imgur.com/9rarmsD.png" alt="Lumera" style="height: 60px; margin-bottom: 20px;">
-      <h2 style="color: #fff; margin-bottom: 20px;">${isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
-      <form id="authForm" style="display: flex; flex-direction: column; gap: 15px;">
-        <input type="email" id="emailInput" placeholder="Correo electrónico" required style="padding: 12px; border-radius: 8px; background: #222; border: 1px solid #444; color: white;">
-        <input type="password" id="passwordInput" placeholder="Contraseña" required style="padding: 12px; border-radius: 8px; background: #222; border: 1px solid #444; color: white;">
-        <button type="submit" style="padding: 12px; background: #d4af37; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">
-          ${isRegistering ? 'Registrarse' : 'Entrar a Lumera'}
-        </button>
+    <div style="max-width:400px; margin:80px auto; padding:30px; background:#141414; border-radius:8px; color:#fff; font-family:sans-serif; text-align:center;">
+      <h2 id="authTitle" style="margin-bottom:20px;">Iniciar Sesión</h2>
+      <form id="authForm">
+        <input type="email" id="authEmail" placeholder="Correo electrónico" required style="width:100%; padding:10px; margin-bottom:10px; border-radius:4px; border:1px solid #333; background:#222; color:#fff;">
+        <input type="password" id="authPassword" placeholder="Contraseña" required style="width:100%; padding:10px; margin-bottom:20px; border-radius:4px; border:1px solid #333; background:#222; color:#fff;">
+        <button type="submit" id="btnSubmitAuth" style="width:100%; padding:10px; background:#e50914; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Ingresar</button>
       </form>
-      <p style="margin-top: 20px; color: #aaa; font-size: 14px;">
-        ${isRegistering ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
-        <span id="btnToggleAuth" style="color: #d4af37; cursor: pointer; font-weight: bold;">
-          ${isRegistering ? ' Inicia Sesión' : ' Regístrate gratis'}
-        </span>
+      <p style="margin-top:15px; font-size:14px; color:#aaa;">
+        <span id="toggleAuthText">¿No tienes cuenta?</span> 
+        <a href="#" id="toggleAuthLink" style="color:#fff; text-decoration:underline;">Regístrate aquí</a>
       </p>
     </div>
   `;
 
-  document.getElementById('btnToggleAuth').onclick = () => {
-    isRegistering = !isRegistering;
-    renderAuthScreen(container);
+  let isRegister = false;
+  const form = document.getElementById('authForm');
+  const toggleLink = document.getElementById('toggleAuthLink');
+  const authTitle = document.getElementById('authTitle');
+  const btnSubmit = document.getElementById('btnSubmitAuth');
+  const toggleText = document.getElementById('toggleAuthText');
+
+  toggleLink.onclick = (e) => {
+    e.preventDefault();
+    isRegister = !isRegister;
+    authTitle.innerText = isRegister ? 'Crear Cuenta' : 'Iniciar Sesión';
+    btnSubmit.innerText = isRegister ? 'Registrarse' : 'Ingresar';
+    toggleText.innerText = isRegister ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?';
+    toggleLink.innerText = isRegister ? 'Inicia sesión' : 'Regístrate aquí';
   };
 
-  document.getElementById('authForm').onsubmit = async (e) => {
+  form.onsubmit = async (e) => {
     e.preventDefault();
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+
     try {
-      if (isRegistering) {
-        await createUserWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value);
+      if (isRegister) {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Cuenta creada con éxito.");
       } else {
-        await signInWithEmailAndPassword(auth, document.getElementById('emailInput').value, document.getElementById('passwordInput').value);
+        await signInWithEmailAndPassword(auth, email, password);
       }
     } catch (err) {
-      alert(err.message);
+      console.error(err);
+      alert("Error de autenticación: " + err.message);
     }
   };
 }
 
-async function renderProfileSelection(container) {
-  if (heroInterval) clearInterval(heroInterval);
-  const t = i18n[currentLang];
-  container.innerHTML = `<h2 style="color:#d4af37; text-align:center; margin-top:50px;">${t.loading}</h2>`;
+export async function cerrarSesion() {
+  await signOut(auth);
+  window.location.reload();
+}
 
-  let perfiles = [];
+// 2. CARGA Y SELECCIÓN DE PERFILES
+async function cargarPerfilesUsuario(uid, onSelectProfileCallback) {
+  let firebaseAvatars = [];
   try {
-    const snap = await getDocs(collection(db, "profiles"));
-    snap.forEach(d => perfiles.push({ id: d.id, ...d.data() }));
-  } catch (e) {}
-
-  if (perfiles.length === 0) {
-    perfiles = [
-      { id: 'p1', name: 'Principal', isKids: false, avatar: defaultAvatars[0] },
-      { id: 'p2', name: 'Niños', isKids: true, avatar: defaultAvatars[1] }
-    ];
+    const avatarSnap = await getDocs(collection(db, "avatars"));
+    avatarSnap.forEach(doc => firebaseAvatars.push(doc.data().url));
+  } catch (e) {
+    console.warn("No se cargaron avatares:", e);
   }
 
-  let html = `
-    <div style="padding: 20px 10px; text-align: center; max-width: 800px; margin: 10px auto;">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px;">
-        <h1 style="color: #fff; font-size: 1.8rem; margin: 0;">${t.whoIsWatching}</h1>
-        <button id="btnEditarPerfilesMode" style="background: transparent; border: 1px solid #d4af37; color: #d4af37; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✎</button>
-      </div>
-      <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
-  `;
+  let profiles = [];
+  try {
+    const pSnap = await getDocs(collection(db, `users/${uid}/profiles`));
+    pSnap.forEach(d => profiles.push({ id: d.id, ...d.data() }));
+  } catch (e) {
+    console.error("Error al cargar perfiles:", e);
+  }
 
-  perfiles.forEach(p => {
-    const borderClass = p.isKids ? 'kids-avatar-active' : '';
-    const staticBorder = p.isKids ? '' : 'border: 3px solid white;';
+  if (profiles.length === 0) {
+    profiles = [{ id: 'default', name: 'Principal', avatar: firebaseAvatars[0] || 'https://via.placeholder.com/100' }];
+  }
 
-    html += `
-      <div class="card-perfil-item" data-id="${p.id}" data-kids="${p.isKids}" style="cursor: pointer; text-align: center; position: relative;">
-        <img src="${p.avatar}" class="${borderClass}" style="width: 105px; height: 105px; border-radius: 50%; object-fit: cover; ${staticBorder}">
-        <p style="color: #fff; margin-top: 10px; font-weight: bold; font-size: 15px;">${p.name}</p>
-        <button class="btn-edit-single-profile" data-json='${JSON.stringify(p)}' style="display:none; position:absolute; top:0; right:0; background:rgba(0,0,0,0.9); border:1px solid #d4af37; color:#d4af37; border-radius:50%; width:32px; height:32px; cursor:pointer;">✎</button>
-      </div>
-    `;
+  renderProfileSelection(profiles, firebaseAvatars, async (selectedProfile) => {
+    entrarPlataforma();
+    if (onSelectProfileCallback) onSelectProfileCallback(selectedProfile);
+  }, async (newProfileData) => {
+    try {
+      const docRef = await addDoc(collection(db, `users/${uid}/profiles`), newProfileData);
+      profiles.push({ id: docRef.id, ...newProfileData });
+      cargarPerfilesUsuario(uid, onSelectProfileCallback);
+    } catch (err) {
+      console.error("Error al guardar perfil:", err);
+    }
   });
+}
 
-  html += `
-        <div style="cursor: pointer; text-align: center;" id="btnCrearPerfilModal">
-          <div style="width: 105px; height: 105px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center;">
-            <span style="font-size: 36px; color: #aaa;">+</span>
-          </div>
-          <p style="color: #aaa; margin-top: 10px; font-weight: bold;">${t.addProfile}</p>
-        </div>
+export function renderProfileSelection(profiles, avatarsList, onSelectProfile, onCreateProfile) {
+  const container = document.getElementById('authContainer');
+  if (!container) return;
+
+  let profilesHTML = profiles.map(p => `
+    <div class="profile-card" data-id="${p.id}" style="display:inline-block; text-align:center; margin:15px; cursor:pointer;">
+      <img src="${p.avatar || 'https://via.placeholder.com/100'}" style="width:100px; height:100px; border-radius:10px; object-fit:cover;">
+      <p style="color:#fff; margin-top:8px;">${p.name}</p>
+    </div>
+  `).join('');
+
+  container.innerHTML = `
+    <div style="text-align:center; padding:40px; color:#fff; font-family:sans-serif;">
+      <h2>¿Quién está viendo ahora?</h2>
+      <div style="margin:20px 0;">${profilesHTML}</div>
+      <button id="btnAddProfile" style="padding:10px 20px; background:#e50914; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Añadir Perfil</button>
+      <div style="margin-top:20px;">
+        <button id="btnLogout" style="background:transparent; color:#aaa; border:none; text-decoration:underline; cursor:pointer;">Cerrar Sesión</button>
       </div>
-      <button id="btnSignOut" style="margin-top: 40px; padding: 10px 24px; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 8px; cursor: pointer;">${t.signOut}</button>
     </div>
   `;
 
-  container.innerHTML = html;
-
-  document.querySelectorAll('.card-perfil-item').forEach(elem => {
-    elem.onclick = (e) => {
-      if (e.target.classList.contains('btn-edit-single-profile')) return;
-      entrarPlataforma({ isKids: elem.getAttribute('data-kids') === 'true', filtroTipo: 'todos' });
+  container.querySelectorAll('.profile-card').forEach(card => {
+    card.onclick = () => {
+      const pId = card.getAttribute('data-id');
+      const selected = profiles.find(p => p.id === pId);
+      onSelectProfile(selected);
     };
   });
 
-  let editModeActive = false;
-  document.getElementById('btnEditarPerfilesMode').onclick = () => {
-    editModeActive = !editModeActive;
-    document.querySelectorAll('.btn-edit-single-profile').forEach(b => b.style.display = editModeActive ? 'block' : 'none');
-  };
+  const btnAdd = document.getElementById('btnAddProfile');
+  if (btnAdd) {
+    btnAdd.onclick = () => {
+      mostrarModalCrearPerfil(avatarsList, onCreateProfile);
+    };
+  }
 
-  document.querySelectorAll('.btn-edit-single-profile').forEach(btn => {
-    btn.onclick = () => abrirModalGestionPerfil(JSON.parse(btn.getAttribute('data-json')));
-  });
-
-  document.getElementById('btnCrearPerfilModal').onclick = () => abrirModalGestionPerfil(null);
-  document.getElementById('btnSignOut').onclick = () => signOut(auth);
+  const btnLogout = document.getElementById('btnLogout');
+  if (btnLogout) btnLogout.onclick = () => cerrarSesion();
 }
 
-async function abrirModalGestionPerfil(perfilExistente = null) {
-  const t = i18n[currentLang];
-  let avatarSeleccionado = perfilExistente ? perfilExistente.avatar : defaultAvatars[0];
+function mostrarModalCrearPerfil(avatars, onCreateProfile) {
+  const name = prompt("Nombre del nuevo perfil:");
+  if (!name) return;
 
-  const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:999; padding:20px;";
-  modal.innerHTML = `
-    <div class="glass-modal" style="padding:25px; border-radius:20px; width:100%; max-width:400px; color:white;">
-      <h3 style="color:#d4af37; margin-bottom:20px; text-align:center;">${perfilExistente ? t.editProfiles : t.createProfile}</h3>
-      <div style="display:flex; flex-direction:column; gap:15px;">
-        <input type="text" id="profNameInput" placeholder="${t.profileName}" value="${perfilExistente ? perfilExistente.name : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:8px;">
-        <select id="profTypeSelect" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:8px;">
-          <option value="normal" ${perfilExistente && !perfilExistente.isKids ? 'selected' : ''}>${t.normalType}</option>
-          <option value="kids" ${perfilExistente && perfilExistente.isKids ? 'selected' : ''}>${t.kidsType}</option>
-        </select>
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
-          <button id="btnCancelProf" type="button" style="padding:10px; background:transparent; border:1px solid #666; color:white; border-radius:8px;">${t.cancel}</button>
-          <button id="btnSaveProf" type="button" style="padding:10px 20px; background:#d4af37; border:none; color:black; font-weight:bold; border-radius:8px;">${t.save}</button>
+  let selectedAvatar = avatars[0] || '';
+  if (avatars.length > 0) {
+    const avatarChoice = prompt(`Selecciona el número de avatar (1 a ${avatars.length}) o pega una URL directa:\n` + avatars.map((a, i) => `${i + 1}: ${a}`).join('\n'));
+    if (avatarChoice) {
+      const index = parseInt(avatarChoice) - 1;
+      if (!isNaN(index) && avatars[index]) {
+        selectedAvatar = avatars[index];
+      } else if (avatarChoice.startsWith('http')) {
+        selectedAvatar = avatarChoice;
+      }
+    }
+  } else {
+    selectedAvatar = prompt("Introduce la URL de la imagen de perfil:") || '';
+  }
+
+  onCreateProfile({ name, avatar: selectedAvatar || 'https://via.placeholder.com/100' });
+}
+
+// 3. ENTRADA Y NAVEGACIÓN DE LA PLATAFORMA
+export function entrarPlataforma() {
+  const authCont = document.getElementById('authContainer');
+  const mainCont = document.getElementById('mainAppContainer');
+  if (authCont) authCont.classList.add('hidden');
+  if (mainCont) mainCont.classList.remove('hidden');
+  cargarContenido();
+  setupHeader();
+}
+
+async function cargarContenido() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "movies"));
+    allContent = [];
+    querySnapshot.forEach((doc) => {
+      allContent.push({ id: doc.id, ...doc.data() });
+    });
+    renderHeroSlider(allContent);
+    renderCatalog(allContent);
+  } catch (e) {
+    console.error("Error al cargar contenido:", e);
+  }
+}
+
+function setupHeader() {
+  const btnInicio = document.getElementById('btnNavInicio');
+  const btnPelis = document.getElementById('btnNavPelis');
+  const btnSeries = document.getElementById('btnNavSeries');
+  const searchInput = document.getElementById('searchInput') || document.querySelector('input[type="search"]');
+
+  if (btnInicio) {
+    btnInicio.onclick = (e) => { 
+      e.preventDefault(); 
+      renderHeroSlider(allContent);
+      renderCatalog(allContent); 
+    };
+  }
+  if (btnPelis) {
+    btnPelis.onclick = (e) => {
+      e.preventDefault();
+      const pelis = allContent.filter(i => i.type === 'movie' || i.tipo === 'pelicula');
+      renderHeroSlider(pelis);
+      renderCatalog(pelis);
+    };
+  }
+  if (btnSeries) {
+    btnSeries.onclick = (e) => {
+      e.preventDefault();
+      const series = allContent.filter(i => i.type === 'series' || i.tipo === 'serie');
+      renderHeroSlider(series);
+      renderCatalog(series);
+    };
+  }
+
+  if (searchInput) {
+    searchInput.oninput = (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        renderHeroSlider(allContent);
+        renderCatalog(allContent);
+        return;
+      }
+      const filtrados = allContent.filter(item => {
+        const titulo = (item.title || item.titulo || '').toLowerCase();
+        const desc = (item.description || item.descripcion || '').toLowerCase();
+        const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : (item.tags || '').toLowerCase();
+        return titulo.includes(query) || desc.includes(query) || tags.includes(query);
+      });
+      renderHeroSlider(filtrados);
+      renderCatalog(filtrados);
+    };
+  }
+}
+
+// 4. HERO SLIDER AUTOMÁTICO (CADA 10 SEGUNDOS)
+function renderHeroSlider(items) {
+  const heroContainer = document.getElementById('heroContainer');
+  if (!heroContainer) return;
+
+  const heroItems = items.filter(i => i.heroImg || i.poster || i.img);
+  if (heroItems.length === 0) {
+    heroContainer.style.display = 'none';
+    return;
+  }
+
+  heroContainer.style.display = 'block';
+  clearInterval(heroInterval);
+
+  function updateHero(index) {
+    const item = heroItems[index];
+    const bgUrl = item.heroImg || item.poster || item.img;
+
+    heroContainer.innerHTML = `
+      <div style="position:relative; width:100%; height:55vh; background:linear-gradient(to top, #141414, transparent), url('${bgUrl}') center/cover no-repeat; transition: background 1s ease-in-out; display:flex; align-items:flex-end; padding:30px; border-radius:8px; margin-bottom:20px;">
+        <div style="max-width:500px; color:#fff; z-index:2;">
+          <h1 style="font-size:2rem; margin-bottom:10px;">${item.title || item.titulo || ''}</h1>
+          <p style="font-size:0.85rem; color:#ccc; margin-bottom:15px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">${item.description || item.descripcion || ''}</p>
+          <button id="btnHeroPlay" style="background:#e50914; color:#fff; border:none; padding:10px 20px; font-weight:bold; border-radius:4px; cursor:pointer;">▶ Reproducir</button>
         </div>
       </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  document.getElementById('btnCancelProf').onclick = () => modal.remove();
-  document.getElementById('btnSaveProf').onclick = async () => {
-    const name = document.getElementById('profNameInput').value.trim();
-    const isKids = document.getElementById('profTypeSelect').value === 'kids';
-    if (!name) return;
-
-    if (perfilExistente && perfilExistente.id.length > 5) {
-      await deleteDoc(doc(db, "profiles", perfilExistente.id));
-    }
-    await addDoc(collection(db, "profiles"), { name, isKids, avatar: avatarSeleccionado });
-    modal.remove();
-    renderProfileSelection(document.getElementById('appContainer'));
-  };
-}
-
-export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
-  currentPerfilKids = isKids;
-  const t = i18n[currentLang];
-  const container = document.getElementById('appContainer');
-  container.innerHTML = `<h2 style="color:#d4af37; text-align:center; margin-top:40px;">${t.loading}</h2>`;
-
-  if (heroInterval) clearInterval(heroInterval);
-
-  try {
-    const heroSnap = await getDocs(collection(db, "heroes"));
-    let heroImages = [];
-    heroSnap.forEach(d => heroImages.push(d.data().url));
-    if (heroImages.length === 0) heroImages = ["https://i.imgur.com/9rarmsD.png"];
-
-    const contentsSnap = await getDocs(collection(db, "contents"));
-    let todosLosContenidos = [];
-
-    contentsSnap.forEach(d => {
-      const item = d.data();
-      item.id = d.id;
-      if (isKids && item.is7Plus) return;
-      if (filtroTipo === 'pelicula' && item.type !== 'pelicula') return;
-      if (filtroTipo === 'serie' && item.type !== 'serie') return;
-      todosLosContenidos.push(item);
-    });
-
-    let mainHtml = `
-      <div style="padding: 10px 20px 40px 20px; max-width: 1200px; margin: 0 auto;">
-        <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
-          <img id="imgHeroActive" src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <h2 style="color:#d4af37; margin-bottom: 20px; font-size: 1.6rem; text-transform: capitalize;">
-          ${filtroTipo === 'todos' ? (isKids ? t.catalogKids : t.catalogHome) : (filtroTipo === 'pelicula' ? t.movies : t.series)}
-        </h2>
     `;
 
-    if (todosLosContenidos.length === 0) {
-      mainHtml += `<p style="color:#888; text-align:center; margin-top:30px;">${t.noContent}</p>`;
-    } else {
-      const agrupados = {};
-      todosLosContenidos.forEach(item => {
-        const cat = item.category || 'Destacados';
-        if (!agrupados[cat]) agrupados[cat] = [];
-        agrupados[cat].push(item);
-      });
-
-      Object.keys(agrupados).forEach(catNombre => {
-        mainHtml += `
-          <div style="margin-bottom: 30px;">
-            <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 12px; font-weight: bold;">${catNombre}</h3>
-            <div class="fila-scroll">
-        `;
-
-        agrupados[catNombre].forEach(item => {
-          mainHtml += `
-            <div class="card-content-item" data-id="${item.id}" style="flex: 0 0 140px; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;">
-              <img src="${item.poster}" style="width: 100%; height: 190px; object-fit: cover;">
-              <div style="padding: 8px;">
-                <h4 style="color: #fff; font-size: 13px; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
-                <span style="color: #d4af37; font-size: 11px; font-weight: bold;">${(item.type || 'CONTENIDO').toUpperCase()}</span>
-              </div>
-            </div>
-          `;
-        });
-
-        mainHtml += `</div></div>`;
-      });
-    }
-
-    mainHtml += `</div>`;
-    container.innerHTML = mainHtml;
-
-    // EVENTO ABRIR PANTALLA DE DESCRIPCIÓN
-    container.querySelectorAll('.card-content-item').forEach(card => {
-      card.onclick = () => {
-        const item = todosLosContenidos.find(c => c.id === card.getAttribute('data-id'));
-        if (item) renderDetailsScreen(container, item);
+    const btnPlay = document.getElementById('btnHeroPlay');
+    if (btnPlay) {
+      btnPlay.onclick = () => {
+        const container = document.getElementById('detailsContainer') || document.getElementById('mainAppContainer');
+        renderDetailsScreen(container, item);
       };
-    });
+    }
+  }
 
-  } catch (err) {
-    container.innerHTML = `<p style="text-align:center; color:#ff5555; margin-top:50px;">Error al cargar la plataforma.</p>`;
+  currentHeroIndex = 0;
+  updateHero(currentHeroIndex);
+
+  if (heroItems.length > 1) {
+    heroInterval = setInterval(() => {
+      currentHeroIndex = (currentHeroIndex + 1) % heroItems.length;
+      updateHero(currentHeroIndex);
+    }, 10000);
   }
 }
 
-function conectarMenuDrawer() {
-  const drawerLinks = document.querySelectorAll('.nav-item');
-  if (!drawerLinks.length) return;
+// 5. RENDERIZADO DE CATÁLOGO
+function renderCatalog(items) {
+  const grid = document.getElementById('catalogGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
 
-  drawerLinks.forEach((link) => {
-    const newLink = link.cloneNode(true);
-    if (link.parentNode) link.parentNode.replaceChild(newLink, link);
+  if (items.length === 0) {
+    grid.innerHTML = '<p style="color: #fff; padding: 20px;">No se encontraron resultados.</p>';
+    return;
+  }
 
-    newLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      cerrarDrawerGlobal();
-      const key = newLink.querySelector('span') ? newLink.querySelector('span').getAttribute('data-i18n') : '';
-
-      if (key === 'home') entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-      else if (key === 'movies') entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'pelicula' });
-      else if (key === 'series') entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'serie' });
-      else if (key === 'kids') entrarPlataforma({ isKids: true, filtroTipo: 'todos' });
-      else if (key === 'profiles') renderProfileSelection(document.getElementById('appContainer'));
-    });
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    card.style.cssText = 'cursor:pointer; margin:10px; display:inline-block; width:150px;';
+    card.innerHTML = `
+      <img src="${item.poster || item.img || ''}" alt="${item.title || ''}" style="width:100%; border-radius:8px; height:225px; object-fit:cover;">
+      <h4 style="color:#fff; font-size:14px; margin-top:5px; text-align:center;">${item.title || item.titulo || ''}</h4>
+    `;
+    card.onclick = () => {
+      const container = document.getElementById('detailsContainer') || document.getElementById('mainAppContainer');
+      renderDetailsScreen(container, item);
+    };
+    grid.appendChild(card);
   });
-}
-
-function inyectarBotonAdmin() {
-  const navRight = document.querySelector('.nav-right');
-  if (navRight && !document.getElementById('btnAdminSecret')) {
-    const btnAdmin = document.createElement('button');
-    btnAdmin.id = 'btnAdminSecret';
-    btnAdmin.className = 'svg-btn';
-    btnAdmin.title = 'Panel Maestro';
-    btnAdmin.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
-    btnAdmin.onclick = () => renderAdminPanel(document.getElementById('appContainer'));
-    navRight.prepend(btnAdmin);
-  }
-}
-
-function quitarBotonAdmin() {
-  const btn = document.getElementById('btnAdminSecret');
-  if (btn) btn.remove();
 }
