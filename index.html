@@ -9,7 +9,7 @@
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN PRINCIPAL -->
+  <!-- BARRA DE NAVEGACIÓN PRINCIPAL (HEADER) -->
   <header class="glass-nav">
     <div class="nav-left">
       <button id="btnMenu" class="svg-btn" aria-label="Abrir Menú">
@@ -21,25 +21,29 @@
     </div>
     
     <div class="nav-right">
-      <button id="btnConfig" class="svg-btn" title="Configurar Idioma">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-      </button>
+      <!-- SELECTOR DE IDIOMAS INTEGRADO -->
+      <select id="langSelect" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(212,175,55,0.4); padding: 6px 10px; border-radius: 8px; font-weight: bold; cursor: pointer; outline: none;">
+        <option value="es" style="background: #111; color: white;">ES</option>
+        <option value="en" style="background: #111; color: white;">EN</option>
+        <option value="ja" style="background: #111; color: white;">JA</option>
+        <option value="fr" style="background: #111; color: white;">FR</option>
+        <option value="pt" style="background: #111; color: white;">PT</option>
+        <option value="de" style="background: #111; color: white;">DE</option>
+      </select>
     </div>
   </header>
 
   <!-- MENÚ LATERAL (DRAWER Y OVERLAY) -->
-  <div id="overlay" class="overlay"></div>
-  <aside id="drawer" class="glass-drawer">
-    <div class="drawer-header">
+  <div id="drawerOverlay" class="overlay"></div>
+  <aside id="mainDrawer" class="glass-drawer">
+    <div class="drawer-header" style="display: flex; justify-content: space-between; align-items: center;">
       <img src="https://i.imgur.com/9rarmsD.png" alt="Lumera Drawer Logo" class="drawer-logo">
+      <button id="btnCloseDrawer" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">✕</button>
     </div>
     <nav class="drawer-links">
       <a href="#" class="nav-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> 
-        <span data-i18n="home">Inicio</span>
+        <span data-i18n="catalogHome">Inicio</span>
       </a>
       <a href="#" class="nav-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> 
@@ -51,7 +55,7 @@
       </a>
       <a href="#" class="nav-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> 
-        <span data-i18n="kids">Niños</span>
+        <span data-i18n="catalogKids">Niños</span>
       </a>
       <a href="#" class="nav-item">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 
@@ -60,10 +64,10 @@
     </nav>
   </aside>
 
-  <!-- CONTENEDOR DINÁMICO DE LA APLICACIÓN -->
+  <!-- CONTENEDOR PRINCIPAL DINÁMICO DE LA APLICACIÓN -->
   <main id="appContainer"></main>
 
-  <!-- MÓDULOS JS PRINCIPALES -->
+  <!-- MÓDULOS DE NAVEGACIÓN Y AUTENTICACIÓN -->
   <script type="module" src="app.js"></script>
   <script type="module" src="auth.js"></script>
 </body>
