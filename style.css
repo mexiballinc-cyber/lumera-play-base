@@ -77,7 +77,8 @@ body {
   z-index: 150;
 }
 
-.overlay.active {
+.overlay.active,
+.overlay.open {
   opacity: 1;
   pointer-events: all;
 }
@@ -106,13 +107,13 @@ body {
 
 .drawer-header {
   text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
   border-bottom: 1px solid var(--glass-border);
 }
 
 .drawer-logo {
-  max-width: 140px;
+  max-width: 120px;
 }
 
 .drawer-links {
