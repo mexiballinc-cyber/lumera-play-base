@@ -681,8 +681,7 @@ function inyectarBotonAdmin() {
     btnAdmin.title = 'Panel Maestro';
     
     // SVG Limpio sin interpolación de cadenas conflictivas
-    btnAdmin.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
-    
+   btnAdmin.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
     btnAdmin.onclick = () => {
       const container = document.getElementById('appContainer');
       renderAdminPanel(container);
