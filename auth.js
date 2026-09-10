@@ -21,7 +21,7 @@ let currentPerfilKids = false;
 let heroInterval = null;
 export let currentLang = 'es';
 
-// DICCIONARIO DE IDIOMAS (6 IDIOMAS)
+// DICCIONARIO DE IDIOMAS
 const i18n = {
   es: { whoIsWatching: "¿Quién está viendo?", addProfile: "Añadir", signOut: "Cerrar Sesión", editProfiles: "Editar Perfiles", createProfile: "Crear Nuevo Perfil", profileName: "Nombre del Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borde Blanco)", kidsType: "Niños (Borde Arcoíris)", selectAvatar: "Selecciona una Foto", cancel: "Cancelar", save: "Guardar", delete: "Borrar", catalogKids: "Sección Infantil", catalogHome: "Inicio", movies: "Películas", series: "Series", noContent: "No hay contenido disponible.", loading: "Cargando Lumera...", profiles: "Perfiles", searchPlaceholder: "Buscar películas, series...", play: "Reproducir", details: "Detalles" },
   en: { whoIsWatching: "Who's watching?", addProfile: "Add Profile", signOut: "Sign Out", editProfiles: "Edit Profiles", createProfile: "Create New Profile", profileName: "Profile Name", profileType: "Profile Type", normalType: "Normal (White Border)", kidsType: "Kids (Rainbow Border)", selectAvatar: "Select an Avatar", cancel: "Cancel", save: "Save", delete: "Delete", catalogKids: "Kids Section", catalogHome: "Home", movies: "Movies", series: "Series", noContent: "No content available.", loading: "Loading Lumera...", profiles: "Profiles", searchPlaceholder: "Search movies, series...", play: "Play", details: "Details" },
@@ -38,7 +38,7 @@ const defaultAvatars = [
   "https://i.imgur.com/sNakldY.png"
 ];
 
-// IDIOMA GLOBAL
+// IDIOMA GLOBAL Y ACTUALIZACIÓN
 export function setLanguage(lang) {
   currentLang = lang;
   traducirDrawerHTML();
@@ -71,7 +71,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// PANTALLA LOGIN
+// LOGIN / REGISTRO
 function renderAuthScreen(container) {
   if (heroInterval) clearInterval(heroInterval);
   container.innerHTML = `
@@ -296,7 +296,7 @@ async function abrirModalGestionPerfil(perfilExistente = null) {
   }
 }
 
-// CATÁLOGO, BUSCADOR Y MODAL DETALLES
+// CATÁLOGO
 export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
   currentPerfilKids = isKids;
   const t = i18n[currentLang];
@@ -327,13 +327,10 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
 
     let mainHtml = `
       <div style="padding: 10px 20px 40px 20px; max-width: 1200px; margin: 0 auto;">
-        
-        <!-- BUSCADOR -->
         <div style="margin-bottom:20px; display:flex; justify-content:center;">
           <input type="text" id="inputSearchLumera" placeholder="${t.searchPlaceholder}" style="width:100%; max-width:500px; padding:12px 18px; border-radius:25px; background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.4); color:white; font-size:14px; outline:none;">
         </div>
 
-        <!-- HERO BANNER -->
         <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
           <img id="imgHeroActive" src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.8s ease-in-out;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);"></div>
@@ -350,14 +347,12 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
     container.innerHTML = mainHtml;
     renderGridContenidos(todosLosContenidos);
 
-    // EVENTO DE BÚSQUEDA
     document.getElementById('inputSearchLumera').oninput = (e) => {
       const q = e.target.value.toLowerCase().trim();
       const filtrados = todosLosContenidos.filter(item => item.title.toLowerCase().includes(q));
       renderGridContenidos(filtrados);
     };
 
-    // ROTACIÓN DE HERO
     if (heroImages.length > 1) {
       let currentHeroIdx = 0;
       const imgElem = document.getElementById('imgHeroActive');
@@ -379,7 +374,7 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
   }
 }
 
-// RENDERIZAR FILAS POR CATEGORÍA
+// RENDER GRID
 function renderGridContenidos(lista) {
   const area = document.getElementById('catalogContentArea');
   const t = i18n[currentLang];
@@ -425,7 +420,6 @@ function renderGridContenidos(lista) {
 
   area.innerHTML = html;
 
-  // EVENTO PARA ABRIR EL MODAL DETALLES DEL CONTENIDO
   area.querySelectorAll('.card-media-item').forEach(card => {
     card.onclick = () => {
       const itemData = JSON.parse(card.getAttribute('data-json'));
@@ -434,7 +428,7 @@ function renderGridContenidos(lista) {
   });
 }
 
-// MODAL DE DETALLES Y LANZAMIENTO DEL REPRODUCTOR
+// MODAL DETALLES
 function abrirModalDetalles(item) {
   const t = i18n[currentLang];
   const modal = document.createElement('div');
@@ -502,7 +496,7 @@ function abrirModalDetalles(item) {
   };
 }
 
-// CONEXIÓN DEL MENÚ OVERLAY / DRAWER
+// CONECTAR DRAWER
 function conectarMenuDrawer() {
   const drawerLinks = document.querySelectorAll('.nav-item');
   if (!drawerLinks.length) return;
