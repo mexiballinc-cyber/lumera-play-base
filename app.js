@@ -1,5 +1,5 @@
 // app.js - Control Global, Drawer Lateral, Menú Responsive e Idiomas
-import { setLanguage, entrarPlataforma, currentLang } from './auth.js';
+import { setLanguage, currentLang } from './auth.js';
 
 export function cerrarDrawerGlobal() {
   const drawer = document.getElementById('mainDrawer');
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.onclick = () => cerrarDrawerGlobal();
   }
 
-  // Cambio de Idioma Global
+  // Cambio de Idioma Global / Configuración
   if (langSelect) {
     langSelect.value = currentLang;
     langSelect.onchange = (e) => {
