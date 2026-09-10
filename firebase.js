@@ -1,25 +1,35 @@
-// firebase.js - Conexión al backend de Lumera
+// firebase.js - Conexión Firebase + Exportaciones requeridas por el nuevo Admin
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  doc, 
+  deleteDoc, 
+  updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
-// Tu configuración exacta
 const firebaseConfig = {
-  apiKey: "AIzaSyBynw4cMM1Y2iY8zeX37WJBcT6aNQMqGQc",
-  authDomain: "lumera-79254.firebaseapp.com",
-  projectId: "lumera-79254",
-  storageBucket: "lumera-79254.firebasestorage.app",
-  messagingSenderId: "4621510860",
-  appId: "1:4621510860:web:fcd7cfa27a59f196943a69"
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_PROJECT.firebaseapp.com",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_PROJECT.appspot.com",
+  messagingSenderId: "TU_SENDER_ID",
+  appId: "TU_APP_ID"
 };
 
-// Inicializamos los servicios
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Exportamos las herramientas para usarlas en auth.js y admin.js
 export { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
@@ -29,5 +39,6 @@ export {
   addDoc, 
   getDocs, 
   doc, 
-  deleteDoc 
+  deleteDoc, 
+  updateDoc 
 };
