@@ -1,4 +1,4 @@
-// auth.js - Flujo Completo, Perfiles, Buscador, Detalles y Lanzamiento del Reproductor
+// auth.js - Flujo Completo, Perfiles, Buscador, Detalles Fullscreen y Lanzamiento del Reproductor
 import { cerrarDrawerGlobal } from './app.js';
 import { 
   auth, db, 
@@ -21,14 +21,14 @@ let currentPerfilKids = false;
 let heroInterval = null;
 export let currentLang = 'es';
 
-// DICCIONARIO DE IDIOMAS
+// DICCIONARIO DE IDIOMAS (6 IDIOMAS)
 const i18n = {
-  es: { whoIsWatching: "¿Quién está viendo?", addProfile: "Añadir", signOut: "Cerrar Sesión", editProfiles: "Editar Perfiles", createProfile: "Crear Nuevo Perfil", profileName: "Nombre del Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borde Blanco)", kidsType: "Niños (Borde Arcoíris)", selectAvatar: "Selecciona una Foto", cancel: "Cancelar", save: "Guardar", delete: "Borrar", catalogKids: "Sección Infantil", catalogHome: "Inicio", movies: "Películas", series: "Series", noContent: "No hay contenido disponible.", loading: "Cargando Lumera...", profiles: "Perfiles", searchPlaceholder: "Buscar películas, series...", play: "Reproducir", details: "Detalles" },
-  en: { whoIsWatching: "Who's watching?", addProfile: "Add Profile", signOut: "Sign Out", editProfiles: "Edit Profiles", createProfile: "Create New Profile", profileName: "Profile Name", profileType: "Profile Type", normalType: "Normal (White Border)", kidsType: "Kids (Rainbow Border)", selectAvatar: "Select an Avatar", cancel: "Cancel", save: "Save", delete: "Delete", catalogKids: "Kids Section", catalogHome: "Home", movies: "Movies", series: "Series", noContent: "No content available.", loading: "Loading Lumera...", profiles: "Profiles", searchPlaceholder: "Search movies, series...", play: "Play", details: "Details" },
-  ja: { whoIsWatching: "誰が観ていますか？", addProfile: "プロフィールを追加", signOut: "ログアウト", editProfiles: "プロフィールを編集", createProfile: "新しいプロフィールを作成", profileName: "プロフィール名", profileType: "プロフィールの種類", normalType: "通常（白枠）", kidsType: "キッズ（レインボー枠）", selectAvatar: "アバターを選択", cancel: "キャンセル", save: "保存", delete: "削除", catalogKids: "キッズコーナー", catalogHome: "ホーム", movies: "映画", series: "シリーズ", noContent: "コンテンツがありません。", loading: "読み込み中...", profiles: "プロフィール", searchPlaceholder: "検索...", play: "再生", details: "詳細" },
-  fr: { whoIsWatching: "Qui regarde ?", addProfile: "Ajouter", signOut: "Déconnexion", editProfiles: "Gérer les profils", createProfile: "Créer un profil", profileName: "Nom du profil", profileType: "Type de profil", normalType: "Normal (Bord blanc)", kidsType: "Enfants (Bord arc-en-ciel)", selectAvatar: "Choisir un avatar", cancel: "Annuler", save: "Enregistrer", delete: "Supprimer", catalogKids: "Section Enfants", catalogHome: "Accueil", movies: "Films", series: "Séries", noContent: "Aucun contenu disponible.", loading: "Chargement...", profiles: "Profils", searchPlaceholder: "Rechercher...", play: "Lancer", details: "Détails" },
-  pt: { whoIsWatching: "Quem está assistindo?", addProfile: "Adicionar", signOut: "Sair", editProfiles: "Editar Perfis", createProfile: "Criar Novo Perfil", profileName: "Nome do Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borda Branca)", kidsType: "Infantil (Borda Arco-íris)", selectAvatar: "Selecione uma Foto", cancel: "Cancelar", save: "Salvar", delete: "Excluir", catalogKids: "Seção Infantil", catalogHome: "Início", movies: "Filmes", series: "Séries", noContent: "Nenhum conteúdo disponível.", loading: "Carregando...", profiles: "Perfis", searchPlaceholder: "Pesquisar...", play: "Assistir", details: "Detalhes" },
-  de: { whoIsWatching: "Wer schaut gerade?", addProfile: "Hinzufügen", signOut: "Abmelden", editProfiles: "Profile bearbeiten", createProfile: "Neues Profil erstellen", profileName: "Profilname", profileType: "Profiltyp", normalType: "Normal (Weißer Rand)", kidsType: "Kinder (Regenbogenrand)", selectAvatar: "Avatar auswählen", cancel: "Abbrechen", save: "Speichern", delete: "Löschen", catalogKids: "Kinderbereich", catalogHome: "Startseite", movies: "Filme", series: "Serien", noContent: "Kein Inhalt verfügbar.", loading: "Wird geladen...", profiles: "Profile", searchPlaceholder: "Suchen...", play: "Abspielen", details: "Details" }
+  es: { whoIsWatching: "¿Quién está viendo?", addProfile: "Añadir", signOut: "Cerrar Sesión", editProfiles: "Editar Perfiles", createProfile: "Crear Nuevo Perfil", profileName: "Nombre del Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borde Blanco)", kidsType: "Niños (Borde Arcoíris)", selectAvatar: "Selecciona una Foto", cancel: "Cancelar", save: "Guardar", delete: "Borrar", catalogKids: "Sección Infantil", catalogHome: "Inicio", movies: "Películas", series: "Series", noContent: "No hay contenido disponible.", loading: "Cargando Lumera...", profiles: "Perfiles", searchPlaceholder: "Buscar películas, series...", play: "Reproducir", details: "Detalles", seasons: "Temporadas", season: "Temporada", episode: "Episodio" },
+  en: { whoIsWatching: "Who's watching?", addProfile: "Add Profile", signOut: "Sign Out", editProfiles: "Edit Profiles", createProfile: "Create New Profile", profileName: "Profile Name", profileType: "Profile Type", normalType: "Normal (White Border)", kidsType: "Kids (Rainbow Border)", selectAvatar: "Select an Avatar", cancel: "Cancel", save: "Save", delete: "Delete", catalogKids: "Kids Section", catalogHome: "Home", movies: "Movies", series: "Series", noContent: "No content available.", loading: "Loading Lumera...", profiles: "Profiles", searchPlaceholder: "Search movies, series...", play: "Play", details: "Details", seasons: "Seasons", season: "Season", episode: "Episode" },
+  ja: { whoIsWatching: "誰が観ていますか？", addProfile: "プロフィールを追加", signOut: "ログアウト", editProfiles: "プロフィールを編集", createProfile: "新しいプロフィールを作成", profileName: "プロフィール名", profileType: "プロフィールの種類", normalType: "通常（白枠）", kidsType: "キッズ（レインボー枠）", selectAvatar: "アバターを選択", cancel: "キャンセル", save: "保存", delete: "削除", catalogKids: "キッズコーナー", catalogHome: "ホーム", movies: "映画", series: "シリーズ", noContent: "コンテンツがありません。", loading: "読み込み中...", profiles: "プロフィール", searchPlaceholder: "検索...", play: "再生", details: "詳細", seasons: "シーズン", season: "シーズン", episode: "エピソード" },
+  fr: { whoIsWatching: "Qui regarde ?", addProfile: "Ajouter", signOut: "Déconnexion", editProfiles: "Gérer les profils", createProfile: "Créer un profil", profileName: "Nom du profil", profileType: "Type de profil", normalType: "Normal (Bord blanc)", kidsType: "Enfants (Bord arc-en-ciel)", selectAvatar: "Choisir un avatar", cancel: "Annuler", save: "Enregistrer", delete: "Supprimer", catalogKids: "Section Enfants", catalogHome: "Accueil", movies: "Films", series: "Séries", noContent: "Aucun contenu disponible.", loading: "Chargement...", profiles: "Profils", searchPlaceholder: "Rechercher...", play: "Lancer", details: "Détails", seasons: "Saisons", season: "Saison", episode: "Épisode" },
+  pt: { whoIsWatching: "Quem está assistindo?", addProfile: "Adicionar", signOut: "Sair", editProfiles: "Editar Perfis", createProfile: "Criar Novo Perfil", profileName: "Nome do Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borda Branca)", kidsType: "Infantil (Borda Arco-íris)", selectAvatar: "Selecione uma Foto", cancel: "Cancelar", save: "Salvar", delete: "Excluir", catalogKids: "Seção Infantil", catalogHome: "Início", movies: "Filmes", series: "Séries", noContent: "Nenhum conteúdo disponível.", loading: "Carregando...", profiles: "Perfis", searchPlaceholder: "Pesquisar...", play: "Assistir", details: "Detalhes", seasons: "Temporadas", season: "Temporada", episode: "Episódio" },
+  de: { whoIsWatching: "Wer schaut gerade?", addProfile: "Hinzufügen", signOut: "Abmelden", editProfiles: "Profile bearbeiten", createProfile: "Neues Profil erstellen", profileName: "Profilname", profileType: "Profiltyp", normalType: "Normal (Weißer Rand)", kidsType: "Kinder (Regenbogenrand)", selectAvatar: "Avatar auswählen", cancel: "Abbrechen", save: "Speichern", delete: "Löschen", catalogKids: "Kinderbereich", catalogHome: "Startseite", movies: "Filme", series: "Serien", noContent: "Kein Inhalt verfügbar.", loading: "Wird geladen...", profiles: "Profile", searchPlaceholder: "Suchen...", play: "Abspielen", details: "Details", seasons: "Staffeln", season: "Staffel", episode: "Folge" }
 };
 
 const defaultAvatars = [
@@ -38,7 +38,7 @@ const defaultAvatars = [
   "https://i.imgur.com/sNakldY.png"
 ];
 
-// IDIOMA GLOBAL Y ACTUALIZACIÓN
+// IDIOMA GLOBAL
 export function setLanguage(lang) {
   currentLang = lang;
   traducirDrawerHTML();
@@ -71,7 +71,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// LOGIN / REGISTRO
+// PANTALLA LOGIN
 function renderAuthScreen(container) {
   if (heroInterval) clearInterval(heroInterval);
   container.innerHTML = `
@@ -296,7 +296,7 @@ async function abrirModalGestionPerfil(perfilExistente = null) {
   }
 }
 
-// CATÁLOGO
+// CATÁLOGO, BUSCADOR Y MODAL DETALLES
 export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
   currentPerfilKids = isKids;
   const t = i18n[currentLang];
@@ -327,10 +327,13 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
 
     let mainHtml = `
       <div style="padding: 10px 20px 40px 20px; max-width: 1200px; margin: 0 auto;">
+        
+        <!-- BUSCADOR -->
         <div style="margin-bottom:20px; display:flex; justify-content:center;">
           <input type="text" id="inputSearchLumera" placeholder="${t.searchPlaceholder}" style="width:100%; max-width:500px; padding:12px 18px; border-radius:25px; background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.4); color:white; font-size:14px; outline:none;">
         </div>
 
+        <!-- HERO BANNER -->
         <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
           <img id="imgHeroActive" src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.8s ease-in-out;">
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);"></div>
@@ -347,12 +350,14 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
     container.innerHTML = mainHtml;
     renderGridContenidos(todosLosContenidos);
 
+    // EVENTO DE BÚSQUEDA
     document.getElementById('inputSearchLumera').oninput = (e) => {
       const q = e.target.value.toLowerCase().trim();
       const filtrados = todosLosContenidos.filter(item => item.title.toLowerCase().includes(q));
       renderGridContenidos(filtrados);
     };
 
+    // ROTACIÓN DE HERO
     if (heroImages.length > 1) {
       let currentHeroIdx = 0;
       const imgElem = document.getElementById('imgHeroActive');
@@ -374,7 +379,7 @@ export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } 
   }
 }
 
-// RENDER GRID
+// RENDERIZAR FILAS POR CATEGORÍA
 function renderGridContenidos(lista) {
   const area = document.getElementById('catalogContentArea');
   const t = i18n[currentLang];
@@ -420,6 +425,7 @@ function renderGridContenidos(lista) {
 
   area.innerHTML = html;
 
+  // EVENTO PARA ABRIR EL MODAL DETALLES DEL CONTENIDO
   area.querySelectorAll('.card-media-item').forEach(card => {
     card.onclick = () => {
       const itemData = JSON.parse(card.getAttribute('data-json'));
@@ -428,33 +434,53 @@ function renderGridContenidos(lista) {
   });
 }
 
-// MODAL DETALLES
+// MODAL DE DETALLES FULLSCREEN CON SELECCIÓN DE TEMPORADAS Y EPISODIOS
 function abrirModalDetalles(item) {
   const t = i18n[currentLang];
   const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; z-index:9999; backdrop-filter:blur(8px); padding:20px;";
+  modal.style.cssText = "position:fixed; inset:0; background:#0a0a0a; display:flex; flex-direction:column; z-index:9999; overflow-y:auto; color:white;";
 
   const esSerie = item.type === 'serie';
+  let seasonSelectHtml = '';
+  let episodesGridHtml = '';
+
+  if (esSerie && item.seasons && item.seasons.length > 0) {
+    seasonSelectHtml = `
+      <div style="margin-top: 30px;">
+        <div style="display:flex; align-items:center; gap:15px; margin-bottom: 20px;">
+          <h3 style="margin:0; font-size:1.2rem; color:#d4af37;">${t.seasons}</h3>
+          <select id="seasonSelector" style="padding: 8px 16px; background: #222; color: white; border: 1px solid #d4af37; border-radius: 8px; outline: none; font-size:14px; cursor:pointer;">
+            ${item.seasons.map((s, idx) => `<option value="${idx}">${s.name || `${t.season} ${idx + 1}`}</option>`).join('')}
+          </select>
+        </div>
+        <div id="episodesListArea" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px;"></div>
+      </div>
+    `;
+  }
 
   modal.innerHTML = `
-    <div style="background:#151515; border-radius:16px; border:1px solid #d4af37; width:100%; max-width:600px; color:white; overflow:hidden; position:relative;">
+    <!-- BOTÓN CERRAR -->
+    <button id="btnCloseDetails" style="position:fixed; top:20px; right:25px; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.2); color:white; border-radius:50%; width:42px; height:42px; font-size:20px; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px);">✕</button>
+
+    <!-- BANNER HERO DETALLES -->
+    <div style="position:relative; width:100%; min-height:450px; display:flex; align-items:flex-end;">
+      <img src="${item.banner || item.poster}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.5;">
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, #0a0a0a 10%, rgba(10,10,10,0.4) 60%, transparent 100%);"></div>
       
-      <button id="btnCloseDetails" style="position:absolute; top:15px; right:15px; background:rgba(0,0,0,0.6); border:none; color:white; border-radius:50%; width:32px; height:32px; font-size:18px; cursor:pointer; z-index:2;">✕</button>
+      <div style="position:relative; z-index:2; padding:40px; max-width:900px;">
+        <span style="background:#d4af37; color:black; font-weight:bold; padding:4px 12px; border-radius:4px; font-size:12px; text-transform:uppercase;">${(item.type || 'CONTENIDO').toUpperCase()}</span>
+        <h1 style="font-size:3rem; margin:15px 0 10px 0; text-shadow:2px 2px 8px rgba(0,0,0,0.8);">${item.title}</h1>
+        <p style="color:#ddd; font-size:16px; line-height:1.6; margin-bottom:25px; max-width:700px;">${item.description || 'Sin descripción disponible.'}</p>
 
-      <div style="width:100%; height:240px; position:relative;">
-        <img src="${item.banner || item.poster}" style="width:100%; height:100%; object-fit:cover;">
-        <div style="position:absolute; inset:0; background:linear-gradient(to top, #151515, transparent);"></div>
-      </div>
-
-      <div style="padding:20px;">
-        <h2 style="margin:0 0 10px 0; color:#fff;">${item.title}</h2>
-        <p style="color:#aaa; font-size:14px; margin-bottom:20px; line-height:1.4;">${item.description || 'Sin descripción disponible.'}</p>
-
-        <button id="btnPlayMediaModal" style="padding:12px 30px; background:#d4af37; color:black; border:none; border-radius:25px; font-weight:bold; font-size:16px; cursor:pointer; display:flex; align-items:center; gap:8px;">
+        <button id="btnPlayMediaModal" style="padding:14px 36px; background:#d4af37; color:black; border:none; border-radius:30px; font-weight:bold; font-size:18px; cursor:pointer; display:inline-flex; align-items:center; gap:10px; box-shadow:0 4px 15px rgba(212,175,55,0.4);">
           ▶ ${t.play}
         </button>
       </div>
+    </div>
 
+    <!-- SECCIÓN INFERIOR DE TEMPORADAS / DETALLES EXTRA -->
+    <div style="padding:0 40px 60px 40px; max-width:1200px; width:100%; box-sizing:border-box;">
+      ${seasonSelectHtml}
     </div>
   `;
 
@@ -462,41 +488,96 @@ function abrirModalDetalles(item) {
 
   document.getElementById('btnCloseDetails').onclick = () => modal.remove();
 
+  // RENDERIZAR EPISODIOS
+  const renderEpisodesForSeason = (seasonIndex) => {
+    const area = document.getElementById('episodesListArea');
+    if (!area || !item.seasons || !item.seasons[seasonIndex]) return;
+
+    const episodes = item.seasons[seasonIndex].episodes || [];
+    if (episodes.length === 0) {
+      area.innerHTML = `<p style="color:#aaa;">No hay episodios agregados en esta temporada.</p>`;
+      return;
+    }
+
+    area.innerHTML = episodes.map((ep, epIdx) => `
+      <div class="card-episode-item" data-sidx="${seasonIndex}" data-eidx="${epIdx}" data-url="${ep.videoUrl || ''}" style="background:#181818; border-radius:10px; overflow:hidden; border:1px solid #2a2a2a; cursor:pointer; transition:transform 0.2s, border-color 0.2s;" onmouseover="this.style.transform='scale(1.02)'; this.style.borderColor='#d4af37';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#2a2a2a';">
+        <div style="position:relative; height:120px; background:#222;">
+          <img src="${ep.thumbnail || item.banner || item.poster}" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center;">
+            <span style="background:rgba(0,0,0,0.7); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#d4af37;">▶</span>
+          </div>
+        </div>
+        <div style="padding:12px;">
+          <h4 style="margin:0 0 5px 0; font-size:14px; color:#fff;">${epIdx + 1}. ${ep.title || `${t.episode} ${epIdx + 1}`}</h4>
+          <p style="margin:0; font-size:12px; color:#888; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${ep.description || ''}</p>
+        </div>
+      </div>
+    `).join('');
+
+    area.querySelectorAll('.card-episode-item').forEach(card => {
+      card.onclick = () => {
+        const sIdx = parseInt(card.getAttribute('data-sidx'));
+        const eIdx = parseInt(card.getAttribute('data-eidx'));
+        const url = card.getAttribute('data-url');
+
+        modal.remove();
+        lanzarReproductor(item, sIdx, eIdx, url);
+      };
+    });
+  };
+
+  // MANEJO SELECTOR DE TEMPORADAS
+  const selector = document.getElementById('seasonSelector');
+  if (selector) {
+    renderEpisodesForSeason(0);
+    selector.onchange = (e) => renderEpisodesForSeason(parseInt(e.target.value));
+  }
+
+  // ACCIÓN BOTÓN PRINCIPAL REPRODUCIR
   document.getElementById('btnPlayMediaModal').onclick = () => {
     modal.remove();
-    const playerContainer = document.getElementById('appContainer');
-
-    if (esSerie && item.seasons && item.seasons.length > 0) {
+    if (esSerie && item.seasons && item.seasons.length > 0 && item.seasons[0].episodes && item.seasons[0].episodes.length > 0) {
       const epInicial = item.seasons[0].episodes[0];
-      renderPlayer(playerContainer, {
-        videoUrl: epInicial ? epInicial.videoUrl : '',
-        title: item.title,
-        seasons: item.seasons,
-        currentSeasonIdx: 0,
-        currentEpisodeIdx: 0,
-        onBack: () => entrarPlataforma({ isKids: currentPerfilKids }),
-        onSelectEpisode: (sIdx, eIdx, newUrl) => {
-          renderPlayer(playerContainer, {
-            videoUrl: newUrl,
-            title: item.title,
-            seasons: item.seasons,
-            currentSeasonIdx: sIdx,
-            currentEpisodeIdx: eIdx,
-            onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
-          });
-        }
-      });
+      lanzarReproductor(item, 0, 0, epInicial.videoUrl);
     } else {
-      renderPlayer(playerContainer, {
-        videoUrl: item.videoUrl || '',
-        title: item.title,
-        onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
-      });
+      lanzarReproductor(item, 0, 0, item.videoUrl || '');
     }
   };
 }
 
-// CONECTAR DRAWER
+// AUXILIAR LANZAMIENTO REPRODUCTOR
+function lanzarReproductor(item, seasonIdx = 0, episodeIdx = 0, targetUrl = '') {
+  const playerContainer = document.getElementById('appContainer');
+
+  if (item.type === 'serie' && item.seasons && item.seasons.length > 0) {
+    renderPlayer(playerContainer, {
+      videoUrl: targetUrl,
+      title: item.title,
+      seasons: item.seasons,
+      currentSeasonIdx: seasonIdx,
+      currentEpisodeIdx: episodeIdx,
+      onBack: () => entrarPlataforma({ isKids: currentPerfilKids }),
+      onSelectEpisode: (sIdx, eIdx, newUrl) => {
+        renderPlayer(playerContainer, {
+          videoUrl: newUrl,
+          title: item.title,
+          seasons: item.seasons,
+          currentSeasonIdx: sIdx,
+          currentEpisodeIdx: eIdx,
+          onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
+        });
+      }
+    });
+  } else {
+    renderPlayer(playerContainer, {
+      videoUrl: targetUrl || item.videoUrl || '',
+      title: item.title,
+      onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
+    });
+  }
+}
+
+// CONEXIÓN DEL MENÚ OVERLAY / DRAWER
 function conectarMenuDrawer() {
   const drawerLinks = document.querySelectorAll('.nav-item');
   if (!drawerLinks.length) return;
