@@ -1,4 +1,4 @@
-// app.js - Shell y Navegación Lateral
+// app.js - Control Global, Drawer Lateral, Menú Responsive e Idiomas
 import { setLanguage, entrarPlataforma, currentLang } from './auth.js';
 
 export function cerrarDrawerGlobal() {
@@ -8,25 +8,48 @@ export function cerrarDrawerGlobal() {
   if (overlay) overlay.classList.remove('open');
 }
 
+export function abrirDrawerGlobal() {
+  const drawer = document.getElementById('mainDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  if (drawer) drawer.classList.add('open');
+  if (overlay) overlay.classList.add('open');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const btnMenu = document.getElementById('btnMenu');
+  const btnCloseDrawer = document.getElementById('btnCloseDrawer');
   const drawer = document.getElementById('mainDrawer');
   const overlay = document.getElementById('drawerOverlay');
   const langSelect = document.getElementById('langSelect');
 
-  if (btnMenu && drawer && overlay) {
-    btnMenu.onclick = () => {
-      drawer.classList.add('open');
-      overlay.classList.add('open');
+  // Control de Apertura/Cierre de Menú Lateral
+  if (btnMenu) {
+    btnMenu.onclick = (e) => {
+      e.stopPropagation();
+      abrirDrawerGlobal();
     };
+  }
 
+  if (btnCloseDrawer) {
+    btnCloseDrawer.onclick = () => cerrarDrawerGlobal();
+  }
+
+  if (overlay) {
     overlay.onclick = () => cerrarDrawerGlobal();
   }
 
+  // Cambio de Idioma Global
   if (langSelect) {
     langSelect.value = currentLang;
     langSelect.onchange = (e) => {
       setLanguage(e.target.value);
     };
   }
+
+  // Cierre de Drawer al presionar la tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      cerrarDrawerGlobal();
+    }
+  });
 });
