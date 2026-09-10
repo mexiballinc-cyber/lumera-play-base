@@ -1,28 +1,37 @@
 // app.js - Control Global, Drawer Lateral, Menú Responsive e Idiomas
-import { setLanguage, entrarPlataforma, currentLang } from './auth.js';
+import { setLanguage, currentLang } from './auth.js';
 
 export function cerrarDrawerGlobal() {
-  const drawer = document.getElementById('mainDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  if (drawer) drawer.classList.remove('open');
-  if (overlay) overlay.classList.remove('open');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  if (drawer) {
+    drawer.classList.remove('open');
+    drawer.classList.remove('active');
+  }
+  if (overlay) {
+    overlay.classList.remove('open');
+    overlay.classList.remove('active');
+  }
 }
 
 export function abrirDrawerGlobal() {
-  const drawer = document.getElementById('mainDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  if (drawer) drawer.classList.add('open');
-  if (overlay) overlay.classList.add('open');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  if (drawer) {
+    drawer.classList.add('open');
+    drawer.classList.add('active');
+  }
+  if (overlay) {
+    overlay.classList.add('open');
+    overlay.classList.add('active');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const btnMenu = document.getElementById('btnMenu');
-  const btnCloseDrawer = document.getElementById('btnCloseDrawer');
-  const drawer = document.getElementById('mainDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  const langSelect = document.getElementById('langSelect');
+  const overlay = document.getElementById('overlay');
+  const btnConfig = document.getElementById('btnConfig');
 
-  // Control de Apertura/Cierre de Menú Lateral
   if (btnMenu) {
     btnMenu.onclick = (e) => {
       e.stopPropagation();
@@ -30,23 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  if (btnCloseDrawer) {
-    btnCloseDrawer.onclick = () => cerrarDrawerGlobal();
-  }
-
   if (overlay) {
     overlay.onclick = () => cerrarDrawerGlobal();
   }
 
-  // Cambio de Idioma Global
-  if (langSelect) {
-    langSelect.value = currentLang;
-    langSelect.onchange = (e) => {
-      setLanguage(e.target.value);
+  if (btnConfig) {
+    btnConfig.onclick = () => {
+      const nuevoIdioma = currentLang === 'es' ? 'en' : 'es';
+      setLanguage(nuevoIdioma);
+      alert(`Idioma cambiado a: ${nuevoIdioma.toUpperCase()}`);
     };
   }
 
-  // Cierre de Drawer al presionar la tecla ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       cerrarDrawerGlobal();
