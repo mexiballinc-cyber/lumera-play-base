@@ -1,4 +1,4 @@
-// firebase.js - Conexión con Firebase Lumera
+// firebase.js - Configuración e Inicialización Completa de Firebase Lumera
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
   getAuth, 
