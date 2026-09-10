@@ -1,4 +1,4 @@
-// firebase.js - Conexión Firebase + Exportaciones requeridas por el nuevo Admin
+// firebase.js - Configuración Lumera
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { 
   getAuth, 
@@ -18,12 +18,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROJECT.firebaseapp.com",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_PROJECT.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBynw4cMM1Y2iY8zeX37WJBcT6aNQMqGQc",
+  authDomain: "lumera-79254.firebaseapp.com",
+  projectId: "lumera-79254",
+  storageBucket: "lumera-79254.firebasestorage.app",
+  messagingSenderId: "4621510860",
+  appId: "1:4621510860:web:fcd7cfa27a59f196943a69"
 };
 
 const app = initializeApp(firebaseConfig);
