@@ -1,136 +1,126 @@
-// details.js - Renderizado exclusivo de detalles de películas y series
+// details.js - Vista de Detalles de Películas y Series en Lumera
+// Muestra sinopsis, ficha técnica, botón de reproducción y selector de episodios para series.
+
 import { state, updateState } from './state.js';
-import { translations } from './translations.js';
 
 /**
- * Renderiza la vista de detalles completa en el contenedor principal.
- * @param {Object} item - Objeto con la información de la película o serie.
+ * Renderiza la vista de detalles para el contenido seleccionado.
+ * @param {HTMLElement} container - Contenedor principal donde se insertará la vista.
  */
-export function renderDetailsScreen(item) {
-  state.selectedDetailMedia = item;
-  const lang = state.currentLang || 'es';
-  const t = translations[lang] || translations['es'];
-  const appContainer = document.getElementById('appContainer');
+export function renderDetails(container) {
+  if (!container) {
+    container = document.getElementById('appContainer');
+  }
+  if (!container) return;
 
-  if (!appContainer || !item) return;
+  const item = state.selectedMedia;
 
-  const isSeries = item.type === 'series' && Array.isArray(item.episodes);
-
-  // Generar HTML para audios y subtítulos disponibles
-  const audiosBadges = (item.availableAudios || ['es'])
-    .map(a => `<span class="badge badge-audio">${a.toUpperCase()}</span>`)
-    .join(' ');
-    
-  const subsBadges = (item.availableSubtitles || ['off'])
-    .map(s => `<span class="badge badge-sub">${s === 'off' ? 'Sin Subs' : s.toUpperCase()}</span>`)
-    .join(' ');
-
-  // Renderizado de lista de episodios si es serie
-  let episodesHTML = '';
-  if (isSeries && item.episodes.length > 0) {
-    episodesHTML = `
-      <div class="episodes-section">
-        <h3 class="section-subtitle">Episodios</h3>
-        <div class="episodes-list">
-          ${item.episodes.map((ep, index) => `
-            <div class="episode-card" data-episode-index="${index}">
-              <div class="episode-thumbnail">
-                <img src="${ep.thumbnail || item.poster || 'https://via.placeholder.com/160x90'}" alt="${ep.title}">
-                <button class="btn-play-episode" data-index="${index}">▶</button>
-              </div>
-              <div class="episode-info">
-                <h4>E${index + 1}: ${ep.title || `Episodio ${index + 1}`}</h4>
-                <p>${ep.description || 'Sin descripción disponible.'}</p>
-                <span class="episode-duration">${ep.duration || '24m'}</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
+  // Redirigir al catálogo si no existe un ítem seleccionado
+  if (!item) {
+    updateState('currentView', 'home');
+    return;
   }
 
-  appContainer.innerHTML = `
-    <div class="details-screen">
-      <div class="details-hero" style="background-image: linear-gradient(to top, rgba(10,10,12,1), rgba(10,10,12,0.4)), url('${item.banner || item.poster}');">
-        <button id="btnBackDetails" class="btn-back">← Volver</button>
-        <div class="details-content">
-          <h1 class="details-title">${item.title}</h1>
-          <div class="details-meta">
-            <span class="meta-year">${item.year || '2026'}</span>
-            <span class="meta-rating">${item.rating || '13+'}</span>
-            <span class="meta-category">${item.category || 'General'}</span>
-          </div>
-          <p class="details-description">${item.description || 'Sin sinopsis disponible.'}</p>
+  const isSeries = item.type === 'series';
+  const episodes = isSeries && Array.isArray(item.episodes) ? item.episodes : [];
+  const bannerBg = item.banner || item.poster || '';
+
+  container.innerHTML = `
+    <div class="details-wrapper" style="min-height: 100vh; background: #0b0b0e; color: #ffffff; padding-bottom: 60px;">
+      
+      <!-- BANNER DE FONDO -->
+      <div class="details-hero" style="position: relative; width: 100%; height: 58vh; min-height: 380px; background: url('${bannerBg}') center/cover no-repeat;">
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,14,0.3) 0%, rgba(11,11,14,1) 100%);"></div>
+        
+        <!-- BOTÓN VOLVER -->
+        <button id="btnBackToHome" style="position: absolute; top: 25px; left: 4%; z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 9px 18px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: bold; backdrop-filter: blur(6px); display: flex; align-items: center; gap: 8px;">
+          ← Volver al Catálogo
+        </button>
+
+        <!-- INFORMACIÓN DEL CONTENIDO -->
+        <div class="details-hero-content" style="position: absolute; bottom: 25px; left: 4%; right: 4%; z-index: 5; display: flex; gap: 28px; align-items: flex-end; max-width: 1200px; margin: 0 auto;">
           
-          <div class="details-tracks-info">
-            <div class="track-group"><strong>Idiomas de audio:</strong> ${audiosBadges}</div>
-            <div class="track-group"><strong>Subtítulos:</strong> ${subsBadges}</div>
+          <img src="${item.poster || 'https://via.placeholder.com/180x260'}" alt="${item.title}" style="width: 180px; height: 260px; object-fit: cover; border-radius: 12px; border: 2px solid rgba(212,175,55,0.4); box-shadow: 0 12px 35px rgba(0,0,0,0.8); flex-shrink: 0;">
+          
+          <div style="flex: 1;">
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+              <span style="background: #d4af37; color: #000; font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">${isSeries ? 'Serie' : 'Película'}</span>
+              <span style="color: #aaa; font-size: 0.85rem; font-weight: 500;">${item.category || 'General'}</span>
+            </div>
+
+            <h1 style="font-size: 2.4rem; font-weight: 800; margin: 0 0 12px 0; color: #ffffff; text-shadow: 0 2px 12px rgba(0,0,0,0.9); line-height: 1.1;">${item.title}</h1>
+            
+            <p style="color: #ccc; font-size: 0.95rem; line-height: 1.5; max-width: 720px; margin-bottom: 22px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${item.description || 'Sin descripción disponible para este título.'}</p>
+
+            <div style="display: flex; gap: 15px; align-items: center;">
+              <button id="btnPlayMain" style="background: #d4af37; color: #000; border: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s ease, background 0.2s ease;">
+                ▶ Reproducir ${isSeries ? 'Episodio 1' : ''}
+              </button>
+            </div>
           </div>
 
-          <div class="details-actions">
-            <button id="btnStartPlayback" class="btn-primary">
-              ▶ ${t.play || 'Reproducir'}
-            </button>
-            <button id="btnAddMyList" class="btn-secondary">
-              + ${t.myList || 'Mi Lista'}
-            </button>
-          </div>
         </div>
       </div>
-      ${episodesHTML}
+
+      <!-- SECCIÓN DE EPISODIOS EN CASO DE SERIE -->
+      ${isSeries ? `
+        <section class="episodes-section" style="max-width: 1200px; margin: 40px auto 0 auto; padding: 0 4%;">
+          <h2 style="font-size: 1.35rem; color: #d4af37; margin-bottom: 20px; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px; font-weight: 700;">Episodios Disponibles</h2>
+
+          <div class="episodes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            ${episodes.length === 0 ? `
+              <p style="color: #888; font-style: italic;">No hay episodios disponibles creados en esta serie.</p>
+            ` : episodes.map((ep, idx) => `
+              <div class="episode-card" data-index="${idx}" style="background: #151518; border: 1px solid #2a2a30; border-radius: 10px; padding: 16px; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <span style="font-size: 0.72rem; color: #d4af37; font-weight: 800; display: block; margin-bottom: 4px; text-transform: uppercase;">Episodio ${idx + 1}</span>
+                  <h4 style="margin: 0; color: #ffffff; font-size: 0.95rem; font-weight: 600;">${ep.title || `Episodio ${idx + 1}`}</h4>
+                </div>
+                <div style="background: rgba(212,175,55,0.15); border: 1px solid #d4af37; color: #d4af37; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0;">
+                  ▶
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+
     </div>
   `;
 
-  // Event Listeners
-  document.getElementById('btnBackDetails')?.addEventListener('click', () => {
+  // MANEJO DE EVENTOS
+
+  // Botón Regresar
+  document.getElementById('btnBackToHome')?.addEventListener('click', () => {
     updateState('currentView', 'home');
   });
 
-  document.getElementById('btnStartPlayback')?.addEventListener('click', () => {
-    if (isSeries && item.episodes.length > 0) {
-      startEpisodePlayback(0);
-    } else {
-      startMoviePlayback();
-    }
+  // Botón Reproducir Principal
+  document.getElementById('btnPlayMain')?.addEventListener('click', () => {
+    state.player = {
+      currentMedia: item,
+      currentIndex: 0,
+      episodesList: isSeries ? episodes : [],
+      selectedAudio: 'es',
+      selectedSubtitle: 'off'
+    };
+    updateState('currentView', 'player');
   });
 
-  // Eventos de selección de episodios individuales
-  const episodeButtons = appContainer.querySelectorAll('.btn-play-episode, .episode-card');
-  episodeButtons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = parseInt(btn.dataset.index || btn.closest('.episode-card')?.dataset.episodeIndex, 10);
-      if (!isNaN(idx)) {
-        startEpisodePlayback(idx);
-      }
+  // Clic en tarjetas de episodios individuales
+  if (isSeries) {
+    container.querySelectorAll('.episode-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const epIndex = parseInt(card.dataset.index, 10);
+        state.player = {
+          currentMedia: item,
+          currentIndex: epIndex,
+          episodesList: episodes,
+          selectedAudio: 'es',
+          selectedSubtitle: 'off'
+        };
+        updateState('currentView', 'player');
+      });
     });
-  });
-}
-
-function startMoviePlayback() {
-  const media = state.selectedDetailMedia;
-  if (!media) return;
-
-  state.player.currentMedia = media;
-  state.player.episodesList = [];
-  state.player.currentIndex = 0;
-  state.player.availableAudios = media.availableAudios || ['es'];
-  state.player.availableSubtitles = media.availableSubtitles || ['off'];
-
-  updateState('currentView', 'player');
-}
-
-function startEpisodePlayback(index) {
-  const media = state.selectedDetailMedia;
-  if (!media || !media.episodes || !media.episodes[index]) return;
-
-  const episode = media.episodes[index];
-  state.player.currentMedia = episode;
-  state.player.episodesList = media.episodes;
-  state.player.currentIndex = index;
-  state.player.availableAudios = episode.availableAudios || media.availableAudios || ['es'];
-  state.player.availableSubtitles = episode.availableSubtitles || media.availableSubtitles || ['off'];
-
-  updateState('currentView', 'player');
+  }
 }
