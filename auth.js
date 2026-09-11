@@ -682,8 +682,10 @@ function parseFirebaseError(code) {
 }
 
 // ============================================================================
-// 8. FUNCIONES AUXILIARES (Agregadas para resolver importaciones en app.js)
+// 8. EXPORTACIONES AUXILIARES PARA APP.JS
 // ============================================================================
+
+export let currentLang = 'es';
 
 export function abrirModalBusqueda() {
   console.log("Abrir modal de búsqueda...");
