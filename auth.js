@@ -1,7 +1,8 @@
-// auth.js - Flujo Completo, Perfiles, Buscador, Detalles Fullscreen y Lanzamiento del Reproductor
+// auth.js - Módulo de Autenticación, Catálogo, Perfiles y Modales
 import { cerrarDrawerGlobal } from './app.js';
 import { 
-  auth, db, 
+  auth, 
+  db, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   onAuthStateChanged, 
@@ -10,624 +11,640 @@ import {
   getDocs, 
   addDoc, 
   doc, 
-  deleteDoc 
+  deleteDoc,
+  updateDoc
 } from './firebase.js';
 import { renderAdminPanel } from './admin.js';
 import { renderPlayer } from './player.js';
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
-let isRegistering = false;
 let currentPerfilKids = false;
-let heroInterval = null;
-export let currentLang = 'es';
+let currentPerfilData = null;
+export let currentLang = localStorage.getItem('lumera_lang') || 'es';
+let cachedContents = [];
 
-// DICCIONARIO DE IDIOMAS (6 IDIOMAS)
+// Diccionario de Traducciones (i18n)
 const i18n = {
-  es: { whoIsWatching: "¿Quién está viendo?", addProfile: "Añadir", signOut: "Cerrar Sesión", editProfiles: "Editar Perfiles", createProfile: "Crear Nuevo Perfil", profileName: "Nombre del Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borde Blanco)", kidsType: "Niños (Borde Arcoíris)", selectAvatar: "Selecciona una Foto", cancel: "Cancelar", save: "Guardar", delete: "Borrar", catalogKids: "Sección Infantil", catalogHome: "Inicio", movies: "Películas", series: "Series", noContent: "No hay contenido disponible.", loading: "Cargando Lumera...", profiles: "Perfiles", searchPlaceholder: "Buscar películas, series...", play: "Reproducir", details: "Detalles", seasons: "Temporadas", season: "Temporada", episode: "Episodio" },
-  en: { whoIsWatching: "Who's watching?", addProfile: "Add Profile", signOut: "Sign Out", editProfiles: "Edit Profiles", createProfile: "Create New Profile", profileName: "Profile Name", profileType: "Profile Type", normalType: "Normal (White Border)", kidsType: "Kids (Rainbow Border)", selectAvatar: "Select an Avatar", cancel: "Cancel", save: "Save", delete: "Delete", catalogKids: "Kids Section", catalogHome: "Home", movies: "Movies", series: "Series", noContent: "No content available.", loading: "Loading Lumera...", profiles: "Profiles", searchPlaceholder: "Search movies, series...", play: "Play", details: "Details", seasons: "Seasons", season: "Season", episode: "Episode" },
-  ja: { whoIsWatching: "誰が観ていますか？", addProfile: "プロフィールを追加", signOut: "ログアウト", editProfiles: "プロフィールを編集", createProfile: "新しいプロフィールを作成", profileName: "プロフィール名", profileType: "プロフィールの種類", normalType: "通常（白枠）", kidsType: "キッズ（レインボー枠）", selectAvatar: "アバターを選択", cancel: "キャンセル", save: "保存", delete: "削除", catalogKids: "キッズコーナー", catalogHome: "ホーム", movies: "映画", series: "シリーズ", noContent: "コンテンツがありません。", loading: "読み込み中...", profiles: "プロフィール", searchPlaceholder: "検索...", play: "再生", details: "詳細", seasons: "シーズン", season: "シーズン", episode: "エピソード" },
-  fr: { whoIsWatching: "Qui regarde ?", addProfile: "Ajouter", signOut: "Déconnexion", editProfiles: "Gérer les profils", createProfile: "Créer un profil", profileName: "Nom du profil", profileType: "Type de profil", normalType: "Normal (Bord blanc)", kidsType: "Enfants (Bord arc-en-ciel)", selectAvatar: "Choisir un avatar", cancel: "Annuler", save: "Enregistrer", delete: "Supprimer", catalogKids: "Section Enfants", catalogHome: "Accueil", movies: "Films", series: "Séries", noContent: "Aucun contenu disponible.", loading: "Chargement...", profiles: "Profils", searchPlaceholder: "Rechercher...", play: "Lancer", details: "Détails", seasons: "Saisons", season: "Saison", episode: "Épisode" },
-  pt: { whoIsWatching: "Quem está assistindo?", addProfile: "Adicionar", signOut: "Sair", editProfiles: "Editar Perfis", createProfile: "Criar Novo Perfil", profileName: "Nome do Perfil", profileType: "Tipo de Perfil", normalType: "Normal (Borda Branca)", kidsType: "Infantil (Borda Arco-íris)", selectAvatar: "Selecione uma Foto", cancel: "Cancelar", save: "Salvar", delete: "Excluir", catalogKids: "Seção Infantil", catalogHome: "Início", movies: "Filmes", series: "Séries", noContent: "Nenhum conteúdo disponível.", loading: "Carregando...", profiles: "Perfis", searchPlaceholder: "Pesquisar...", play: "Assistir", details: "Detalhes", seasons: "Temporadas", season: "Temporada", episode: "Episódio" },
-  de: { whoIsWatching: "Wer schaut gerade?", addProfile: "Hinzufügen", signOut: "Abmelden", editProfiles: "Profile bearbeiten", createProfile: "Neues Profil erstellen", profileName: "Profilname", profileType: "Profiltyp", normalType: "Normal (Weißer Rand)", kidsType: "Kinder (Regenbogenrand)", selectAvatar: "Avatar auswählen", cancel: "Abbrechen", save: "Speichern", delete: "Löschen", catalogKids: "Kinderbereich", catalogHome: "Startseite", movies: "Filme", series: "Serien", noContent: "Kein Inhalt verfügbar.", loading: "Wird geladen...", profiles: "Profile", searchPlaceholder: "Suchen...", play: "Abspielen", details: "Details", seasons: "Staffeln", season: "Staffel", episode: "Folge" }
+  es: {
+    whoIsWatching: "¿Quién está viendo?",
+    addProfile: "Añadir Perfil",
+    signOut: "Cerrar Sesión",
+    catalogKids: "Sección Infantil",
+    catalogHome: "Inicio",
+    movies: "Películas",
+    series: "Series",
+    loading: "Cargando Lumera...",
+    play: "Reproducir",
+    details: "Detalles",
+    seasons: "Temporadas",
+    season: "Temporada",
+    episode: "Episodio",
+    searchPlaceholder: "Buscar películas, series...",
+    selectLangTitle: "Seleccionar Idioma",
+    noResults: "No se encontraron resultados",
+    episodes: "Episodios",
+    close: "Cerrar",
+    kidsName: "Niños"
+  },
+  en: {
+    whoIsWatching: "Who's watching?",
+    addProfile: "Add Profile",
+    signOut: "Sign Out",
+    catalogKids: "Kids Section",
+    catalogHome: "Home",
+    movies: "Movies",
+    series: "Series",
+    loading: "Loading Lumera...",
+    play: "Play",
+    details: "Details",
+    seasons: "Seasons",
+    season: "Season",
+    episode: "Episode",
+    searchPlaceholder: "Search movies, series...",
+    selectLangTitle: "Select Language",
+    noResults: "No results found",
+    episodes: "Episodes",
+    close: "Close",
+    kidsName: "Kids"
+  }
 };
 
-const defaultAvatars = [
-  "https://i.imgur.com/JonRvHX.png",
-  "https://i.imgur.com/sL5WaEy.png",
-  "https://i.imgur.com/HV449p9.png",
-  "https://i.imgur.com/sNakldY.png"
-];
-
-// IDIOMA GLOBAL
+/**
+ * Cambia el idioma global de la app y refresca las vistas activas
+ */
 export function setLanguage(lang) {
   currentLang = lang;
-  traducirDrawerHTML();
-  const container = document.getElementById('appContainer');
-  if (document.getElementById('btnEditarPerfilesMode')) {
-    renderProfileSelection(container);
-  } else {
-    entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-  }
+  localStorage.setItem('lumera_lang', lang);
+  entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
 }
 
-function traducirDrawerHTML() {
-  const t = i18n[currentLang];
-  document.querySelectorAll('[data-i18n]').forEach(elem => {
-    const key = elem.getAttribute('data-i18n');
-    if (t[key]) elem.innerText = t[key];
-  });
-}
-
-// ESTADO DE AUTENTICACIÓN
-onAuthStateChanged(auth, (user) => {
-  const container = document.getElementById('appContainer');
-  conectarMenuDrawer();
-  if (user) {
-    if (user.email === ADMIN_EMAIL) inyectarBotonAdmin();
-    renderProfileSelection(container);
-  } else {
-    quitarBotonAdmin();
-    renderAuthScreen(container);
-  }
-});
-
-// PANTALLA LOGIN
-function renderAuthScreen(container) {
-  if (heroInterval) clearInterval(heroInterval);
-  container.innerHTML = `
-    <div style="max-width: 400px; margin: 80px auto; background: rgba(20,20,20,0.9); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); text-align: center; backdrop-filter: blur(12px);">
-      <img src="https://i.imgur.com/9rarmsD.png" alt="Lumera" style="height: 60px; margin-bottom: 20px;">
-      <h2 style="color: #fff; margin-bottom: 20px;">${isRegistering ? 'Crear Cuenta' : 'Iniciar Sesión'}</h2>
-      
-      <form id="authForm" style="display: flex; flex-direction: column; gap: 15px;">
-        <input type="email" id="emailInput" placeholder="Correo electrónico" required style="padding: 12px; border-radius: 8px; background: #222; border: 1px solid #444; color: white;">
-        <input type="password" id="passwordInput" placeholder="Contraseña" required style="padding: 12px; border-radius: 8px; background: #222; border: 1px solid #444; color: white;">
-        <button type="submit" style="padding: 12px; background: #d4af37; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">
-          ${isRegistering ? 'Registrarse' : 'Entrar a Lumera'}
-        </button>
-      </form>
-
-      <p style="margin-top: 20px; color: #aaa; font-size: 14px;">
-        ${isRegistering ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
-        <span id="btnToggleAuth" style="color: #d4af37; cursor: pointer; font-weight: bold;">
-          ${isRegistering ? ' Inicia Sesión' : ' Regístrate gratis'}
-        </span>
-      </p>
-    </div>
-  `;
-
-  document.getElementById('btnToggleAuth').onclick = () => {
-    isRegistering = !isRegistering;
-    renderAuthScreen(container);
-  };
-
-  document.getElementById('authForm').onsubmit = async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('emailInput').value;
-    const pass = document.getElementById('passwordInput').value;
-
-    try {
-      if (isRegistering) {
-        await createUserWithEmailAndPassword(auth, email, pass);
-      } else {
-        await signInWithEmailAndPassword(auth, email, pass);
-      }
-    } catch (err) {
-      alert("Error: " + err.message);
-    }
-  };
-}
-
-// SELECCIÓN DE PERFILES
-async function renderProfileSelection(container) {
-  if (heroInterval) clearInterval(heroInterval);
-  const t = i18n[currentLang];
-  container.innerHTML = `<h2 style="color:#d4af37; text-align:center; margin-top:50px;">${t.loading}</h2>`;
-
-  let perfiles = [];
-  try {
-    const snap = await getDocs(collection(db, "profiles"));
-    snap.forEach(d => perfiles.push({ id: d.id, ...d.data() }));
-  } catch (e) {}
-
-  if (perfiles.length === 0) {
-    perfiles = [
-      { id: 'p1', name: 'Principal', isKids: false, avatar: defaultAvatars[0] },
-      { id: 'p2', name: 'Niños', isKids: true, avatar: defaultAvatars[1] }
-    ];
-  }
-
-  let html = `
-    <div style="padding: 20px 10px; text-align: center; max-width: 800px; margin: 10px auto;">
-      <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px;">
-        <h1 style="color: #fff; font-size: 1.8rem; margin: 0;">${t.whoIsWatching}</h1>
-        <button id="btnEditarPerfilesMode" title="${t.editProfiles}" style="background: transparent; border: 1px solid #d4af37; color: #d4af37; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-        </button>
-      </div>
-      
-      <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
-  `;
-
-  perfiles.forEach(p => {
-    const borderClass = p.isKids ? 'kids-avatar-active' : '';
-    const staticBorder = p.isKids ? '' : 'border: 3px solid white;';
-
-    html += `
-      <div class="card-perfil-item" data-id="${p.id}" data-kids="${p.isKids}" style="cursor: pointer; text-align: center; position: relative;">
-        <img src="${p.avatar}" class="${borderClass}" style="width: 105px; height: 105px; border-radius: 50%; object-fit: cover; ${staticBorder} transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-        <p style="color: #fff; margin-top: 10px; font-weight: bold; font-size: 15px;">${p.name}</p>
-        <button class="btn-edit-single-profile" data-json='${JSON.stringify(p)}' style="display:none; position:absolute; top:0; right:0; background:rgba(0,0,0,0.9); border:1px solid #d4af37; color:#d4af37; border-radius:50%; width:32px; height:32px; cursor:pointer;">✎</button>
-      </div>
-    `;
-  });
-
-  html += `
-        <div style="cursor: pointer; text-align: center;" id="btnCrearPerfilModal">
-          <div style="width: 105px; height: 105px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
-            <span style="font-size: 36px; color: #aaa;">+</span>
-          </div>
-          <p style="color: #aaa; margin-top: 10px; font-weight: bold; font-size: 15px;">${t.addProfile}</p>
-        </div>
-      </div>
-      <button id="btnSignOut" style="margin-top: 40px; padding: 10px 24px; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 8px; cursor: pointer;">${t.signOut}</button>
-    </div>
-  `;
-
-  container.innerHTML = html;
-
-  document.querySelectorAll('.card-perfil-item').forEach(elem => {
-    elem.onclick = (e) => {
-      if (e.target.classList.contains('btn-edit-single-profile')) return;
-      const isKids = elem.getAttribute('data-kids') === 'true';
-      entrarPlataforma({ isKids, filtroTipo: 'todos' });
-    };
-  });
-
-  let editModeActive = false;
-  document.getElementById('btnEditarPerfilesMode').onclick = () => {
-    editModeActive = !editModeActive;
-    document.querySelectorAll('.btn-edit-single-profile').forEach(b => {
-      b.style.display = editModeActive ? 'block' : 'none';
-    });
-  };
-
-  document.querySelectorAll('.btn-edit-single-profile').forEach(btn => {
-    btn.onclick = () => {
-      const pData = JSON.parse(btn.getAttribute('data-json'));
-      abrirModalGestionPerfil(pData);
-    };
-  });
-
-  document.getElementById('btnCrearPerfilModal').onclick = () => abrirModalGestionPerfil(null);
-  document.getElementById('btnSignOut').onclick = () => signOut(auth);
-}
-
-// MODAL GESTIÓN DE PERFIL
-async function abrirModalGestionPerfil(perfilExistente = null) {
-  const t = i18n[currentLang];
-  let listaAvatares = [...defaultAvatars];
-  try {
-    const snap = await getDocs(collection(db, "avatars"));
-    snap.forEach(d => listaAvatares.push(d.data().url));
-  } catch (e) {}
-
-  let avatarSeleccionado = perfilExistente ? perfilExistente.avatar : listaAvatares[0];
-
+/**
+ * Modal para cambio de idioma desde el botón de Engranaje
+ */
+export function abrirModalIdioma() {
   const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:999; backdrop-filter:blur(8px); padding:20px;";
+  modal.id = 'lumeraModalIdioma';
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(8px);
+    font-family: system-ui, -apple-system, sans-serif;
+  `;
   
-  let optionsAvataresHtml = `<div style="display:flex; gap:12px; overflow-x:auto; padding:10px 0; margin-bottom:15px;">`;
-  listaAvatares.forEach(url => {
-    optionsAvataresHtml += `
-      <img src="${url}" class="opt-avatar-img" data-url="${url}" style="width:60px; height:60px; border-radius:50%; object-fit:cover; cursor:pointer; border: 3px solid ${url === avatarSeleccionado ? '#d4af37' : 'transparent'};">
-    `;
-  });
-  optionsAvataresHtml += `</div>`;
+  const text = i18n[currentLang] || i18n.es;
 
   modal.innerHTML = `
-    <div style="background:#151515; padding:25px; border-radius:20px; border:1px solid #d4af37; width:100%; max-width:400px; color:white;">
-      <h3 style="color:#d4af37; margin-bottom:20px; text-align:center;">${perfilExistente ? t.editProfiles : t.createProfile}</h3>
-      <div style="display:flex; flex-direction:column; gap:15px;">
-        <div>
-          <label style="font-size:13px; color:#aaa; display:block; margin-bottom:5px;">${t.profileName}</label>
-          <input type="text" id="profNameInput" value="${perfilExistente ? perfilExistente.name : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:8px; box-sizing:border-box;">
-        </div>
-        <div>
-          <label style="font-size:13px; color:#aaa; display:block; margin-bottom:5px;">${t.profileType}</label>
-          <select id="profTypeSelect" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:8px;">
-            <option value="normal" ${perfilExistente && !perfilExistente.isKids ? 'selected' : ''}>${t.normalType}</option>
-            <option value="kids" ${perfilExistente && perfilExistente.isKids ? 'selected' : ''}>${t.kidsType}</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-size:13px; color:#aaa; display:block; margin-bottom:5px;">${t.selectAvatar}</label>
-          ${optionsAvataresHtml}
-        </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-          ${perfilExistente ? `<button id="btnBorrarProf" type="button" style="padding:10px 15px; background:rgba(255,0,0,0.2); border:1px solid #ff4444; color:#ff4444; border-radius:8px; cursor:pointer;">${t.delete}</button>` : '<div></div>'}
-          <div style="display:flex; gap:10px;">
-            <button id="btnCancelProf" type="button" style="padding:10px 15px; background:transparent; border:1px solid #666; color:white; border-radius:8px; cursor:pointer;">${t.cancel}</button>
-            <button id="btnSaveProf" type="button" style="padding:10px 20px; background:#d4af37; border:none; color:black; font-weight:bold; border-radius:8px; cursor:pointer;">${t.save}</button>
-          </div>
-        </div>
+    <div style="
+      background: #151515;
+      border: 1px solid #d4af37;
+      padding: 30px;
+      border-radius: 16px;
+      width: 320px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    ">
+      <h3 style="color: #d4af37; margin-top: 0; margin-bottom: 20px; font-size: 20px;">${text.selectLangTitle}</h3>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button class="btn-lang-opt" data-lang="es" style="
+          padding: 12px;
+          background: ${currentLang === 'es' ? '#d4af37' : '#222'};
+          color: ${currentLang === 'es' ? '#000' : '#fff'};
+          border: 1px solid #444;
+          font-weight: bold;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        ">Español</button>
+        <button class="btn-lang-opt" data-lang="en" style="
+          padding: 12px;
+          background: ${currentLang === 'en' ? '#d4af37' : '#222'};
+          color: ${currentLang === 'en' ? '#000' : '#fff'};
+          border: 1px solid #444;
+          font-weight: bold;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        ">English</button>
       </div>
+      <button id="btnCloseLang" style="
+        margin-top: 20px;
+        background: transparent;
+        border: none;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 14px;
+      ">${text.close}</button>
     </div>
   `;
+
   document.body.appendChild(modal);
 
-  modal.querySelectorAll('.opt-avatar-img').forEach(img => {
-    img.onclick = () => {
-      modal.querySelectorAll('.opt-avatar-img').forEach(i => i.style.border = '3px solid transparent');
-      img.style.border = '3px solid #d4af37';
-      avatarSeleccionado = img.getAttribute('data-url');
+  modal.querySelectorAll('.btn-lang-opt').forEach(btn => {
+    btn.onclick = () => {
+      setLanguage(btn.getAttribute('data-lang'));
+      modal.remove();
     };
   });
 
-  document.getElementById('btnCancelProf').onclick = () => modal.remove();
-
-  document.getElementById('btnSaveProf').onclick = async () => {
-    const name = document.getElementById('profNameInput').value.trim();
-    const isKids = document.getElementById('profTypeSelect').value === 'kids';
-
-    if (!name) return alert("Escribe un nombre.");
-
-    const payload = { name, isKids, avatar: avatarSeleccionado };
-
-    if (perfilExistente && perfilExistente.id.length > 5) {
-      await deleteDoc(doc(db, "profiles", perfilExistente.id));
-    }
-    await addDoc(collection(db, "profiles"), payload);
-
-    modal.remove();
-    renderProfileSelection(document.getElementById('appContainer'));
-  };
-
-  if (perfilExistente) {
-    document.getElementById('btnBorrarProf').onclick = async () => {
-      if (confirm("¿Eliminar perfil?")) {
-        if (perfilExistente.id.length > 5) {
-          await deleteDoc(doc(db, "profiles", perfilExistente.id));
-        }
-        modal.remove();
-        renderProfileSelection(document.getElementById('appContainer'));
-      }
-    };
-  }
+  document.getElementById('btnCloseLang').onclick = () => modal.remove();
 }
 
-// CATÁLOGO, BUSCADOR Y MODAL DETALLES
-export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
-  currentPerfilKids = isKids;
-  const t = i18n[currentLang];
-  const container = document.getElementById('appContainer');
-  container.innerHTML = `<h2 style="color:#d4af37; text-align:center; margin-top:40px;">${t.loading}</h2>`;
-
-  if (heroInterval) clearInterval(heroInterval);
-
-  try {
-    const heroSnap = await getDocs(collection(db, "heroes"));
-    let heroImages = [];
-    heroSnap.forEach(d => heroImages.push(d.data().url));
-    if (heroImages.length === 0) heroImages = ["https://i.imgur.com/9rarmsD.png"];
-
-    const contentsSnap = await getDocs(collection(db, "contents"));
-    let todosLosContenidos = [];
-
-    contentsSnap.forEach(d => {
-      const item = d.data();
-      item.id = d.id;
-
-      if (isKids && item.is7Plus) return;
-      if (filtroTipo === 'pelicula' && item.type !== 'pelicula') return;
-      if (filtroTipo === 'serie' && item.type !== 'serie') return;
-
-      todosLosContenidos.push(item);
-    });
-
-    let mainHtml = `
-      <div style="padding: 10px 20px 40px 20px; max-width: 1200px; margin: 0 auto;">
-        
-        <!-- BUSCADOR -->
-        <div style="margin-bottom:20px; display:flex; justify-content:center;">
-          <input type="text" id="inputSearchLumera" placeholder="${t.searchPlaceholder}" style="width:100%; max-width:500px; padding:12px 18px; border-radius:25px; background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.4); color:white; font-size:14px; outline:none;">
-        </div>
-
-        <!-- HERO BANNER -->
-        <div id="heroBannerContainer" style="width: 100%; height: 220px; border-radius: 24px; overflow: hidden; position: relative; border: 1px solid rgba(212,175,55,0.3); margin-bottom: 30px; background: #111;">
-          <img id="imgHeroActive" src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.8s ease-in-out;">
-          <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);"></div>
-        </div>
-
-        <h2 style="color:#d4af37; margin-bottom: 20px; font-size: 1.6rem; text-transform: capitalize;">
-          ${filtroTipo === 'todos' ? (isKids ? t.catalogKids : t.catalogHome) : (filtroTipo === 'pelicula' ? t.movies : t.series)}
-        </h2>
-
-        <div id="catalogContentArea"></div>
-      </div>
-    `;
-
-    container.innerHTML = mainHtml;
-    renderGridContenidos(todosLosContenidos);
-
-    // EVENTO DE BÚSQUEDA
-    document.getElementById('inputSearchLumera').oninput = (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtrados = todosLosContenidos.filter(item => item.title.toLowerCase().includes(q));
-      renderGridContenidos(filtrados);
-    };
-
-    // ROTACIÓN DE HERO
-    if (heroImages.length > 1) {
-      let currentHeroIdx = 0;
-      const imgElem = document.getElementById('imgHeroActive');
-
-      heroInterval = setInterval(() => {
-        currentHeroIdx = (currentHeroIdx + 1) % heroImages.length;
-        if (imgElem) {
-          imgElem.style.opacity = '0.3';
-          setTimeout(() => {
-            imgElem.src = heroImages[currentHeroIdx];
-            imgElem.style.opacity = '1';
-          }, 400);
-        }
-      }, 10000);
-    }
-
-  } catch (err) {
-    container.innerHTML = `<p style="text-align:center; color:#ff5555; margin-top:50px;">Error al cargar la plataforma.</p>`;
-  }
-}
-
-// RENDERIZAR FILAS POR CATEGORÍA
-function renderGridContenidos(lista) {
-  const area = document.getElementById('catalogContentArea');
-  const t = i18n[currentLang];
-  if (!area) return;
-
-  if (lista.length === 0) {
-    area.innerHTML = `<p style="color:#888; text-align:center; margin-top:30px;">${t.noContent}</p>`;
-    return;
-  }
-
-  const agrupados = {};
-  lista.forEach(item => {
-    const cat = item.category || 'Destacados';
-    if (!agrupados[cat]) agrupados[cat] = [];
-    agrupados[cat].push(item);
-  });
-
-  let html = '';
-  Object.keys(agrupados).forEach(catNombre => {
-    html += `
-      <div style="margin-bottom: 30px;">
-        <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 12px; font-weight: bold;">${catNombre}</h3>
-        <div class="fila-scroll" style="display:flex; gap:15px; overflow-x:auto; padding-bottom:10px;">
-    `;
-
-    agrupados[catNombre].forEach(item => {
-      html += `
-        <div class="card-media-item" data-id="${item.id}" data-json='${JSON.stringify(item)}' style="flex: 0 0 140px; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
-          <img src="${item.poster}" style="width: 100%; height: 190px; object-fit: cover;">
-          <div style="padding: 8px;">
-            <h4 style="color: #fff; font-size: 13px; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
-            <span style="color: #d4af37; font-size: 11px; font-weight: bold;">${(item.type || 'CONTENIDO').toUpperCase()}</span>
-          </div>
-        </div>
-      `;
-    });
-
-    html += `
-        </div>
-      </div>
-    `;
-  });
-
-  area.innerHTML = html;
-
-  // EVENTO PARA ABRIR EL MODAL DETALLES DEL CONTENIDO
-  area.querySelectorAll('.card-media-item').forEach(card => {
-    card.onclick = () => {
-      const itemData = JSON.parse(card.getAttribute('data-json'));
-      abrirModalDetalles(itemData);
-    };
-  });
-}
-
-// MODAL DE DETALLES FULLSCREEN CON SELECCIÓN DE TEMPORADAS Y EPISODIOS
-function abrirModalDetalles(item) {
-  const t = i18n[currentLang];
+/**
+ * Modal para búsqueda interactiva desde el botón de Lupa
+ */
+export function abrirModalBusqueda() {
   const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:#0a0a0a; display:flex; flex-direction:column; z-index:9999; overflow-y:auto; color:white;";
+  modal.id = 'lumeraModalBusqueda';
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.96);
+    z-index: 9999;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    font-family: system-ui, -apple-system, sans-serif;
+  `;
 
-  const esSerie = item.type === 'serie';
-  let seasonSelectHtml = '';
-  let episodesGridHtml = '';
-
-  if (esSerie && item.seasons && item.seasons.length > 0) {
-    seasonSelectHtml = `
-      <div style="margin-top: 30px;">
-        <div style="display:flex; align-items:center; gap:15px; margin-bottom: 20px;">
-          <h3 style="margin:0; font-size:1.2rem; color:#d4af37;">${t.seasons}</h3>
-          <select id="seasonSelector" style="padding: 8px 16px; background: #222; color: white; border: 1px solid #d4af37; border-radius: 8px; outline: none; font-size:14px; cursor:pointer;">
-            ${item.seasons.map((s, idx) => `<option value="${idx}">${s.name || `${t.season} ${idx + 1}`}</option>`).join('')}
-          </select>
-        </div>
-        <div id="episodesListArea" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px;"></div>
-      </div>
-    `;
-  }
+  const text = i18n[currentLang] || i18n.es;
 
   modal.innerHTML = `
-    <!-- BOTÓN CERRAR -->
-    <button id="btnCloseDetails" style="position:fixed; top:20px; right:25px; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.2); color:white; border-radius:50%; width:42px; height:42px; font-size:20px; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px);">✕</button>
-
-    <!-- BANNER HERO DETALLES -->
-    <div style="position:relative; width:100%; min-height:450px; display:flex; align-items:flex-end;">
-      <img src="${item.banner || item.poster}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.5;">
-      <div style="position:absolute; inset:0; background:linear-gradient(to top, #0a0a0a 10%, rgba(10,10,10,0.4) 60%, transparent 100%);"></div>
-      
-      <div style="position:relative; z-index:2; padding:40px; max-width:900px;">
-        <span style="background:#d4af37; color:black; font-weight:bold; padding:4px 12px; border-radius:4px; font-size:12px; text-transform:uppercase;">${(item.type || 'CONTENIDO').toUpperCase()}</span>
-        <h1 style="font-size:3rem; margin:15px 0 10px 0; text-shadow:2px 2px 8px rgba(0,0,0,0.8);">${item.title}</h1>
-        <p style="color:#ddd; font-size:16px; line-height:1.6; margin-bottom:25px; max-width:700px;">${item.description || 'Sin descripción disponible.'}</p>
-
-        <button id="btnPlayMediaModal" style="padding:14px 36px; background:#d4af37; color:black; border:none; border-radius:30px; font-weight:bold; font-size:18px; cursor:pointer; display:inline-flex; align-items:center; gap:10px; box-shadow:0 4px 15px rgba(212,175,55,0.4);">
-          ▶ ${t.play}
-        </button>
-      </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 900px; margin: 0 auto; width: 100%;">
+      <input type="text" id="modalSearchInput" placeholder="${text.searchPlaceholder}" style="
+        width: 100%;
+        padding: 16px 24px;
+        border-radius: 30px;
+        background: #1c1c1c;
+        border: 2px solid #d4af37;
+        color: white;
+        font-size: 18px;
+        outline: none;
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+      " autoFocus>
+      <button id="btnCloseSearch" style="
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        margin-left: 20px;
+      ">✕</button>
     </div>
-
-    <!-- SECCIÓN INFERIOR DE TEMPORADAS / DETALLES EXTRA -->
-    <div style="padding:0 40px 60px 40px; max-width:1200px; width:100%; box-sizing:border-box;">
-      ${seasonSelectHtml}
-    </div>
+    <div id="modalSearchResults" style="
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 20px auto 0 auto;
+      width: 100%;
+    "></div>
   `;
 
   document.body.appendChild(modal);
 
-  document.getElementById('btnCloseDetails').onclick = () => modal.remove();
+  const input = document.getElementById('modalSearchInput');
+  const results = document.getElementById('modalSearchResults');
 
-  // RENDERIZAR EPISODIOS
-  const renderEpisodesForSeason = (seasonIndex) => {
-    const area = document.getElementById('episodesListArea');
-    if (!area || !item.seasons || !item.seasons[seasonIndex]) return;
-
-    const episodes = item.seasons[seasonIndex].episodes || [];
-    if (episodes.length === 0) {
-      area.innerHTML = `<p style="color:#aaa;">No hay episodios agregados en esta temporada.</p>`;
+  input.oninput = (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query) {
+      results.innerHTML = '';
       return;
     }
 
-    area.innerHTML = episodes.map((ep, epIdx) => `
-      <div class="card-episode-item" data-sidx="${seasonIndex}" data-eidx="${epIdx}" data-url="${ep.videoUrl || ''}" style="background:#181818; border-radius:10px; overflow:hidden; border:1px solid #2a2a2a; cursor:pointer; transition:transform 0.2s, border-color 0.2s;" onmouseover="this.style.transform='scale(1.02)'; this.style.borderColor='#d4af37';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#2a2a2a';">
-        <div style="position:relative; height:120px; background:#222;">
-          <img src="${ep.thumbnail || item.banner || item.poster}" style="width:100%; height:100%; object-fit:cover;">
-          <div style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center;">
-            <span style="background:rgba(0,0,0,0.7); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#d4af37;">▶</span>
-          </div>
-        </div>
-        <div style="padding:12px;">
-          <h4 style="margin:0 0 5px 0; font-size:14px; color:#fff;">${epIdx + 1}. ${ep.title || `${t.episode} ${epIdx + 1}`}</h4>
-          <p style="margin:0; font-size:12px; color:#888; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${ep.description || ''}</p>
+    const filtrados = cachedContents.filter(item => {
+      const matchTitle = item.title && item.title.toLowerCase().includes(query);
+      const isKidsFilter = currentPerfilKids ? item.isKids === true : true;
+      return matchTitle && isKidsFilter;
+    });
+
+    if (filtrados.length === 0) {
+      results.innerHTML = `<p style="color: #888; grid-column: 1 / -1; text-align: center;">${text.noResults}</p>`;
+      return;
+    }
+
+    results.innerHTML = filtrados.map(item => `
+      <div class="search-item-card" data-json='${JSON.stringify(item).replace(/'/g, "&apos;")}' style="
+        cursor: pointer;
+        background: #181818;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #282828;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      ">
+        <img src="${item.poster || ''}" style="width: 100%; height: 210px; object-fit: cover; display: block;">
+        <div style="padding: 10px;">
+          <p style="color: white; font-size: 13px; font-weight: 600; margin: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</p>
         </div>
       </div>
     `).join('');
 
-    area.querySelectorAll('.card-episode-item').forEach(card => {
+    results.querySelectorAll('.search-item-card').forEach(card => {
       card.onclick = () => {
-        const sIdx = parseInt(card.getAttribute('data-sidx'));
-        const eIdx = parseInt(card.getAttribute('data-eidx'));
-        const url = card.getAttribute('data-url');
-
         modal.remove();
-        lanzarReproductor(item, sIdx, eIdx, url);
+        abrirModalDetalles(JSON.parse(card.getAttribute('data-json')));
       };
     });
   };
 
-  // MANEJO SELECTOR DE TEMPORADAS
-  const selector = document.getElementById('seasonSelector');
-  if (selector) {
-    renderEpisodesForSeason(0);
-    selector.onchange = (e) => renderEpisodesForSeason(parseInt(e.target.value));
-  }
+  document.getElementById('btnCloseSearch').onclick = () => modal.remove();
+}
 
-  // ACCIÓN BOTÓN PRINCIPAL REPRODUCIR
-  document.getElementById('btnPlayMediaModal').onclick = () => {
-    modal.remove();
-    if (esSerie && item.seasons && item.seasons.length > 0 && item.seasons[0].episodes && item.seasons[0].episodes.length > 0) {
-      const epInicial = item.seasons[0].episodes[0];
-      lanzarReproductor(item, 0, 0, epInicial.videoUrl);
-    } else {
-      lanzarReproductor(item, 0, 0, item.videoUrl || '');
+// Observador de Estado de Autenticación
+onAuthStateChanged(auth, (user) => {
+  const container = document.getElementById('appContainer');
+  conectarMenuDrawer();
+  
+  if (user) {
+    if (user.email === ADMIN_EMAIL) {
+      inyectarBotonAdmin();
+    }
+    renderProfileSelection(container);
+  } else {
+    renderAuthScreen(container);
+  }
+});
+
+/**
+ * Renderiza la pantalla de Login y Registro
+ */
+function renderAuthScreen(container) {
+  container.innerHTML = `
+    <div style="
+      max-width: 380px;
+      margin: 80px auto;
+      background: #141414;
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid #282828;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      font-family: system-ui, -apple-system, sans-serif;
+    ">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h2 style="color: #d4af37; margin: 0; font-size: 28px; font-weight: bold; letter-spacing: 1px;">LUMERA</h2>
+        <p style="color: #777; font-size: 14px; margin-top: 5px;">Bienvenido a la plataforma</p>
+      </div>
+
+      <form id="authForm" style="display: flex; flex-direction: column; gap: 15px;">
+        <input type="email" id="emailInput" placeholder="Correo electrónico" required style="
+          padding: 12px 16px;
+          background: #222;
+          border: 1px solid #333;
+          color: white;
+          border-radius: 8px;
+          outline: none;
+          font-size: 14px;
+        ">
+        <input type="password" id="passwordInput" placeholder="Contraseña" required style="
+          padding: 12px 16px;
+          background: #222;
+          border: 1px solid #333;
+          color: white;
+          border-radius: 8px;
+          outline: none;
+          font-size: 14px;
+        ">
+        <button type="submit" id="btnLoginSubmit" style="
+          padding: 14px;
+          background: #d4af37;
+          border: none;
+          color: black;
+          font-weight: bold;
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 15px;
+          margin-top: 10px;
+          transition: background 0.2s ease;
+        ">Iniciar Sesión</button>
+      </form>
+    </div>
+  `;
+
+  document.getElementById('authForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value.trim();
+    const pass = document.getElementById('passwordInput').value.trim();
+
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (err) {
+      alert("Error al iniciar sesión: " + err.message);
     }
   };
 }
 
-// AUXILIAR LANZAMIENTO REPRODUCTOR
-function lanzarReproductor(item, seasonIdx = 0, episodeIdx = 0, targetUrl = '') {
-  const playerContainer = document.getElementById('appContainer');
+/**
+ * Pantalla de Selección de Perfiles
+ */
+async function renderProfileSelection(container) {
+  const text = i18n[currentLang] || i18n.es;
 
-  if (item.type === 'serie' && item.seasons && item.seasons.length > 0) {
-    renderPlayer(playerContainer, {
-      videoUrl: targetUrl,
-      title: item.title,
-      seasons: item.seasons,
-      currentSeasonIdx: seasonIdx,
-      currentEpisodeIdx: episodeIdx,
-      onBack: () => entrarPlataforma({ isKids: currentPerfilKids }),
-      onSelectEpisode: (sIdx, eIdx, newUrl) => {
-        renderPlayer(playerContainer, {
-          videoUrl: newUrl,
-          title: item.title,
-          seasons: item.seasons,
-          currentSeasonIdx: sIdx,
-          currentEpisodeIdx: eIdx,
-          onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
-        });
-      }
+  container.innerHTML = `
+    <div style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: white;
+    ">
+      <h1 style="font-size: 32px; font-weight: 600; margin-bottom: 40px; color: #fff;">${text.whoIsWatching}</h1>
+      
+      <div id="profilesGrid" style="
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 40px;
+      ">
+        <!-- Perfil Principal -->
+        <div class="profile-card-item" data-kids="false" style="cursor: pointer; text-align: center;">
+          <div style="
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: border-color 0.2s ease;
+            background: #222;
+          ">
+            <img src="https://i.imgur.com/83p1XbT.png" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <p style="margin-top: 12px; color: #ccc; font-weight: 500;">Usuario</p>
+        </div>
+
+        <!-- Perfil Kids -->
+        <div class="profile-card-item" data-kids="true" style="cursor: pointer; text-align: center;">
+          <div style="
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: border-color 0.2s ease;
+            background: #222;
+          ">
+            <img src="https://i.imgur.com/3G3Yx1c.png" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <p style="margin-top: 12px; color: #ccc; font-weight: 500;">${text.kidsName}</p>
+        </div>
+      </div>
+
+      <button id="btnSignOutApp" style="
+        background: transparent;
+        border: 1px solid #444;
+        color: #888;
+        padding: 10px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      ">${text.signOut}</button>
+    </div>
+  `;
+
+  container.querySelectorAll('.profile-card-item').forEach(card => {
+    card.onclick = () => {
+      const isKids = card.getAttribute('data-kids') === 'true';
+      entrarPlataforma({ isKids, filtroTipo: 'todos' });
+    };
+  });
+
+  document.getElementById('btnSignOutApp').onclick = () => signOut(auth);
+}
+
+/**
+ * Carga e Inicia el Catálogo Principal de la Plataforma
+ */
+export async function entrarPlataforma({ isKids = false, filtroTipo = 'todos' } = {}) {
+  currentPerfilKids = isKids;
+  const container = document.getElementById('appContainer');
+  const text = i18n[currentLang] || i18n.es;
+
+  try {
+    const contentsSnap = await getDocs(collection(db, "contents"));
+    cachedContents = [];
+    contentsSnap.forEach(d => cachedContents.push({ id: d.id, ...d.data() }));
+
+    const heroSnap = await getDocs(collection(db, "heroes"));
+    let heroImages = [];
+    heroSnap.forEach(d => heroImages.push(d.data().url));
+    if (heroImages.length === 0) {
+      heroImages = ["https://i.imgur.com/9rarmsD.png"];
+    }
+
+    container.innerHTML = `
+      <div style="padding: 20px 40px; max-width: 1300px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif;">
+        <!-- BANNER HERO -->
+        <div style="
+          width: 100%;
+          height: 260px;
+          border-radius: 20px;
+          overflow: hidden;
+          border: 1px solid #282828;
+          margin-bottom: 35px;
+          box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+          position: relative;
+        ">
+          <img src="${heroImages[0]}" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <!-- TÍTULO SECCIÓN -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="color: #d4af37; margin: 0; font-size: 22px; font-weight: 600;">
+            ${isKids ? text.catalogKids : text.catalogHome}
+          </h2>
+        </div>
+
+        <!-- CONTENEDOR GRID DE CONTENIDOS -->
+        <div id="catalogArea" style="
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 20px;
+        "></div>
+      </div>
+    `;
+
+    const area = document.getElementById('catalogArea');
+    
+    // Filtrado de contenido según perfil (Kids/Adultos) y tipo (Película/Serie)
+    const filtrados = cachedContents.filter(item => {
+      if (isKids && !item.isKids) return false;
+      if (filtroTipo === 'pelicula' && item.type !== 'pelicula') return false;
+      if (filtroTipo === 'serie' && item.type !== 'serie') return false;
+      return true;
     });
-  } else {
-    renderPlayer(playerContainer, {
-      videoUrl: targetUrl || item.videoUrl || '',
-      title: item.title,
-      onBack: () => entrarPlataforma({ isKids: currentPerfilKids })
+
+    if (filtrados.length === 0) {
+      area.innerHTML = `<p style="color: #666; grid-column: 1/-1;">No hay contenido disponible en esta sección.</p>`;
+      return;
+    }
+
+    area.innerHTML = filtrados.map(item => `
+      <div class="card-media-item" data-json='${JSON.stringify(item).replace(/'/g, "&apos;")}' style="
+        background: #141414;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 1px solid #222;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      ">
+        <img src="${item.poster || ''}" style="width: 100%; height: 220px; object-fit: cover; display: block;">
+        <div style="padding: 12px;">
+          <h4 style="color: white; font-size: 13px; font-weight: 600; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</h4>
+          <span style="color: #d4af37; font-size: 11px; text-transform: uppercase; margin-top: 4px; display: block;">${item.type}</span>
+        </div>
+      </div>
+    `).join('');
+
+    area.querySelectorAll('.card-media-item').forEach(card => {
+      card.onclick = () => abrirModalDetalles(JSON.parse(card.getAttribute('data-json')));
     });
+
+  } catch (e) {
+    console.error("Error al cargar plataforma:", e);
+    container.innerHTML = `<p style="color: white; text-align: center; margin-top: 50px;">Error al cargar datos del catálogo.</p>`;
   }
 }
 
-// CONEXIÓN DEL MENÚ OVERLAY / DRAWER
-function conectarMenuDrawer() {
-  const drawerLinks = document.querySelectorAll('.nav-item');
-  if (!drawerLinks.length) return;
+/**
+ * Modal de Detalles de Película o Serie
+ */
+function abrirModalDetalles(item) {
+  const modal = document.createElement('div');
+  modal.id = 'lumeraModalDetalles';
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.95);
+    z-index: 9999;
+    overflow-y: auto;
+    color: white;
+    padding: 40px;
+    font-family: system-ui, -apple-system, sans-serif;
+  `;
 
-  drawerLinks.forEach((link) => {
-    const newLink = link.cloneNode(true);
-    if (link.parentNode) link.parentNode.replaceChild(newLink, link);
+  const text = i18n[currentLang] || i18n.es;
 
-    newLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      cerrarDrawerGlobal();
+  modal.innerHTML = `
+    <div style="max-width: 800px; margin: 0 auto; position: relative;">
+      <button id="btnCloseDet" style="
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+      ">✕</button>
 
-      const spanText = newLink.querySelector('span');
-      const key = spanText ? spanText.getAttribute('data-i18n') : '';
-      const texto = newLink.innerText.toLowerCase();
+      <div style="display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap;">
+        <img src="${item.poster || ''}" style="width: 200px; height: 290px; object-fit: cover; border-radius: 12px; border: 1px solid #333;">
+        <div style="flex: 1; min-width: 280px;">
+          <h1 style="margin-top: 0; color: #d4af37; font-size: 32px;">${item.title}</h1>
+          <p style="color: #ccc; font-size: 14px; line-height: 1.6;">${item.description || 'Sin descripción disponible.'}</p>
+          
+          <button id="btnPlayMain" style="
+            padding: 14px 32px;
+            background: #d4af37;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+          ">▶ ${text.play}</button>
+        </div>
+      </div>
 
-      if (key === 'home' || texto.includes('inicio') || texto.includes('home')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'todos' });
-      } else if (key === 'movies' || texto.includes('película') || texto.includes('movies')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'pelicula' });
-      } else if (key === 'series' || texto.includes('serie')) {
-        entrarPlataforma({ isKids: currentPerfilKids, filtroTipo: 'serie' });
-      } else if (key === 'kids' || texto.includes('niño') || texto.includes('kids')) {
-        entrarPlataforma({ isKids: true, filtroTipo: 'todos' });
-      } else if (key === 'profiles' || texto.includes('perfil') || texto.includes('profiles')) {
-        renderProfileSelection(document.getElementById('appContainer'));
-      }
+      <div id="episodesArea" style="margin-top: 40px;"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  document.getElementById('btnCloseDet').onclick = () => modal.remove();
+
+  // Si es Serie, renderizar las temporadas y episodios
+  if (item.type === 'serie' && item.seasons && item.seasons.length > 0) {
+    const area = document.getElementById('episodesArea');
+    area.innerHTML = `<h3 style="color: #d4af37; border-bottom: 1px solid #333; padding-bottom: 10px;">${text.seasons}</h3>`;
+    
+    item.seasons.forEach((s, sIdx) => {
+      area.innerHTML += `<h4 style="color: #fff; margin-top: 20px;">${s.name || `${text.season} ${sIdx + 1}`}</h4>`;
+      
+      const epContainer = document.createElement('div');
+      epContainer.style.cssText = "display: flex; flex-direction: column; gap: 8px; margin-top: 10px;";
+
+      (s.episodes || []).forEach((ep, eIdx) => {
+        const epBtn = document.createElement('div');
+        epBtn.style.cssText = "padding: 12px 16px; background: #181818; border: 1px solid #282828; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;";
+        epBtn.innerHTML = `
+          <span>E${eIdx + 1}: ${ep.title || 'Episodio'}</span>
+          <span style="color: #d4af37; font-size: 12px;">▶ Play</span>
+        `;
+        epBtn.onclick = () => {
+          modal.remove();
+          renderPlayer(document.getElementById('appContainer'), { 
+            videoUrl: ep.videoUrl, 
+            title: `${item.title} - ${ep.title || 'Episodio'}`,
+            tracks: ep.subtitles || item.subtitles || {}
+          });
+        };
+        epContainer.appendChild(epBtn);
+      });
+
+      area.appendChild(epContainer);
     });
-  });
+  }
+
+  // Botón Principal Reproducir
+  document.getElementById('btnPlayMain').onclick = () => {
+    modal.remove();
+    let url = item.videoUrl;
+    if (item.type === 'serie' && item.seasons?.[0]?.episodes?.[0]) {
+      url = item.seasons[0].episodes[0].videoUrl;
+    }
+    renderPlayer(document.getElementById('appContainer'), { 
+      videoUrl: url, 
+      title: item.title, 
+      tracks: item.subtitles || {} 
+    });
+  };
+}
+
+function conectarMenuDrawer() {
+  // Manejador del Menú Lateral
+  const btnInicio = document.getElementById('navInicio');
+  const btnPeliculas = document.getElementById('navPeliculas');
+  const btnSeries = document.getElementById('navSeries');
+  const btnKids = document.getElementById('navKids');
+
+  if (btnInicio) btnInicio.onclick = () => { cerrarDrawerGlobal(); entrarPlataforma({ isKids: false, filtroTipo: 'todos' }); };
+  if (btnPeliculas) btnPeliculas.onclick = () => { cerrarDrawerGlobal(); entrarPlataforma({ isKids: false, filtroTipo: 'pelicula' }); };
+  if (btnSeries) btnSeries.onclick = () => { cerrarDrawerGlobal(); entrarPlataforma({ isKids: false, filtroTipo: 'serie' }); };
+  if (btnKids) btnKids.onclick = () => { cerrarDrawerGlobal(); entrarPlataforma({ isKids: true, filtroTipo: 'todos' }); };
 }
 
 function inyectarBotonAdmin() {
   const navRight = document.querySelector('.nav-right');
   if (navRight && !document.getElementById('btnAdminSecret')) {
-    const btnAdmin = document.createElement('button');
-    btnAdmin.id = 'btnAdminSecret';
-    btnAdmin.className = 'svg-btn';
-    btnAdmin.title = 'Panel Maestro';
-    btnAdmin.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
-    
-    btnAdmin.onclick = () => {
-      const container = document.getElementById('appContainer');
-      renderAdminPanel(container);
-    };
-
-    navRight.prepend(btnAdmin);
+    const btn = document.createElement('button');
+    btn.id = 'btnAdminSecret';
+    btn.style.cssText = "background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px;";
+    btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`;
+    btn.onclick = () => renderAdminPanel(document.getElementById('appContainer'));
+    navRight.prepend(btn);
   }
-}
-
-function quitarBotonAdmin() {
-  const btn = document.getElementById('btnAdminSecret');
-  if (btn) btn.remove();
 }
