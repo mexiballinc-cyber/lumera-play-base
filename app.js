@@ -1,66 +1,55 @@
-// app.js - Control Global, Drawer Lateral, Menú Responsive e Idiomas
-import { setLanguage, currentLang } from './auth.js';
-
-export function cerrarDrawerGlobal() {
-  const drawer = document.getElementById('mainDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  if (drawer) {
-    drawer.classList.remove('open');
-    drawer.classList.remove('active');
-  }
-  if (overlay) {
-    overlay.classList.remove('open');
-    overlay.classList.remove('active');
-  }
-}
-
-export function abrirDrawerGlobal() {
-  const drawer = document.getElementById('mainDrawer');
-  const overlay = document.getElementById('drawerOverlay');
-  if (drawer) {
-    drawer.classList.add('open');
-    drawer.classList.add('active');
-  }
-  if (overlay) {
-    overlay.classList.add('open');
-    overlay.classList.add('active');
-  }
-}
+import { 
+  setLanguage, 
+  currentLang, 
+  abrirModalBusqueda, 
+  abrirModalIdioma 
+} from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const btnMenu = document.getElementById('btnMenu');
-  const btnCloseDrawer = document.getElementById('btnCloseDrawer');
+  const drawer = document.getElementById('drawerMenu');
   const overlay = document.getElementById('drawerOverlay');
-  const langSelect = document.getElementById('langSelect');
+  const btnClose = document.getElementById('btnCloseDrawer');
 
-  // Control de Apertura/Cierre de Menú Lateral
-  if (btnMenu) {
-    btnMenu.onclick = (e) => {
-      e.stopPropagation();
-      abrirDrawerGlobal();
+  // Control de apertura y cierre del menú lateral (Drawer)
+  if (btnMenu && drawer && overlay) {
+    btnMenu.onclick = () => {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+    };
+
+    const closeAll = () => {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+    };
+
+    if (btnClose) btnClose.onclick = closeAll;
+    overlay.onclick = closeAll;
+  }
+
+  // BOTÓN BÚSQUEDA (Lupa en el Header)
+  const btnSearch = document.getElementById('btnSearchHeader');
+  if (btnSearch) {
+    btnSearch.onclick = () => {
+      abrirModalBusqueda();
     };
   }
 
-  if (btnCloseDrawer) {
-    btnCloseDrawer.onclick = () => cerrarDrawerGlobal();
-  }
-
-  if (overlay) {
-    overlay.onclick = () => cerrarDrawerGlobal();
-  }
-
-  // Cambio de Idioma Global / Configuración
-  if (langSelect) {
-    langSelect.value = currentLang;
-    langSelect.onchange = (e) => {
-      setLanguage(e.target.value);
+  // BOTÓN CONFIGURACIÓN (Engranaje en el Header)
+  const btnConfig = document.getElementById('btnConfigHeader');
+  if (btnConfig) {
+    btnConfig.onclick = () => {
+      abrirModalIdioma();
     };
   }
-
-  // Cierre de Drawer al presionar la tecla ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      cerrarDrawerGlobal();
-    }
-  });
 });
+
+/**
+ * Cierra manualmente el menú lateral desde cualquier parte del código
+ */
+export function cerrarDrawerGlobal() {
+  const drawer = document.getElementById('drawerMenu');
+  const overlay = document.getElementById('drawerOverlay');
+  if (drawer) drawer.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
