@@ -682,9 +682,17 @@ function parseFirebaseError(code) {
 }
 
 // ============================================================================
-// 8. BÚSQUEDA (Agregado para resolver importación en app.js)
+// 8. FUNCIONES AUXILIARES (Agregadas para resolver importaciones en app.js)
 // ============================================================================
 
 export function abrirModalBusqueda() {
   console.log("Abrir modal de búsqueda...");
+}
+
+export function abrirModalIdioma() {
+  console.log("Abrir modal de idioma...");
+}
+
+export function abrirModalAjustes() {
+  console.log("Abrir modal de ajustes...");
 }
