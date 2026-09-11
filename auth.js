@@ -680,3 +680,11 @@ function parseFirebaseError(code) {
       return null;
   }
 }
+
+// ============================================================================
+// 8. BÚSQUEDA (Agregado para resolver importación en app.js)
+// ============================================================================
+
+export function abrirModalBusqueda() {
+  console.log("Abrir modal de búsqueda...");
+}
