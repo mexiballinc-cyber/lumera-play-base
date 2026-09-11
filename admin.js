@@ -1,4 +1,4 @@
-// admin.js - Panel de Control con 12 Opciones en Películas y Series + Hero e Avatares con Imgur
+// admin.js - Panel de Control con 12 Opciones en Películas y Series + Hero e Avatares con Imgur + Categoría por Sección
 import { db, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from './firebase.js';
 
 let adminContents = [];
@@ -51,6 +51,7 @@ async function renderContentsTab() {
     <div style="background: #151515; border: 1px solid #282828; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
       <img src="${item.poster || ''}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px;">
       <h4 style="margin: 0; color: white;">${item.title}</h4>
+      <span style="color: #888; font-size: 11px;">[${item.category || 'Sin Categoría'}]</span>
       <span style="color: var(--gold-accent); font-size: 11px; text-transform: uppercase;">${item.type}</span>
       <div style="display: flex; gap: 4px; margin-top: auto; flex-wrap: wrap;">
         <button class="btn-edit" data-id="${item.id}" style="flex: 1; padding: 6px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; font-size: 11px; cursor: pointer;">Editar</button>
@@ -77,6 +78,10 @@ function abrirModalCrearEditarContenido(item = null) {
       <h3 style="margin-top: 0; color: var(--gold-accent);">${item ? 'Editar Contenido' : 'Nuevo Contenido'}</h3>
       <form id="formContent" style="display: flex; flex-direction: column; gap: 10px;">
         <input type="text" id="cTitle" value="${item?.title || ''}" placeholder="Título" required style="padding: 8px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
+        
+        <!-- CAMPO DE CATEGORÍA / SECCIÓN -->
+        <input type="text" id="cCategory" value="${item?.category || ''}" placeholder="Sección / Categoría (ej: Tendencias, Acción, Anime)" required style="padding: 8px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
+        
         <select id="cType" style="padding: 8px; background: #222; border: 1px solid #444; color: white; border-radius: 4px;">
           <option value="pelicula" ${item?.type === 'pelicula' ? 'selected' : ''}>Película</option>
           <option value="serie" ${item?.type === 'serie' ? 'selected' : ''}>Serie</option>
@@ -102,6 +107,7 @@ function abrirModalCrearEditarContenido(item = null) {
     e.preventDefault();
     const data = {
       title: document.getElementById('cTitle').value.trim(),
+      category: document.getElementById('cCategory').value.trim() || 'General',
       type: document.getElementById('cType').value,
       poster: document.getElementById('cPoster').value.trim(),
       banner: document.getElementById('cBanner').value.trim(),
