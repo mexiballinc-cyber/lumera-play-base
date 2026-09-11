@@ -2,16 +2,14 @@
 // auth.js - Módulo Completo de Autenticación, Roles y Gestión de Perfiles
 // ============================================================================
 
-import { db } from './firebase.js';
 import { 
-  getAuth, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
-  sendPasswordResetEmail,
-  updateProfile as updateFirebaseUserProfile
+  sendPasswordResetEmail
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
 import { 
   collection, 
   doc, 
@@ -19,12 +17,12 @@ import {
   setDoc, 
   updateDoc, 
   getDocs,
-  arrayUnion,
-  arrayRemove
+  arrayUnion
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-// Instancia global de Auth
-const auth = getAuth();
+// Usar las instancias asignadas globalmente desde tu inicialización local de Firebase
+const auth = window.auth;
+const db = window.db;
 
 // Estados globales del módulo de autenticación
 let currentUser = null;
@@ -32,7 +30,7 @@ let activeProfile = null;
 let userRole = 'user';
 let authListeners = [];
 
-// Avatares por defecto en caso de que Firestore no devuelva ninguno aún
+// Avatares por defecto
 const DEFAULT_AVATARS = [
   'https://i.imgur.com/6VBx3io.png',
   'https://i.imgur.com/3G3f2xG.png',
@@ -44,10 +42,6 @@ const DEFAULT_AVATARS = [
 // 1. INICIALIZACIÓN Y SUSCRIPCIÓN AL ESTADO DE AUTENTICACIÓN
 // ============================================================================
 
-/**
- * Inicializa la escucha global de la sesión de Firebase Auth.
- * @param {Function} onUserChangedCallback - Callback ejecutado al cambiar la sesión.
- */
 export function initAuth(onUserChangedCallback) {
   if (typeof onUserChangedCallback === 'function') {
     authListeners.push(onUserChangedCallback);
@@ -62,7 +56,6 @@ export function initAuth(onUserChangedCallback) {
         const userSnap = await getDoc(userDocRef);
 
         if (!userSnap.exists()) {
-          // Si el usuario es totalmente nuevo, creamos su registro base en Firestore
           const initialData = {
             uid: user.uid,
             email: user.email,
@@ -84,7 +77,6 @@ export function initAuth(onUserChangedCallback) {
           const userData = userSnap.data();
           userRole = userData.role || 'user';
           
-          // Cargar perfil guardado en el almacenamiento local para este UID
           const savedProfileId = localStorage.getItem(`lumera_active_profile_${user.uid}`);
           const profilesList = userData.profiles || [];
           
@@ -110,14 +102,10 @@ export function initAuth(onUserChangedCallback) {
       userRole = 'guest';
     }
 
-    // Notificar a todos los escuchas registrados
     notifyAuthListeners();
   });
 }
 
-/**
- * Notifica los cambios a las vistas o componentes suscritos.
- */
 function notifyAuthListeners() {
   authListeners.forEach(listener => {
     if (typeof listener === 'function') {
@@ -157,7 +145,7 @@ export async function isUserAdmin() {
 }
 
 // ============================================================================
-// 3. OPERACIONES DE AUTENTICACIÓN (LOGIN, REGISTRO, RECOVERY, LOGOUT)
+// 3. OPERACIONES DE AUTENTICACIÓN
 // ============================================================================
 
 export async function loginEmail(email, password) {
@@ -357,7 +345,7 @@ export function showAuthModal(onSuccessCallback) {
     display: flex; align-items: center; justify-content: center; padding: 20px;
   `;
 
-  let currentView = 'login'; // 'login', 'register', 'recover'
+  let currentView = 'login';
 
   const renderModalContent = () => {
     let title = 'Iniciar Sesión';
@@ -476,7 +464,6 @@ export async function showProfileSelectorModal(onProfileSelectedCallback) {
 
   const profiles = await getUserProfiles();
 
-  // Cargar lista global de avatares creados desde la Pestaña 2 del Panel de Control admin.js
   let globalAvatars = [];
   try {
     const snap = await getDocs(collection(db, "avatars"));
