@@ -687,6 +687,11 @@ function parseFirebaseError(code) {
 
 export let currentLang = 'es';
 
+export function setLanguage(lang) {
+  currentLang = lang;
+  console.log("Idioma cambiado a:", lang);
+}
+
 export function entrarPlataforma() {
   console.log("Entrando a la plataforma...");
 }
@@ -701,4 +706,16 @@ export function abrirModalIdioma() {
 
 export function abrirModalAjustes() {
   console.log("Abrir modal de ajustes...");
+}
+
+export function renderHeader() {
+  console.log("Header renderizado");
+}
+
+export function renderFooter() {
+  console.log("Footer renderizado");
+}
+
+export function initApp() {
+  console.log("App inicializada");
 }
