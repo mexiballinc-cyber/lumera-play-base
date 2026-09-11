@@ -687,6 +687,10 @@ function parseFirebaseError(code) {
 
 export let currentLang = 'es';
 
+export function entrarPlataforma() {
+  console.log("Entrando a la plataforma...");
+}
+
 export function abrirModalBusqueda() {
   console.log("Abrir modal de búsqueda...");
 }
