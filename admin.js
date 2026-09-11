@@ -1,349 +1,493 @@
-// admin.js - Panel Maestro para Gestión de Contenidos, Episodios y Pistas de Idioma
-import { IDIOMAS_DISPONIBLES } from './i18n.js';
-import { db, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from './firebase.js';
+// admin.js - Panel Maestro de Administración Completo
+import { 
+  db, 
+  collection, 
+  getDocs, 
+  addDoc, 
+  deleteDoc, 
+  doc, 
+  updateDoc 
+} from './firebase.js';
+import { entrarPlataforma } from './auth.js';
 
+/**
+ * Renderiza el Panel Maestro con sus 3 secciones principales
+ */
 export async function renderAdminPanel(container) {
   container.innerHTML = `
-    <div style="padding: 20px; max-width: 900px; margin: 0 auto; color: white;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 15px;">
-        <h2 style="color: #d4af37; margin: 0;">🛠️ Panel Maestro de Administración</h2>
-        <button id="btnCrearNuevoContenido" style="padding: 10px 20px; background: #d4af37; border: none; color: black; font-weight: bold; border-radius: 8px; cursor: pointer;">+ Nuevo Contenido</button>
+    <div style="
+      padding: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+    ">
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #282828;
+        padding-bottom: 15px;
+      ">
+        <h2 style="color: #d4af37; margin: 0; font-size: 24px; font-weight: 600;">🛠 Panel Maestro de Administración</h2>
+        <button id="btnExitAdmin" style="
+          padding: 8px 18px;
+          background: transparent;
+          border: 1px solid #555;
+          color: white;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.2s ease;
+        ">Volver al Catálogo</button>
       </div>
 
-      <div id="adminContentArea">Cargando contenidos...</div>
+      <!-- NAVEGACIÓN SUPERIOR POR PESTAÑAS -->
+      <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+        <button id="tabContent" class="admin-tab-btn" style="
+          padding: 12px 24px;
+          background: #d4af37;
+          border: none;
+          color: black;
+          font-weight: bold;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+        ">Contenido</button>
+        <button id="tabHero" class="admin-tab-btn" style="
+          padding: 12px 24px;
+          background: #1c1c1c;
+          border: 1px solid #333;
+          color: white;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+        ">Imágenes Hero</button>
+        <button id="tabAvatars" class="admin-tab-btn" style="
+          padding: 12px 24px;
+          background: #1c1c1c;
+          border: 1px solid #333;
+          color: white;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+        ">Fotos Perfil</button>
+      </div>
+
+      <!-- CONTENEDOR DINÁMICO DE LA SECCIÓN SELECCIONADA -->
+      <div id="adminSectionBody"></div>
     </div>
   `;
 
-  document.getElementById('btnCrearNuevoContenido').onclick = () => abrirModalCrearEditarContenido(null);
-  cargarListaContenidos();
+  document.getElementById('btnExitAdmin').onclick = () => entrarPlataforma();
+
+  const tabContent = document.getElementById('tabContent');
+  const tabHero = document.getElementById('tabHero');
+  const tabAvatars = document.getElementById('tabAvatars');
+
+  const setTabActive = (activeBtn) => {
+    [tabContent, tabHero, tabAvatars].forEach(btn => {
+      btn.style.background = '#1c1c1c';
+      btn.style.color = 'white';
+      btn.style.border = '1px solid #333';
+      btn.style.fontWeight = 'normal';
+    });
+    activeBtn.style.background = '#d4af37';
+    activeBtn.style.color = 'black';
+    activeBtn.style.border = 'none';
+    activeBtn.style.fontWeight = 'bold';
+  };
+
+  tabContent.onclick = () => { setTabActive(tabContent); renderSectionContent(); };
+  tabHero.onclick = () => { setTabActive(tabHero); renderSectionHero(); };
+  tabAvatars.onclick = () => { setTabActive(tabAvatars); renderSectionAvatars(); };
+
+  // Carga inicial en la pestaña de Contenido
+  renderSectionContent();
 }
 
-async function cargarListaContenidos() {
-  const area = document.getElementById('adminContentArea');
-  if (!area) return;
+/* ==========================================================================
+   1. SECCIÓN CONTENIDO (PELÍCULAS Y SERIES)
+   ========================================================================== */
+async function renderSectionContent() {
+  const body = document.getElementById('adminSectionBody');
+  body.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h3 style="margin: 0; color: #ccc;">Gestión de Películas y Series</h3>
+      <button id="btnNewContent" style="
+        padding: 10px 20px;
+        background: #d4af37;
+        border: none;
+        font-weight: bold;
+        color: black;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+      ">+ Nuevo Contenido</button>
+    </div>
+    <div id="contentList" style="display: flex; flex-direction: column; gap: 12px;">Cargando catálogo...</div>
+  `;
+
+  document.getElementById('btnNewContent').onclick = () => abrirModalFormContenido();
 
   try {
     const snap = await getDocs(collection(db, "contents"));
+    const list = document.getElementById('contentList');
+    list.innerHTML = '';
+
     if (snap.empty) {
-      area.innerHTML = `<p style="color:#aaa; text-align:center;">No hay contenidos registrados en la base de datos.</p>`;
+      list.innerHTML = `<p style="color: #666;">No hay contenidos registrados.</p>`;
       return;
     }
 
-    let html = `<div style="display: flex; flex-direction: column; gap: 15px;">`;
-
-    snap.forEach(documento => {
-      const item = documento.data();
-      const id = documento.id;
-
-      html += `
-        <div style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+    snap.forEach(d => {
+      const item = { id: d.id, ...d.data() };
+      list.innerHTML += `
+        <div style="
+          background: #141414;
+          padding: 16px 20px;
+          border-radius: 10px;
+          border: 1px solid #282828;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
           <div style="display: flex; align-items: center; gap: 15px;">
-            <img src="${item.poster || 'https://via.placeholder.com/50x75'}" style="width: 50px; height: 75px; object-fit: cover; border-radius: 6px;">
+            <img src="${item.poster || ''}" style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; background: #222;">
             <div>
-              <h4 style="margin: 0 0 5px 0; color: #fff; font-size: 16px;">${item.title} <span style="font-size: 12px; color: #d4af37; font-weight: normal;">(${item.type ? item.type.toUpperCase() : 'CONTENIDO'})</span></h4>
-              <p style="margin: 0; color: #aaa; font-size: 13px;">Categoría: ${item.category || 'General'} ${item.is7Plus ? ' | <span style="color:#ffbb33;">+7 Niños</span>' : ''}</p>
+              <strong style="color: white; font-size: 16px;">${item.title}</strong>
+              <div style="margin-top: 4px;">
+                <span style="color: #d4af37; font-size: 12px; text-transform: uppercase; font-weight: bold;">${item.type}</span>
+                ${item.isKids ? '<span style="color: #4caf50; font-size: 12px; margin-left: 10px;">• Infantil</span>' : ''}
+              </div>
             </div>
           </div>
-
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
-            ${item.type === 'serie' ? `<button class="btn-gestionar-eps" data-id="${id}" data-json='${JSON.stringify(item)}' style="padding: 8px 14px; background: #d4af37; border: none; color: black; font-weight: bold; border-radius: 6px; cursor: pointer;">🎬 Episodios</button>` : ''}
-            <button class="btn-editar-item" data-id="${id}" data-json='${JSON.stringify(item)}' style="padding: 8px 14px; background: #333; border: 1px solid #666; color: white; border-radius: 6px; cursor: pointer;">✏️ Editar</button>
-            <button class="btn-borrar-item" data-id="${id}" style="padding: 8px 14px; background: rgba(255,0,0,0.2); border: 1px solid #ff4444; color: #ff4444; border-radius: 6px; cursor: pointer;">🗑️ Borrar</button>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-edit-item" data-json='${JSON.stringify(item).replace(/'/g, "&apos;")}' style="
+              padding: 8px 16px;
+              background: #222;
+              border: 1px solid #444;
+              color: white;
+              border-radius: 6px;
+              cursor: pointer;
+            ">Editar</button>
+            <button class="btn-del-item" data-id="${item.id}" style="
+              padding: 8px 16px;
+              background: rgba(255, 68, 68, 0.15);
+              border: 1px solid #ff4444;
+              color: #ff4444;
+              border-radius: 6px;
+              cursor: pointer;
+            ">Borrar</button>
           </div>
         </div>
       `;
     });
 
-    html += `</div>`;
-    area.innerHTML = html;
+    list.querySelectorAll('.btn-edit-item').forEach(btn => {
+      btn.onclick = () => abrirModalFormContenido(JSON.parse(btn.getAttribute('data-json')));
+    });
 
-    // Eventos
-    document.querySelectorAll('.btn-borrar-item').forEach(btn => {
+    list.querySelectorAll('.btn-del-item').forEach(btn => {
       btn.onclick = async () => {
-        if (confirm("¿Estás seguro de eliminar este contenido? Esta acción no se puede deshacer.")) {
+        if (confirm("¿Estás seguro de borrar este contenido?")) {
           await deleteDoc(doc(db, "contents", btn.getAttribute('data-id')));
-          cargarListaContenidos();
+          renderSectionContent();
         }
       };
     });
 
-    document.querySelectorAll('.btn-editar-item').forEach(btn => {
-      btn.onclick = () => {
-        const item = JSON.parse(btn.getAttribute('data-json'));
-        abrirModalCrearEditarContenido(btn.getAttribute('data-id'), item);
-      };
-    });
-
-    document.querySelectorAll('.btn-gestionar-eps').forEach(btn => {
-      btn.onclick = () => {
-        const item = JSON.parse(btn.getAttribute('data-json'));
-        abrirModalGestionEpisodios(btn.getAttribute('data-id'), item);
-      };
-    });
-
-  } catch (e) {
-    area.innerHTML = `<p style="color:red; text-align:center;">Error al cargar la lista de contenidos.</p>`;
+  } catch (err) {
+    console.error("Error al cargar lista de contenidos:", err);
   }
 }
 
-// MODAL PARA CREAR / EDITAR PELÍCULA O SERIE
-function abrirModalCrearEditarContenido(docId = null, itemExistente = null) {
+/**
+ * Modal para Crear / Editar Contenido (Película o Serie) con Subtítulos y Doblajes
+ */
+function abrirModalFormContenido(item = null) {
   const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; z-index:9999; backdrop-filter:blur(8px); padding:20px; overflow-y:auto;";
+  modal.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+  `;
+
+  const subs = item?.subtitles || {};
+  const dubs = item?.dubs || {};
 
   modal.innerHTML = `
-    <div style="background:#151515; border:1px solid #d4af37; padding:25px; border-radius:16px; max-width:550px; width:100%; color:white; max-height:90vh; overflow-y:auto;">
-      <h3 style="color:#d4af37; margin-top:0;">${docId ? 'Editar Contenido' : 'Añadir Nuevo Contenido'}</h3>
-      
-      <div style="display:flex; flex-direction:column; gap:12px;">
+    <div style="
+      background: #151515;
+      border: 1px solid #d4af37;
+      padding: 30px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 650px;
+      color: white;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    ">
+      <h3 style="color: #d4af37; margin-top: 0; margin-bottom: 20px; font-size: 20px;">
+        ${item ? 'Editar Contenido' : 'Añadir Nuevo Contenido'}
+      </h3>
+
+      <form id="formSaveContent" style="display: flex; flex-direction: column; gap: 14px;">
         <div>
-          <label style="font-size:12px; color:#aaa;">Título</label>
-          <input type="text" id="admTitle" value="${itemExistente ? itemExistente.title || '' : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">
+          <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Título</label>
+          <input type="text" id="cTitle" value="${item?.title || ''}" required style="width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box;">
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div>
-            <label style="font-size:12px; color:#aaa;">Tipo</label>
-            <select id="admType" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px;">
-              <option value="pelicula" ${itemExistente && itemExistente.type === 'pelicula' ? 'selected' : ''}>Película</option>
-              <option value="serie" ${itemExistente && itemExistente.type === 'serie' ? 'selected' : ''}>Serie</option>
+        <div style="display: flex; gap: 15px;">
+          <div style="flex: 1;">
+            <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Tipo</label>
+            <select id="cType" style="width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box;">
+              <option value="pelicula" ${item?.type === 'pelicula' ? 'selected' : ''}>Película</option>
+              <option value="serie" ${item?.type === 'serie' ? 'selected' : ''}>Serie</option>
             </select>
           </div>
-          <div>
-            <label style="font-size:12px; color:#aaa;">Categoría</label>
-            <input type="text" id="admCategory" value="${itemExistente ? itemExistente.category || '' : ''}" placeholder="Ej: Acción, Drama..." style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">
+          <div style="flex: 1; display: flex; align-items: center; margin-top: 18px;">
+            <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px;">
+              <input type="checkbox" id="cIsKids" ${item?.isKids ? 'checked' : ''}> ¿Sección Infantil?
+            </label>
           </div>
         </div>
 
         <div>
-          <label style="font-size:12px; color:#aaa;">Descripción</label>
-          <textarea id="admDescription" style="width:100%; height:70px; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">${itemExistente ? itemExistente.description || '' : ''}</textarea>
+          <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">URL del Poster / Carátula</label>
+          <input type="text" id="cPoster" value="${item?.poster || ''}" required style="width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box;">
         </div>
 
         <div>
-          <label style="font-size:12px; color:#aaa;">URL del Poster (Vertical)</label>
-          <input type="text" id="admPoster" value="${itemExistente ? itemExistente.poster || '' : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">
+          <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">URL del Video Principal (MP4 / Direct Link)</label>
+          <input type="text" id="cVideoUrl" value="${item?.videoUrl || ''}" style="width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box;">
         </div>
 
         <div>
-          <label style="font-size:12px; color:#aaa;">URL del Banner (Horizontal)</label>
-          <input type="text" id="admBanner" value="${itemExistente ? itemExistente.banner || '' : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">
+          <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 4px;">Descripción</label>
+          <textarea id="cDescription" rows="3" style="width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; resize: vertical;">${item?.description || ''}</textarea>
         </div>
 
-        <div id="admVideoUrlContainer" style="display:${itemExistente && itemExistente.type === 'serie' ? 'none' : 'block'};">
-          <label style="font-size:12px; color:#aaa;">URL del Video MP4 (Para Películas)</label>
-          <input type="text" id="admVideoUrl" value="${itemExistente ? itemExistente.videoUrl || '' : ''}" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box;">
+        <!-- SUBTÍTULOS -->
+        <div style="border-top: 1px solid #282828; padding-top: 15px; margin-top: 5px;">
+          <h4 style="color: #d4af37; margin: 0 0 10px 0; font-size: 15px;">💬 Pistas de Subtítulos (.vtt)</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <input type="text" id="subEs" placeholder="Subtítulo Español (URL .vtt)" value="${subs.es || ''}" style="padding: 8px 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px;">
+            <input type="text" id="subEn" placeholder="Subtítulo Inglés (URL .vtt)" value="${subs.en || ''}" style="padding: 8px 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px;">
+          </div>
         </div>
 
-        <div style="display:flex; align-items:center; gap:10px; margin-top:5px;">
-          <input type="checkbox" id="admIs7Plus" ${itemExistente && itemExistente.is7Plus ? 'checked' : ''}>
-          <label for="admIs7Plus" style="font-size:13px; color:#aaa;">Apto para +7 (Sección Niños)</label>
+        <!-- DOBLAJES -->
+        <div style="border-top: 1px solid #282828; padding-top: 15px;">
+          <h4 style="color: #d4af37; margin: 0 0 10px 0; font-size: 15px;">🎙 Pistas de Doblaje / Audio</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <input type="text" id="dubEs" placeholder="Video con Audio Español (URL)" value="${dubs.es || ''}" style="padding: 8px 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px;">
+            <input type="text" id="dubEn" placeholder="Video con Audio Inglés (URL)" value="${dubs.en || ''}" style="padding: 8px 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px;">
+          </div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
-          <button id="btnCancelAdmModal" style="padding:10px 18px; background:transparent; border:1px solid #666; color:white; border-radius:6px; cursor:pointer;">Cancelar</button>
-          <button id="btnSaveAdmModal" style="padding:10px 20px; background:#d4af37; border:none; color:black; font-weight:bold; border-radius:6px; cursor:pointer;">Guardar Contenido</button>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; border-top: 1px solid #282828; padding-top: 15px;">
+          <button type="button" id="btnCancelC" style="padding: 10px 20px; background: transparent; border: 1px solid #555; color: white; border-radius: 6px; cursor: pointer;">Cancelar</button>
+          <button type="submit" style="padding: 10px 24px; background: #d4af37; border: none; font-weight: bold; color: black; border-radius: 6px; cursor: pointer;">Guardar Contenido</button>
         </div>
-      </div>
+      </form>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  document.getElementById('admType').onchange = (e) => {
-    document.getElementById('admVideoUrlContainer').style.display = e.target.value === 'serie' ? 'none' : 'block';
-  };
+  document.getElementById('btnCancelC').onclick = () => modal.remove();
 
-  document.getElementById('btnCancelAdmModal').onclick = () => modal.remove();
+  document.getElementById('formSaveContent').onsubmit = async (e) => {
+    e.preventDefault();
 
-  document.getElementById('btnSaveAdmModal').onclick = async () => {
-    const title = document.getElementById('admTitle').value.trim();
-    const type = document.getElementById('admType').value;
-    const category = document.getElementById('admCategory').value.trim();
-    const description = document.getElementById('admDescription').value.trim();
-    const poster = document.getElementById('admPoster').value.trim();
-    const banner = document.getElementById('admBanner').value.trim();
-    const videoUrl = document.getElementById('admVideoUrl').value.trim();
-    const is7Plus = document.getElementById('admIs7Plus').checked;
+    const payload = {
+      title: document.getElementById('cTitle').value.trim(),
+      type: document.getElementById('cType').value,
+      isKids: document.getElementById('cIsKids').checked,
+      poster: document.getElementById('cPoster').value.trim(),
+      videoUrl: document.getElementById('cVideoUrl').value.trim(),
+      description: document.getElementById('cDescription').value.trim(),
+      subtitles: {
+        es: document.getElementById('subEs').value.trim(),
+        en: document.getElementById('subEn').value.trim()
+      },
+      dubs: {
+        es: document.getElementById('dubEs').value.trim(),
+        en: document.getElementById('dubEn').value.trim()
+      }
+    };
 
-    if (!title || !poster) {
-      alert("Por favor completa al menos el título y el póster.");
-      return;
+    try {
+      if (item?.id) {
+        await updateDoc(doc(db, "contents", item.id), payload);
+      } else {
+        await addDoc(collection(db, "contents"), payload);
+      }
+      modal.remove();
+      renderSectionContent();
+    } catch (err) {
+      alert("Error al guardar: " + err.message);
     }
-
-    const payload = { title, type, category, description, poster, banner, is7Plus };
-    if (type === 'pelicula') payload.videoUrl = videoUrl;
-
-    if (docId) {
-      await updateDoc(doc(db, "contents", docId), payload);
-    } else {
-      payload.seasons = type === 'serie' ? [{ seasonNumber: 1, episodes: [] }] : [];
-      await addDoc(collection(db, "contents"), payload);
-    }
-
-    modal.remove();
-    cargarListaContenidos();
   };
 }
 
-// MODAL PARA GESTIONAR EPISODIOS DE UNA SERIE
-function abrirModalGestionEpisodios(docId, item) {
-  const modal = document.createElement('div');
-  modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; z-index:9999; backdrop-filter:blur(8px); padding:20px;";
-
-  let temporadas = item.seasons && item.seasons.length > 0 ? item.seasons : [{ seasonNumber: 1, episodes: [] }];
-
-  const renderEpisodiosList = () => {
-    let listHtml = '';
-    temporadas.forEach((s, sIdx) => {
-      listHtml += `
-        <div style="margin-bottom:20px;">
-          <h4 style="color:#d4af37; margin:10px 0; border-bottom:1px solid #333; padding-bottom:5px;">Temporada ${s.seasonNumber || sIdx + 1}</h4>
-      `;
-      
-      if (!s.episodes || s.episodes.length === 0) {
-        listHtml += `<p style="color:#666; font-size:12px; margin:5px 0;">No hay episodios agregados en esta temporada.</p>`;
-      } else {
-        s.episodes.forEach((ep, eIdx) => {
-          listHtml += `
-            <div style="background:#222; border:1px solid #444; padding:10px 14px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <span style="font-size:13px; color:white; font-weight:bold;">${eIdx + 1}. ${ep.title || 'Episodio ' + (eIdx + 1)}</span>
-                <p style="margin:2px 0 0 0; font-size:11px; color:#888;">URL: ${ep.videoUrl ? ep.videoUrl.substring(0, 35) + '...' : 'Sin video'}</p>
-              </div>
-              <div style="display:flex; gap:6px;">
-                <button class="btn-editar-ep-pistas" data-sidx="${sIdx}" data-eidx="${eIdx}" style="padding:6px 12px; background:#d4af37; border:none; color:black; font-size:12px; font-weight:bold; border-radius:6px; cursor:pointer;">✎ Editar Pistas</button>
-                <button class="btn-borrar-ep" data-sidx="${sIdx}" data-eidx="${eIdx}" style="padding:6px 10px; background:rgba(255,0,0,0.2); border:1px solid #ff4444; color:#ff4444; font-size:12px; border-radius:6px; cursor:pointer;">🗑️</button>
-              </div>
-            </div>
-          `;
-        });
-      }
-
-      listHtml += `</div>`;
-    });
-    return listHtml;
-  };
-
-  modal.innerHTML = `
-    <div style="background:#151515; border:1px solid #d4af37; padding:25px; border-radius:16px; max-width:650px; width:100%; color:white; max-height:85vh; overflow-y:auto;">
-      <h3 style="color:#d4af37; margin-top:0;">Gestionar Episodios: ${item.title}</h3>
-      
-      <div id="contenedorListaEpisodiosAdmin">
-        ${renderEpisodiosList()}
-      </div>
-
-      <div style="margin-top:20px; border-top:1px solid #333; padding-top:15px; display:flex; justify-content:space-between; gap:10px;">
-        <button id="btnAñadirNuevoEpisodio" style="padding:10px 16px; background:#333; border:1px solid #d4af37; color:#d4af37; border-radius:8px; cursor:pointer; font-weight:bold;">+ Añadir Episodio</button>
-        <button id="btnCloseEpModal" style="padding:10px 18px; background:transparent; border:1px solid #666; color:white; border-radius:8px; cursor:pointer;">Cerrar</button>
-      </div>
+/* ==========================================================================
+   2. SECCIÓN IMÁGENES HERO
+   ========================================================================== */
+async function renderSectionHero() {
+  const body = document.getElementById('adminSectionBody');
+  body.innerHTML = `
+    <h3 style="margin-top: 0; color: #ccc;">Gestión de Banners del Hero</h3>
+    <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+      <input type="text" id="inputHeroUrl" placeholder="URL de la nueva imagen Hero" style="flex: 1; padding: 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; outline: none;">
+      <button id="btnAddHero" style="padding: 12px 24px; background: #d4af37; border: none; font-weight: bold; color: black; border-radius: 6px; cursor: pointer;">+ Añadir Hero</button>
     </div>
+    <div id="heroList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px;">Cargando imágenes...</div>
   `;
 
-  document.body.appendChild(modal);
+  const list = document.getElementById('heroList');
 
-  const reasignarEventos = () => {
-    modal.querySelectorAll('.btn-editar-ep-pistas').forEach(btn => {
-      btn.onclick = () => {
-        const sIdx = parseInt(btn.getAttribute('data-sidx'));
-        const eIdx = parseInt(btn.getAttribute('data-eidx'));
-        const epActual = temporadas[sIdx].episodes[eIdx];
+  try {
+    const snap = await getDocs(collection(db, "heroes"));
+    list.innerHTML = '';
 
-        abrirSubModalEdicionPistas(epActual, async (epEditado) => {
-          temporadas[sIdx].episodes[eIdx] = epEditado;
-          await updateDoc(doc(db, "contents", docId), { seasons: temporadas });
-          document.getElementById('contenedorListaEpisodiosAdmin').innerHTML = renderEpisodiosList();
-          reasignarEventos();
-        });
-      };
+    if (snap.empty) {
+      list.innerHTML = `<p style="color: #666; grid-column: 1/-1;">No hay imágenes cargadas en el Hero.</p>`;
+    }
+
+    snap.forEach(d => {
+      const data = d.data();
+      list.innerHTML += `
+        <div style="
+          background: #141414;
+          border: 1px solid #282828;
+          border-radius: 10px;
+          overflow: hidden;
+          position: relative;
+        ">
+          <img src="${data.url}" style="width: 100%; height: 120px; object-fit: cover; display: block;">
+          <button class="btn-del-hero" data-id="${d.id}" style="
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 0, 0, 0.85);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-weight: bold;
+          ">✕</button>
+        </div>
+      `;
     });
 
-    modal.querySelectorAll('.btn-borrar-ep').forEach(btn => {
+    document.getElementById('btnAddHero').onclick = async () => {
+      const url = document.getElementById('inputHeroUrl').value.trim();
+      if (url) {
+        await addDoc(collection(db, "heroes"), { url });
+        renderSectionHero();
+      }
+    };
+
+    list.querySelectorAll('.btn-del-hero').forEach(btn => {
       btn.onclick = async () => {
-        if (confirm("¿Borrar este episodio?")) {
-          const sIdx = parseInt(btn.getAttribute('data-sidx'));
-          const eIdx = parseInt(btn.getAttribute('data-eidx'));
-          temporadas[sIdx].episodes.splice(eIdx, 1);
-          await updateDoc(doc(db, "contents", docId), { seasons: temporadas });
-          document.getElementById('contenedorListaEpisodiosAdmin').innerHTML = renderEpisodiosList();
-          reasignarEventos();
+        if (confirm("¿Borrar esta imagen del Hero?")) {
+          await deleteDoc(doc(db, "heroes", btn.getAttribute('data-id')));
+          renderSectionHero();
         }
       };
     });
-  };
 
-  reasignarEventos();
-
-  document.getElementById('btnCloseEpModal').onclick = () => modal.remove();
-
-  document.getElementById('btnAñadirNuevoEpisodio').onclick = async () => {
-    const titulo = prompt("Título del episodio:");
-    const url = prompt("URL del video MP4:");
-    if (titulo && url) {
-      if (!temporadas[0]) temporadas[0] = { seasonNumber: 1, episodes: [] };
-      temporadas[0].episodes.push({ title: titulo, videoUrl: url, subtitles: {}, dubbings: {} });
-      await updateDoc(doc(db, "contents", docId), { seasons: temporadas });
-      document.getElementById('contenedorListaEpisodiosAdmin').innerHTML = renderEpisodiosList();
-      reasignarEventos();
-    }
-  };
+  } catch (err) {
+    console.error("Error al cargar banners Hero:", err);
+  }
 }
 
-// SUBMODAL CON LAS 6 CASILLAS DE SUBTÍTULOS Y 6 CASILLAS DE DOBLAJES (INTERNET ARCHIVE)
-function abrirSubModalEdicionPistas(episode, onSave) {
-  const subModal = document.createElement('div');
-  subModal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.92); display:flex; align-items:center; justify-content:center; z-index:10000; padding:20px; overflow-y:auto;";
-
-  let subsInputs = IDIOMAS_DISPONIBLES.map(l => `
-    <div>
-      <label style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">💬 Subtítulo ${l.name}</label>
-      <input type="text" id="sub_${l.code}" value="${episode.subtitles?.[l.code] || ''}" placeholder="URL VTT/SRT" style="width:100%; padding:8px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box; font-size:12px;">
+/* ==========================================================================
+   3. SECCIÓN FOTOS DE PERFIL (AVATARES)
+   ========================================================================== */
+async function renderSectionAvatars() {
+  const body = document.getElementById('adminSectionBody');
+  body.innerHTML = `
+    <h3 style="margin-top: 0; color: #ccc;">Gestión de Avatares / Fotos de Perfil</h3>
+    <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+      <input type="text" id="inputAvatarUrl" placeholder="URL de la nueva foto de perfil" style="flex: 1; padding: 12px; background: #222; border: 1px solid #333; color: white; border-radius: 6px; outline: none;">
+      <button id="btnAddAvatar" style="padding: 12px 24px; background: #d4af37; border: none; font-weight: bold; color: black; border-radius: 6px; cursor: pointer;">+ Añadir Foto</button>
     </div>
-  `).join('');
-
-  let dubsInputs = IDIOMAS_DISPONIBLES.map(l => `
-    <div>
-      <label style="font-size:11px; color:#aaa; display:block; margin-bottom:2px;">🔊 Doblaje Archive ${l.name}</label>
-      <input type="text" id="dub_${l.code}" value="${episode.dubbings?.[l.code] || ''}" placeholder="URL Internet Archive Video" style="width:100%; padding:8px; background:#222; border:1px solid #444; color:white; border-radius:6px; box-sizing:border-box; font-size:12px;">
-    </div>
-  `).join('');
-
-  subModal.innerHTML = `
-    <div style="background:#151515; border:1px solid #d4af37; padding:25px; border-radius:16px; max-width:650px; width:100%; color:white;">
-      <h3 style="color:#d4af37; margin-top:0;">Editar Pistas de Idioma: ${episode.title || 'Episodio'}</h3>
-      
-      <h4 style="color:#fff; margin-top:15px; font-size:14px; border-bottom:1px solid #333; padding-bottom:5px;">💬 Subtítulos (6 Idiomas)</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">${subsInputs}</div>
-
-      <h4 style="color:#fff; margin-top:20px; font-size:14px; border-bottom:1px solid #333; padding-bottom:5px;">🔊 Doblajes / Video Internet Archive (6 Idiomas)</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">${dubsInputs}</div>
-
-      <div style="margin-top:25px; display:flex; justify-content:flex-end; gap:10px;">
-        <button id="btnCancelSubModal" style="padding:10px 18px; background:transparent; border:1px solid #666; color:white; border-radius:8px; cursor:pointer;">Cancelar</button>
-        <button id="btnSaveSubModal" style="padding:10px 20px; background:#d4af37; border:none; color:black; font-weight:bold; border-radius:8px; cursor:pointer;">Guardar Pistas</button>
-      </div>
-    </div>
+    <div id="avatarList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 20px;">Cargando avatares...</div>
   `;
 
-  document.body.appendChild(subModal);
+  const list = document.getElementById('avatarList');
 
-  document.getElementById('btnCancelSubModal').onclick = () => subModal.remove();
+  try {
+    const snap = await getDocs(collection(db, "avatars"));
+    list.innerHTML = '';
 
-  document.getElementById('btnSaveSubModal').onclick = () => {
-    const subtitles = {};
-    const dubbings = {};
+    if (snap.empty) {
+      list.innerHTML = `<p style="color: #666; grid-column: 1/-1;">No hay avatares registrados.</p>`;
+    }
 
-    IDIOMAS_DISPONIBLES.forEach(l => {
-      const subVal = document.getElementById(`sub_${l.code}`).value.trim();
-      const dubVal = document.getElementById(`dub_${l.code}`).value.trim();
-      if (subVal) subtitles[l.code] = subVal;
-      if (dubVal) dubbings[l.code] = dubVal;
+    snap.forEach(d => {
+      const data = d.data();
+      list.innerHTML += `
+        <div style="
+          background: #141414;
+          border: 1px solid #282828;
+          border-radius: 50%;
+          width: 100px;
+          height: 100px;
+          overflow: hidden;
+          position: relative;
+          margin: 0 auto;
+        ">
+          <img src="${data.url}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          <button class="btn-del-avatar" data-id="${d.id}" style="
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: rgba(255, 0, 0, 0.85);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+          ">✕</button>
+        </div>
+      `;
     });
 
-    episode.subtitles = subtitles;
-    episode.dubbings = dubbings;
+    document.getElementById('btnAddAvatar').onclick = async () => {
+      const url = document.getElementById('inputAvatarUrl').value.trim();
+      if (url) {
+        await addDoc(collection(db, "avatars"), { url });
+        renderSectionAvatars();
+      }
+    };
 
-    onSave(episode);
-    subModal.remove();
-  };
+    list.querySelectorAll('.btn-del-avatar').forEach(btn => {
+      btn.onclick = async () => {
+        if (confirm("¿Borrar este avatar?")) {
+          await deleteDoc(doc(db, "avatars", btn.getAttribute('data-id')));
+          renderSectionAvatars();
+        }
+      };
+    });
+
+  } catch (err) {
+    console.error("Error al cargar avatares:", err);
+  }
 }
