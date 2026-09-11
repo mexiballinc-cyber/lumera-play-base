@@ -1,55 +1,43 @@
-import { 
-  setLanguage, 
-  currentLang, 
-  abrirModalBusqueda, 
-  abrirModalIdioma 
-} from './auth.js';
+// app.js - Punto de Entrada Principal y Gestión del Menú Drawer/Header
+import { abrirModalBusqueda, abrirModalIdioma } from './auth.js';
 
+// Inicialización de Eventos de la Interfaz Global
 document.addEventListener('DOMContentLoaded', () => {
-  const btnMenu = document.getElementById('btnMenu');
-  const drawer = document.getElementById('drawerMenu');
-  const overlay = document.getElementById('drawerOverlay');
-  const btnClose = document.getElementById('btnCloseDrawer');
+  const btnMenu = document.getElementById('btnMenuToggle');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const mainDrawer = document.getElementById('mainDrawer');
+  const btnSearch = document.getElementById('btnHeaderSearch');
+  const btnSettings = document.getElementById('btnHeaderSettings');
 
-  // Control de apertura y cierre del menú lateral (Drawer)
-  if (btnMenu && drawer && overlay) {
+  // 1. Abrir / Cerrar Menú Lateral (Hamburguesa)
+  if (btnMenu) {
     btnMenu.onclick = () => {
-      drawer.classList.add('open');
-      overlay.classList.add('open');
+      drawerOverlay?.classList.add('active');
+      mainDrawer?.classList.add('active');
     };
-
-    const closeAll = () => {
-      drawer.classList.remove('open');
-      overlay.classList.remove('open');
-    };
-
-    if (btnClose) btnClose.onclick = closeAll;
-    overlay.onclick = closeAll;
   }
 
-  // BOTÓN BÚSQUEDA (Lupa en el Header)
-  const btnSearch = document.getElementById('btnSearchHeader');
+  if (drawerOverlay) {
+    drawerOverlay.onclick = cerrarDrawerGlobal;
+  }
+
+  // 2. Abrir Modal de Búsqueda (Lupa)
   if (btnSearch) {
-    btnSearch.onclick = () => {
-      abrirModalBusqueda();
-    };
+    btnSearch.onclick = () => abrirModalBusqueda();
   }
 
-  // BOTÓN CONFIGURACIÓN (Engranaje en el Header)
-  const btnConfig = document.getElementById('btnConfigHeader');
-  if (btnConfig) {
-    btnConfig.onclick = () => {
-      abrirModalIdioma();
-    };
+  // 3. Abrir Modal de Idioma / Ajustes (Engranaje)
+  if (btnSettings) {
+    btnSettings.onclick = () => abrirModalIdioma();
   }
 });
 
 /**
- * Cierra manualmente el menú lateral desde cualquier parte del código
+ * Cierra la barra lateral deslizante
  */
 export function cerrarDrawerGlobal() {
-  const drawer = document.getElementById('drawerMenu');
-  const overlay = document.getElementById('drawerOverlay');
-  if (drawer) drawer.classList.remove('open');
-  if (overlay) overlay.classList.remove('open');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const mainDrawer = document.getElementById('mainDrawer');
+  if (drawerOverlay) drawerOverlay.classList.remove('active');
+  if (mainDrawer) mainDrawer.classList.remove('active');
 }
