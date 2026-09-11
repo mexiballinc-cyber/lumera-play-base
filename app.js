@@ -1,43 +1,87 @@
-// app.js - Punto de Entrada Principal y Gestión del Menú Drawer/Header
-import { abrirModalBusqueda, abrirModalIdioma } from './auth.js';
+// app.js - Gestión de Eventos Globales y Menú Lateral
+import { abrirModalBusqueda, abrirModalIdioma, entrarPlataforma, setLanguage, currentLang } from './auth.js';
 
-// Inicialización de Eventos de la Interfaz Global
 document.addEventListener('DOMContentLoaded', () => {
-  const btnMenu = document.getElementById('btnMenuToggle');
+  // Elementos de la Interfaz
+  const btnMenu = document.getElementById('btnMenu');
+  const btnCloseDrawer = document.getElementById('btnCloseDrawer');
   const drawerOverlay = document.getElementById('drawerOverlay');
   const mainDrawer = document.getElementById('mainDrawer');
-  const btnSearch = document.getElementById('btnHeaderSearch');
-  const btnSettings = document.getElementById('btnHeaderSettings');
+  const btnSearch = document.getElementById('btnSearch');
+  const btnConfig = document.getElementById('btnConfig');
+  const langSelect = document.getElementById('langSelect');
 
-  // 1. Abrir / Cerrar Menú Lateral (Hamburguesa)
+  // 1. Control del Menú Lateral (Abrir / Cerrar)
   if (btnMenu) {
     btnMenu.onclick = () => {
-      drawerOverlay?.classList.add('active');
-      mainDrawer?.classList.add('active');
+      drawerOverlay?.classList.add('open', 'active');
+      mainDrawer?.classList.add('open', 'active');
     };
+  }
+
+  if (btnCloseDrawer) {
+    btnCloseDrawer.onclick = cerrarDrawerGlobal;
   }
 
   if (drawerOverlay) {
     drawerOverlay.onclick = cerrarDrawerGlobal;
   }
 
-  // 2. Abrir Modal de Búsqueda (Lupa)
+  // 2. Control de Botones del Header
   if (btnSearch) {
     btnSearch.onclick = () => abrirModalBusqueda();
   }
 
-  // 3. Abrir Modal de Idioma / Ajustes (Engranaje)
-  if (btnSettings) {
-    btnSettings.onclick = () => abrirModalIdioma();
+  if (btnConfig) {
+    btnConfig.onclick = () => abrirModalIdioma();
   }
+
+  // 3. Control del Selector de Idioma en el Drawer
+  if (langSelect) {
+    langSelect.value = currentLang;
+    langSelect.onchange = (e) => {
+      setLanguage(e.target.value);
+    };
+  }
+
+  // 4. Navegación del Menú Lateral
+  const navItems = document.querySelectorAll('.drawer-links .nav-item');
+  navItems.forEach((item, index) => {
+    item.onclick = (e) => {
+      e.preventDefault();
+      cerrarDrawerGlobal();
+
+      // Mapeo por índice según el HTML actual
+      switch (index) {
+        case 0: // Inicio
+          entrarPlataforma({ isKids: false, filtroTipo: 'todos' });
+          break;
+        case 1: // Series
+          entrarPlataforma({ isKids: false, filtroTipo: 'serie' });
+          break;
+        case 2: // Películas
+          entrarPlataforma({ isKids: false, filtroTipo: 'pelicula' });
+          break;
+        case 3: // Niños
+          entrarPlataforma({ isKids: true, filtroTipo: 'todos' });
+          break;
+        case 4: // Perfiles
+          location.reload();
+          break;
+        case 5: // Spark
+          alert("Próximamente Lumera Spark AI ✨");
+          break;
+      }
+    };
+  });
 });
 
 /**
- * Cierra la barra lateral deslizante
+ * Cierra el menú lateral desplegable
  */
 export function cerrarDrawerGlobal() {
   const drawerOverlay = document.getElementById('drawerOverlay');
   const mainDrawer = document.getElementById('mainDrawer');
-  if (drawerOverlay) drawerOverlay.classList.remove('active');
-  if (mainDrawer) mainDrawer.classList.remove('active');
+  if (drawerOverlay) drawerOverlay.classList.remove('open', 'active');
+  if (mainDrawer) mainDrawer.classList.remove('open', 'active');
 }
