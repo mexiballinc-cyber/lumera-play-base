@@ -19,10 +19,11 @@
     </div>
     
     <div class="nav-right">
-      <button id="btnSearch" class="svg-btn">
+      <!-- IDs corregidos para coincidir con app.js -->
+      <button id="btnSearchHeader" class="svg-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       </button>
-      <button id="btnConfig" class="svg-btn">
+      <button id="btnConfigHeader" class="svg-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
@@ -30,40 +31,26 @@
 
   <!-- MENÚ LATERAL (DRAWER) -->
   <div id="drawerOverlay" class="overlay"></div>
-  <aside id="mainDrawer" class="glass-drawer">
+  <!-- ID corregido a drawerMenu -->
+  <aside id="drawerMenu" class="glass-drawer">
     <div class="drawer-header" style="display: flex; justify-content: space-between; align-items: center;">
       <img src="https://i.imgur.com/9rarmsD.png" alt="Lumera Drawer Logo" class="drawer-logo">
       <button id="btnCloseDrawer" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">✕</button>
     </div>
 
-    <!-- SELECTOR DE IDIOMAS -->
-    <div style="padding: 0 0 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px;">
-      <select id="langSelect" style="width: 100%; padding: 8px; background: #222; border: 1px solid #444; color: white; border-radius: 6px; outline: none; cursor: pointer;">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
-        <option value="fr">Français</option>
-        <option value="pt">Português</option>
-        <option value="de">Deutsch</option>
-      </select>
-    </div>
-
+    <!-- NAVEGACIÓN CON IDs PARA EVENTOS -->
     <nav class="drawer-links">
-      <a href="#" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> <span data-i18n="home">Inicio</span></a>
-      <a href="#" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> <span data-i18n="series">Series</span></a>
-      <a href="#" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg> <span data-i18n="movies">Películas</span></a>
-      <a href="#" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> <span data-i18n="kids">Niños</span></a>
-      <a href="#" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span data-i18n="profiles">Perfiles</span></a>
-      <a href="#" class="nav-item spark-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span>Spark</span></a>
+      <a href="#" id="navInicio" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> <span>Inicio</span></a>
+      <a href="#" id="navSeries" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> <span>Series</span></a>
+      <a href="#" id="navPeliculas" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg> <span>Películas</span></a>
+      <a href="#" id="navKids" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> <span>Niños</span></a>
     </nav>
   </aside>
 
   <!-- CONTENEDOR PRINCIPAL -->
-  <main id="appContainer">
-    <!-- El sistema inyectará aquí el Hero y el Contenido -->
-  </main>
+  <main id="appContainer"></main>
 
-  <script type="module" src="app.js"></script>
-  <script type="module" src="auth.js"></script>
+  <!-- Solo app.js (él se encarga de importar auth.js, player.js y admin.js) -->
+  <script type="module" src="app.js?v=3"></script>
 </body>
 </html>
