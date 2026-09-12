@@ -1,5 +1,5 @@
-// i18n.js - Diccionario Local y Consultas de Traducción en Firebase Firestore
-import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+// i18n.js - Diccionario Local y Consultas de Traducción en Firebase Firestore (v12.19.0)
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
 export const IDIOMAS_DISPONIBLES = [
   { code: 'es', name: 'Español' },
@@ -96,7 +96,6 @@ export async function fetchTranslationFromFirebase(contentId) {
 
   try {
     const lang = getCurrentLang();
-    // Consulta la subcolección o documento de traducciones en Firestore
     const translationDocRef = doc(db, "contents", contentId, "translations", lang);
     const translationSnap = await getDoc(translationDocRef);
 
@@ -120,7 +119,6 @@ export function translateContentLocal(item) {
 
   const targetLang = getCurrentLang();
 
-  // Si el documento ya trae embebido el mapa de idiomas (ej: item.translations.en)
   if (item.translations && item.translations[targetLang]) {
     const t = item.translations[targetLang];
     return {
@@ -131,7 +129,6 @@ export function translateContentLocal(item) {
     };
   }
 
-  // Traducción de categoría común
   if (item.genre) {
     const catMap = DICTIONARY[targetLang]?.categories;
     const cleanGenre = item.genre.toLowerCase();
