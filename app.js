@@ -1,3 +1,5 @@
+import './firebase.js';
+
 // app.js - Gestión de Interfaz, Catálogo, Búsqueda y Navegación
 import { 
   initAuth, 
