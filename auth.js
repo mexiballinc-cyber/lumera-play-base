@@ -20,11 +20,11 @@ import {
   arrayUnion
 } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-// Usar las instancias asignadas globalmente desde tu inicialización local de Firebase
+// Instancias globales
 const auth = window.auth;
 const db = window.db;
 
-// Estados globales del módulo de autenticación
+// Estados globales
 let currentUser = null;
 let activeProfile = null;
 let userRole = 'user';
@@ -484,55 +484,81 @@ export async function showProfileSelectorModal(onProfileSelectedCallback) {
     display: flex; align-items: center; justify-content: center; padding: 20px; color: white;
   `;
 
+  let isEditingMode = false;
+
   const renderProfilesView = () => {
     modal.innerHTML = `
       <div style="max-width: 800px; width: 100%; text-align: center;">
-        <h2 style="font-size: 32px; margin-bottom: 30px; color: var(--gold-accent, #d4af37);">¿Quién está viendo?</h2>
+        <h2 style="font-size: 32px; margin-bottom: 30px; color: var(--gold-accent, #d4af37);">
+          ${isEditingMode ? 'Administrar Perfiles' : '¿Quién está viendo?'}
+        </h2>
         
         <div style="display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
           ${profiles.map(p => `
-            <div class="profile-card" data-id="${p.id}" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 120px;">
+            <div class="profile-card" data-id="${p.id}" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; width: 120px; position: relative;">
               <div style="position: relative; width: 100px; height: 100px;">
-                <img src="${p.avatar || DEFAULT_AVATARS[0]}" style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 2px solid transparent; transition: all 0.2s ease;">
+                <img src="${p.avatar || DEFAULT_AVATARS[0]}" style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 2px solid ${isEditingMode ? '#d4af37' : 'transparent'}; transition: all 0.2s ease;">
                 ${p.isKids ? `<span style="position: absolute; bottom: 4px; right: 4px; background: #00d2ff; color: black; font-weight: bold; font-size: 9px; padding: 2px 4px; border-radius: 4px;">KIDS</span>` : ''}
+                ${isEditingMode ? `<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">✏️</div>` : ''}
               </div>
               <span style="margin-top: 12px; font-size: 15px; color: #eee; font-weight: 500;">${p.name}</span>
-              <button class="btn-edit-prof-item" data-id="${p.id}" style="margin-top: 6px; background: transparent; border: none; color: #888; font-size: 11px; cursor: pointer;">Editar</button>
             </div>
           `).join('')}
 
-          ${profiles.length < 5 ? `
+          ${(profiles.length < 5 && !isEditingMode) ? `
             <div id="btnAddProfile" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100px; height: 100px; border: 2px dashed #444; border-radius: 12px; background: rgba(255,255,255,0.02);">
               <span style="font-size: 32px; color: #888;">+</span>
               <span style="font-size: 12px; color: #888; margin-top: 4px;">Añadir</span>
             </div>
           ` : ''}
         </div>
+
+        <div style="display: flex; justify-content: center; gap: 15px;">
+          <button id="btnToggleEditMode" style="padding: 10px 24px; background: transparent; border: 1px solid #666; color: #aaa; border-radius: 6px; cursor: pointer; font-size: 14px;">
+            ${isEditingMode ? 'Listo' : 'Administrar Perfiles'}
+          </button>
+          ${currentUser ? `
+            <button id="btnLogoutModal" style="padding: 10px 24px; background: #300; border: 1px solid #600; color: #ff8888; border-radius: 6px; cursor: pointer; font-size: 14px;">
+              Cerrar Sesión
+            </button>
+          ` : ''}
+        </div>
       </div>
     `;
 
     modal.querySelectorAll('.profile-card').forEach(card => {
-      card.onclick = (e) => {
-        if (e.target.classList.contains('btn-edit-prof-item')) return;
-        const selected = profiles.find(p => p.id === card.getAttribute('data-id'));
-        setActiveProfile(selected);
-        modal.remove();
-        if (typeof onProfileSelectedCallback === 'function') onProfileSelectedCallback(selected);
-      };
-    });
+      card.onclick = () => {
+        const pId = card.getAttribute('data-id');
+        const selected = profiles.find(p => p.id === pId);
 
-    modal.querySelectorAll('.btn-edit-prof-item').forEach(btn => {
-      btn.onclick = (e) => {
-        e.stopPropagation();
-        const pId = btn.getAttribute('data-id');
-        const targetProfile = profiles.find(p => p.id === pId);
-        renderEditProfileForm(targetProfile);
+        if (isEditingMode) {
+          renderEditProfileForm(selected);
+        } else {
+          setActiveProfile(selected);
+          modal.remove();
+          if (typeof onProfileSelectedCallback === 'function') onProfileSelectedCallback(selected);
+        }
       };
     });
 
     const btnAdd = document.getElementById('btnAddProfile');
-    if (btnAdd) {
-      btnAdd.onclick = () => renderCreateProfileForm();
+    if (btnAdd) btnAdd.onclick = () => renderCreateProfileForm();
+
+    const btnToggleEdit = document.getElementById('btnToggleEditMode');
+    if (btnToggleEdit) {
+      btnToggleEdit.onclick = () => {
+        isEditingMode = !isEditingMode;
+        renderProfilesView();
+      };
+    }
+
+    const btnLogout = document.getElementById('btnLogoutModal');
+    if (btnLogout) {
+      btnLogout.onclick = async () => {
+        await logoutUser();
+        modal.remove();
+        showAuthModal();
+      };
     }
   };
 
