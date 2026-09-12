@@ -19,19 +19,25 @@
     </div>
     
     <div class="nav-right">
-      <!-- IDs corregidos para coincidir con app.js -->
+      <!-- Botón de administración opcional si el usuario es Admin -->
+      <button id="btnAdminHeader" class="svg-btn" style="display: none;">Admin</button>
+
       <button id="btnSearchHeader" class="svg-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       </button>
-      <button id="btnConfigHeader" class="svg-btn">
+
+      <!-- ID actualizado a btnSettings para coincidir con app.js -->
+      <button id="btnSettings" class="svg-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
+
+      <!-- Avatar del Perfil Activo -->
+      <img id="profileAvatarHeader" class="avatar-header" src="" alt="Perfil" style="display: none; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
     </div>
   </header>
 
   <!-- MENÚ LATERAL (DRAWER) -->
   <div id="drawerOverlay" class="overlay"></div>
-  <!-- ID corregido a drawerMenu -->
   <aside id="drawerMenu" class="glass-drawer">
     <div class="drawer-header" style="display: flex; justify-content: space-between; align-items: center;">
       <img src="https://i.imgur.com/9rarmsD.png" alt="Lumera Drawer Logo" class="drawer-logo">
@@ -44,13 +50,27 @@
       <a href="#" id="navSeries" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> <span>Series</span></a>
       <a href="#" id="navPeliculas" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg> <span>Películas</span></a>
       <a href="#" id="navKids" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg> <span>Niños</span></a>
+      <!-- OPCIÓN AÑADIDA PARA CAMBIAR PERFIL -->
+      <a href="#" id="navProfiles" class="nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span>Cambiar Perfil</span></a>
     </nav>
   </aside>
 
   <!-- CONTENEDOR PRINCIPAL -->
   <main id="appContainer"></main>
 
-  <!-- Solo app.js (él se encarga de importar auth.js, player.js y admin.js) -->
-  <script type="module" src="app.js?v=3"></script>
+  <!-- INICIALIZADOR DE FIREBASE (Asigna window.db y window.auth para evitar fallos de inicialización) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+    import { firebaseConfig } from "./firebase.js";
+
+    const app = initializeApp(firebaseConfig);
+    window.db = getFirestore(app);
+    window.auth = getAuth(app);
+  </script>
+
+  <!-- Script principal de la aplicación -->
+  <script type="module" src="app.js?v=4"></script>
 </body>
 </html>
