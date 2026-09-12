@@ -1,4 +1,4 @@
-// app.js - Gestión de Interfaz, Catálogo, Búsqueda y Navegación (v12.19.0)
+// app.js - Gestión de Interfaz, Catálogo, Búsqueda y Navegación
 import { 
   initAuth, 
   showAuthModal, 
@@ -18,20 +18,28 @@ let allContentCache = [];
 document.addEventListener('DOMContentLoaded', () => {
   setupUIEventListeners();
 
-  // Inicializar Autenticación y flujo principal
-  initAuth((user, activeProfile, role) => {
-    actualizarHeaderUI(user, activeProfile, role);
+  // Inicializar Autenticación cuando Firebase esté cargado en window
+  const checkFirebaseAndInit = () => {
+    if (window.db && window.auth) {
+      initAuth((user, activeProfile, role) => {
+        actualizarHeaderUI(user, activeProfile, role);
 
-    if (!user) {
-      showAuthModal(() => {
-        showProfileSelectorModal(() => cargarContenidoPrincipal());
+        if (!user) {
+          showAuthModal(() => {
+            showProfileSelectorModal(() => cargarContenidoPrincipal());
+          });
+        } else if (!activeProfile) {
+          showProfileSelectorModal(() => cargarContenidoPrincipal());
+        } else {
+          cargarContenidoPrincipal();
+        }
       });
-    } else if (!activeProfile) {
-      showProfileSelectorModal(() => cargarContenidoPrincipal());
     } else {
-      cargarContenidoPrincipal();
+      setTimeout(checkFirebaseAndInit, 100);
     }
-  });
+  };
+
+  checkFirebaseAndInit();
 });
 
 // Vinculación de eventos con la interfaz
@@ -40,31 +48,31 @@ function setupUIEventListeners() {
   const btnCloseDrawer = document.getElementById('btnCloseDrawer');
   const drawerOverlay = document.getElementById('drawerOverlay');
   const btnSearchHeader = document.getElementById('btnSearchHeader');
-  const langSelect = document.getElementById('langSelect');
+  const btnSettings = document.getElementById('btnSettings');
 
   // Menú Lateral (Drawer)
   if (btnMenu) btnMenu.onclick = abrirDrawerGlobal;
   if (btnCloseDrawer) btnCloseDrawer.onclick = cerrarDrawerGlobal;
   if (drawerOverlay) drawerOverlay.onclick = cerrarDrawerGlobal;
 
+  // Botón de Configuración / Idiomas
+  if (btnSettings) btnSettings.onclick = abrirModalConfiguracion;
+
   // Búsqueda
   if (btnSearchHeader) btnSearchHeader.onclick = abrirModalBusqueda;
-
-  // Idioma
-  if (langSelect) {
-    poblarSelectorIdiomas(langSelect);
-    langSelect.value = getCurrentLang();
-    langSelect.onchange = (e) => {
-      setLanguage(e.target.value);
-      cargarContenidoPrincipal();
-    };
-  }
 
   // Navegación por categorías
   document.getElementById('navInicio')?.addEventListener('click', (e) => { e.preventDefault(); cerrarDrawerGlobal(); cargarContenidoPrincipal(); });
   document.getElementById('navSeries')?.addEventListener('click', (e) => { e.preventDefault(); cerrarDrawerGlobal(); cargarContenidoPorTipo('serie'); });
   document.getElementById('navPeliculas')?.addEventListener('click', (e) => { e.preventDefault(); cerrarDrawerGlobal(); cargarContenidoPorTipo('pelicula'); });
   document.getElementById('navKids')?.addEventListener('click', (e) => { e.preventDefault(); cerrarDrawerGlobal(); cargarContenidoKids(); });
+
+  // Opción de Cambiar Perfil desde el Menú Lateral
+  document.getElementById('navProfiles')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    cerrarDrawerGlobal();
+    showProfileSelectorModal(() => cargarContenidoPrincipal());
+  });
 
   // Perfil y Logout desde Header
   document.getElementById('profileAvatarHeader')?.addEventListener('click', () => {
@@ -87,10 +95,40 @@ export function cerrarDrawerGlobal() {
   document.getElementById('drawerMenu')?.classList.remove('open', 'active');
 }
 
-function poblarSelectorIdiomas(selectElement) {
-  selectElement.innerHTML = IDIOMAS_DISPONIBLES.map(lang => `
-    <option value="${lang.code}">${lang.name}</option>
-  `).join('');
+// Modal de Configuración e Idiomas
+function abrirModalConfiguracion() {
+  const existing = document.getElementById('settingsModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'settingsModal';
+  modal.style.cssText = `position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:20px;`;
+
+  const currentLang = getCurrentLang();
+
+  modal.innerHTML = `
+    <div style="background:#141414; border:1px solid #333; border-radius:12px; width:100%; max-width:400px; padding:25px; color:white; position:relative;">
+      <button id="closeSettingsModal" style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:20px; cursor:pointer;">✕</button>
+      <h3 style="margin-top:0; text-align:center;">Configuración</h3>
+      <div style="margin-top:20px;">
+        <label style="display:block; font-size:14px; margin-bottom:8px; color:#aaa;">Idioma de la aplicación:</label>
+        <select id="modalLangSelect" style="width:100%; padding:10px; background:#222; border:1px solid #444; color:white; border-radius:6px; font-size:15px;">
+          ${IDIOMAS_DISPONIBLES.map(l => `<option value="${l.code}" ${l.code === currentLang ? 'selected' : ''}>${l.name}</option>`).join('')}
+        </select>
+      </div>
+      <button id="btnSaveSettings" style="width:100%; margin-top:25px; padding:12px; background:white; color:black; border:none; font-weight:bold; border-radius:6px; cursor:pointer;">Guardar y Aplicar</button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById('closeSettingsModal').onclick = () => modal.remove();
+  document.getElementById('btnSaveSettings').onclick = () => {
+    const selectedLang = document.getElementById('modalLangSelect').value;
+    setLanguage(selectedLang);
+    modal.remove();
+    cargarContenidoPrincipal();
+  };
 }
 
 function actualizarHeaderUI(user, profile, role) {
@@ -112,7 +150,7 @@ function actualizarHeaderUI(user, profile, role) {
   }
 }
 
-// Búsqueda flotante en tiempo real
+// Búsqueda flotante
 function abrirModalBusqueda() {
   const existing = document.getElementById('searchModal');
   if (existing) existing.remove();
@@ -172,6 +210,8 @@ export async function cargarContenidoPrincipal() {
   container.innerHTML = `<p style="color:#888; text-align:center; margin-top:50px;">Cargando catálogo...</p>`;
 
   try {
+    if (!window.db) throw new Error("Firestore aún no se ha inicializado en window.db");
+
     const snap = await getDocs(collection(window.db, "contents"));
     allContentCache = [];
     snap.forEach(d => allContentCache.push({ id: d.id, ...d.data() }));
@@ -230,8 +270,6 @@ function renderGridContenidos(lista, titulo) {
   container.querySelectorAll('.content-card').forEach(card => {
     card.onclick = () => {
       const item = lista.find(c => c.id === card.getAttribute('data-id'));
-      
-      // Si el elemento se puede reproducir directamente, llama al player personalizado
       if (item.type === 'pelicula' && item.videoUrl) {
         renderPlayer(document.body, { item, title: item.title });
       } else {
