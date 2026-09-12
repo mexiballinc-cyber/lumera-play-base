@@ -1,11 +1,11 @@
-// auth.js - Autenticación Firebase, Roles y Perfiles
+// auth.js - Autenticación Firebase, Roles y Perfiles (v12.19.0)
 import { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
   sendPasswordResetEmail
-} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 
 import { 
   collection, 
@@ -15,7 +15,7 @@ import {
   updateDoc, 
   getDocs,
   arrayUnion
-} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
 const auth = window.auth;
 const db = window.db;
