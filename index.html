@@ -58,17 +58,7 @@
   <!-- CONTENEDOR PRINCIPAL -->
   <main id="appContainer"></main>
 
-  <!-- INICIALIZADOR DE FIREBASE (Asigna window.db y window.auth para evitar fallos de inicialización) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-    import { firebaseConfig } from "./firebase.js";
 
-    const app = initializeApp(firebaseConfig);
-    window.db = getFirestore(app);
-    window.auth = getAuth(app);
-  </script>
 
   <!-- Script principal de la aplicación -->
   <script type="module" src="app.js?v=4"></script>
