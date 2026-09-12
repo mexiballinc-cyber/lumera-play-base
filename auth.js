@@ -682,7 +682,7 @@ function parseFirebaseError(code) {
 }
 
 // ============================================================================
-// 8. EXPORTACIONES AUXILIARES PARA APP.JS
+// 8. EXPORTACIONES AUXILIARES Y CONEXIÓN CON APP.JS
 // ============================================================================
 
 export let currentLang = 'es';
@@ -693,29 +693,55 @@ export function setLanguage(lang) {
 }
 
 export function entrarPlataforma() {
-  console.log("Entrando a la plataforma...");
+  // Llama directamente al selector de perfiles si hay un usuario activo
+  if (currentUser) {
+    showProfileSelectorModal((selectedProfile) => {
+      console.log("Perfil activo seleccionado:", selectedProfile);
+    });
+  } else {
+    // Si no ha iniciado sesión, abre el modal para identificarse
+    showAuthModal((user) => {
+      showProfileSelectorModal();
+    });
+  }
 }
 
 export function abrirModalBusqueda() {
-  console.log("Abrir modal de búsqueda...");
+  const query = prompt("Buscar en Lumera:");
+  if (query) console.log("Buscando:", query);
 }
 
 export function abrirModalIdioma() {
-  console.log("Abrir modal de idioma...");
+  const nuevoIdioma = confirm("¿Cambiar idioma a Inglés?") ? 'en' : 'es';
+  setLanguage(nuevoIdioma);
 }
 
 export function abrirModalAjustes() {
-  console.log("Abrir modal de ajustes...");
+  if (currentUser) {
+    showProfileSelectorModal();
+  } else {
+    showAuthModal();
+  }
 }
 
 export function renderHeader() {
-  console.log("Header renderizado");
+  // Asegura que al renderizar el header se escuche el estado de Firebase
+  initAuth((user, profile, role) => {
+    console.log("Estado de usuario actualizado:", { user, profile, role });
+  });
 }
 
 export function renderFooter() {
-  console.log("Footer renderizado");
+  /* Implementación de pie de página si aplica */
 }
 
 export function initApp() {
-  console.log("App inicializada");
+  // Inicializa la autenticación y fuerza la renderización de la app
+  initAuth((user, profile, role) => {
+    if (!user) {
+      showAuthModal();
+    } else if (!profile) {
+      showProfileSelectorModal();
+    }
+  });
 }
