@@ -1,4 +1,4 @@
-// app.js - Gestión de Interfaz, Catálogo, Búsqueda y Navegación
+// app.js - Gestión de Interfaz, Catálogo, Búsqueda y Navegación (v12.19.0)
 import { 
   initAuth, 
   showAuthModal, 
@@ -11,7 +11,7 @@ import { renderAdminPanel } from './admin.js';
 import { abrirModalDetalles } from './details.js';
 import { renderPlayer } from './player.js';
 import { getTranslation, getCurrentLang, setLanguage, IDIOMAS_DISPONIBLES } from './i18n.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
 let allContentCache = [];
 
