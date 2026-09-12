@@ -692,18 +692,8 @@ export function setLanguage(lang) {
   console.log("Idioma cambiado a:", lang);
 }
 
-export function entrarPlataforma() {
-  // Llama directamente al selector de perfiles si hay un usuario activo
-  if (currentUser) {
-    showProfileSelectorModal((selectedProfile) => {
-      console.log("Perfil activo seleccionado:", selectedProfile);
-    });
-  } else {
-    // Si no ha iniciado sesión, abre el modal para identificarse
-    showAuthModal((user) => {
-      showProfileSelectorModal();
-    });
-  }
+export function entrarPlataforma(opciones = {}) {
+  console.log("Entrando a la plataforma con opciones:", opciones);
 }
 
 export function abrirModalBusqueda() {
@@ -712,8 +702,7 @@ export function abrirModalBusqueda() {
 }
 
 export function abrirModalIdioma() {
-  const nuevoIdioma = confirm("¿Cambiar idioma a Inglés?") ? 'en' : 'es';
-  setLanguage(nuevoIdioma);
+  showProfileSelectorModal();
 }
 
 export function abrirModalAjustes() {
@@ -722,26 +711,4 @@ export function abrirModalAjustes() {
   } else {
     showAuthModal();
   }
-}
-
-export function renderHeader() {
-  // Asegura que al renderizar el header se escuche el estado de Firebase
-  initAuth((user, profile, role) => {
-    console.log("Estado de usuario actualizado:", { user, profile, role });
-  });
-}
-
-export function renderFooter() {
-  /* Implementación de pie de página si aplica */
-}
-
-export function initApp() {
-  // Inicializa la autenticación y fuerza la renderización de la app
-  initAuth((user, profile, role) => {
-    if (!user) {
-      showAuthModal();
-    } else if (!profile) {
-      showProfileSelectorModal();
-    }
-  });
 }
