@@ -17,6 +17,8 @@ import {
   arrayUnion
 } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
+const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
+
 const auth = window.auth;
 const db = window.db;
 
@@ -37,9 +39,16 @@ export function initAuth(onUserChangedCallback) {
     authListeners.push(onUserChangedCallback);
   }
 
+  if (!auth) {
+    console.error("Firebase Auth no está inicializado en window.auth");
+    return;
+  }
+
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       currentUser = user;
+      const assignedRole = (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'admin' : 'user';
+
       try {
         const userDocRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userDocRef);
@@ -48,7 +57,7 @@ export function initAuth(onUserChangedCallback) {
           const initialData = {
             uid: user.uid,
             email: user.email,
-            role: 'user',
+            role: assignedRole,
             createdAt: new Date().toISOString(),
             profiles: [
               {
@@ -60,12 +69,17 @@ export function initAuth(onUserChangedCallback) {
             ]
           };
           await setDoc(userDocRef, initialData);
-          userRole = 'user';
+          userRole = assignedRole;
           activeProfile = initialData.profiles[0];
         } else {
           const userData = userSnap.data();
-          userRole = userData.role || 'user';
+          // Asegurar que si es el correo admin, tenga rol de admin
+          userRole = assignedRole === 'admin' ? 'admin' : (userData.role || 'user');
           
+          if (userData.role !== userRole) {
+            await updateDoc(userDocRef, { role: userRole });
+          }
+
           const savedProfileId = localStorage.getItem(`lumera_active_profile_${user.uid}`);
           const profilesList = userData.profiles || [];
           
@@ -118,6 +132,8 @@ export async function registerEmail(email, password) {
   try {
     const res = await createUserWithEmailAndPassword(auth, email.trim(), password);
     const user = res.user;
+    const assignedRole = (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'admin' : 'user';
+
     const initialProfile = {
       id: 'prof_' + Date.now(),
       name: 'Perfil 1',
@@ -128,11 +144,12 @@ export async function registerEmail(email, password) {
     await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
       email: user.email,
-      role: 'user',
+      role: assignedRole,
       createdAt: new Date().toISOString(),
       profiles: [initialProfile]
     });
 
+    userRole = assignedRole;
     activeProfile = initialProfile;
     localStorage.setItem(`lumera_active_profile_${user.uid}`, initialProfile.id);
     return { success: true, user };
