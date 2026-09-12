@@ -19,8 +19,9 @@ import {
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
 
-const auth = window.auth;
-const db = window.db;
+// Getters dinámicos para evitar que sean undefined al importar el archivo
+const getAuthInstance = () => window.auth;
+const getDbInstance = () => window.db;
 
 let currentUser = null;
 let activeProfile = null;
@@ -39,8 +40,12 @@ export function initAuth(onUserChangedCallback) {
     authListeners.push(onUserChangedCallback);
   }
 
-  if (!auth) {
-    console.error("Firebase Auth no está inicializado en window.auth");
+  const auth = getAuthInstance();
+  const db = getDbInstance();
+
+  if (!auth || !db) {
+    // Si la inicialización del HTML aún no termina, reintentamos en el siguiente ciclo
+    setTimeout(() => initAuth(onUserChangedCallback), 50);
     return;
   }
 
@@ -73,7 +78,7 @@ export function initAuth(onUserChangedCallback) {
           activeProfile = initialData.profiles[0];
         } else {
           const userData = userSnap.data();
-          // Asegurar que si es el correo admin, tenga rol de admin
+          // Asignación explícita de rol administrador por correo
           userRole = assignedRole === 'admin' ? 'admin' : (userData.role || 'user');
           
           if (userData.role !== userRole) {
@@ -121,7 +126,7 @@ export function getUserRole() { return userRole; }
 
 export async function loginEmail(email, password) {
   try {
-    const res = await signInWithEmailAndPassword(auth, email.trim(), password);
+    const res = await signInWithEmailAndPassword(getAuthInstance(), email.trim(), password);
     return { success: true, user: res.user };
   } catch (error) {
     return { success: false, error: parseFirebaseError(error.code) || error.message };
@@ -130,7 +135,7 @@ export async function loginEmail(email, password) {
 
 export async function registerEmail(email, password) {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email.trim(), password);
+    const res = await createUserWithEmailAndPassword(getAuthInstance(), email.trim(), password);
     const user = res.user;
     const assignedRole = (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'admin' : 'user';
 
@@ -141,7 +146,7 @@ export async function registerEmail(email, password) {
       isKids: false
     };
 
-    await setDoc(doc(db, "users", user.uid), {
+    await setDoc(doc(getDbInstance(), "users", user.uid), {
       uid: user.uid,
       email: user.email,
       role: assignedRole,
@@ -160,7 +165,7 @@ export async function registerEmail(email, password) {
 
 export async function sendPasswordReset(email) {
   try {
-    await sendPasswordResetEmail(auth, email.trim());
+    await sendPasswordResetEmail(getAuthInstance(), email.trim());
     return { success: true };
   } catch (error) {
     return { success: false, error: parseFirebaseError(error.code) || error.message };
@@ -170,7 +175,7 @@ export async function sendPasswordReset(email) {
 export async function logoutUser() {
   try {
     if (currentUser) localStorage.removeItem(`lumera_active_profile_${currentUser.uid}`);
-    await signOut(auth);
+    await signOut(getAuthInstance());
     currentUser = null;
     activeProfile = null;
     userRole = 'guest';
@@ -184,7 +189,7 @@ export async function logoutUser() {
 export async function getUserProfiles() {
   if (!currentUser) return [];
   try {
-    const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+    const userSnap = await getDoc(doc(getDbInstance(), "users", currentUser.uid));
     return userSnap.exists() ? (userSnap.data().profiles || []) : [];
   } catch (error) {
     return [];
@@ -210,7 +215,7 @@ export async function createProfile(name, avatarUrl, isKids = false) {
     isKids: Boolean(isKids)
   };
 
-  await updateDoc(doc(db, "users", currentUser.uid), { profiles: arrayUnion(newProfile) });
+  await updateDoc(doc(getDbInstance(), "users", currentUser.uid), { profiles: arrayUnion(newProfile) });
   return newProfile;
 }
 
