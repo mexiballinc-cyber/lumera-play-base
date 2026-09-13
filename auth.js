@@ -1,8 +1,8 @@
 // auth.js - Autenticación Firebase y Gestión Completa de Perfiles
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } 
-  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } 
-  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
 
@@ -27,7 +27,6 @@ export function initAuthObserver(onAuthChange) {
   });
 }
 
-// 1. PANTALLA DE LOGIN / REGISTRO
 export function renderAuthForm(container, onAuthChange) {
   container.innerHTML = `
     <div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
@@ -81,7 +80,6 @@ export function renderAuthForm(container, onAuthChange) {
   };
 }
 
-// 2. PANTALLA "¿QUIÉN ESTÁ VIENDO?" Y PERFILES
 export function renderProfilesScreen(container, onAuthChange) {
   const user = JSON.parse(localStorage.getItem('lumera_user') || '{}');
   const isAdmin = user.email === ADMIN_EMAIL;
@@ -96,7 +94,6 @@ export function renderProfilesScreen(container, onAuthChange) {
         <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px;">
           ${profiles.map((p, idx) => `
             <div class="profile-card" data-idx="${idx}" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;">
-              <!-- Borde arcoíris si es Kids -->
               <div class="avatar-box ${p.isKids ? 'rainbow-avatar' : ''}" style="width: 110px; height: 110px; border-radius: 12px; background: #2a2d3d; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; overflow: hidden; position: relative; border: 2px solid transparent;">
                 ${p.avatar ? `<img src="${p.avatar}" style="width: 100%; height: 100%; object-fit: cover;">` : p.name.charAt(0).toUpperCase()}
                 ${isEditingMode ? `<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 20px;">✏️</div>` : ''}
@@ -105,7 +102,6 @@ export function renderProfilesScreen(container, onAuthChange) {
             </div>
           `).join('')}
 
-          <!-- Botón Agregar Perfil -->
           <div id="btnAddProfile" style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
             <div style="width: 110px; height: 110px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 2px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">+</div>
             <span style="margin-top: 10px; color: var(--text-muted);">Añadir</span>
@@ -119,7 +115,6 @@ export function renderProfilesScreen(container, onAuthChange) {
       </div>
     `;
 
-    // Eventos Perfiles
     container.querySelectorAll('.profile-card').forEach(card => {
       card.onclick = () => {
         const idx = card.dataset.idx;
@@ -139,7 +134,6 @@ export function renderProfilesScreen(container, onAuthChange) {
       };
     });
 
-    // Agregar Perfil
     document.getElementById('btnAddProfile').onclick = () => {
       const name = prompt("Nombre del perfil:");
       if (!name) return;
