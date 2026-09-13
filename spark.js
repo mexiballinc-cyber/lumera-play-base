@@ -1,5 +1,5 @@
 // spark.js - Shorts Feed con Algoritmo del 40% de recomendaciones
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 let sparkList = [];
 let currentIndex = 0;
