@@ -1,11 +1,12 @@
 import { openDetailsModal } from './details.js';
 import { openPlayer } from './player.js';
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 export async function renderMainView(container, filterType = 'all', isKids = false) {
   container.innerHTML = `<div style="padding: 100px; text-align: center;"><h2>Cargando contenido de Lumera...</h2></div>`;
 
   try {
+    // Si por alguna razón window.db no ha cargado, usamos el objeto exportado
     const snap = await getDocs(collection(window.db, "content"));
     let items = [];
     snap.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
@@ -38,7 +39,7 @@ export async function renderMainView(container, filterType = 'all', isKids = fal
       </div>
 
       <div class="catalog-sections" style="padding: 20px;">
-        <!-- FILA: CONTINUAR VIENDO (LOCALSTORAGE) -->
+        <!-- FILA: CONTINUAR VIENDO -->
         ${continueWatching.length > 0 ? `
           <div class="row-section" style="margin-bottom: 30px;">
             <h3>Continuar Viendo</h3>
@@ -52,7 +53,7 @@ export async function renderMainView(container, filterType = 'all', isKids = fal
         <div class="row-section">
           <h3>${isKids ? 'Contenido Infantil' : 'Destacados'}</h3>
           <div class="media-row" style="display: flex; gap: 15px; overflow-x: auto; padding: 10px 0;">
-            ${items.map(item => createCardHTML(item, isKids)).join('')}
+            ${items.length > 0 ? items.map(item => createCardHTML(item, isKids)).join('') : '<p style="color: var(--text-muted);">No hay contenido registrado aún.</p>'}
           </div>
         </div>
       </div>
@@ -74,7 +75,12 @@ export async function renderMainView(container, filterType = 'all', isKids = fal
     });
 
   } catch (err) {
-    container.innerHTML = `<div style="padding: 100px; text-align: center;"><h2>Error al conectar con Firestore.</h2></div>`;
+    console.error("Error en Main.js:", err);
+    container.innerHTML = `
+      <div style="padding: 100px; text-align: center;">
+        <h2>Error al conectar con Firestore.</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">${err.message}</p>
+      </div>`;
   }
 }
 
