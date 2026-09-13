@@ -1,7 +1,7 @@
 // auth.js - Autenticación Firebase y Gestión Completa de Perfiles
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } 
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } 
+import { getFirestore, doc, setDoc } 
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const ADMIN_EMAIL = "jgonzalezgutierrez1@bcedu.mx";
@@ -93,17 +93,21 @@ export function renderProfilesScreen(container, onAuthChange) {
 
         <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px;">
           ${profiles.map((p, idx) => `
-            <div class="profile-card" data-idx="${idx}" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;">
-              <div class="avatar-box ${p.isKids ? 'rainbow-avatar' : ''}" style="width: 110px; height: 110px; border-radius: 12px; background: #2a2d3d; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; overflow: hidden; position: relative; border: 2px solid transparent;">
-                ${p.avatar ? `<img src="${p.avatar}" style="width: 100%; height: 100%; object-fit: cover;">` : p.name.charAt(0).toUpperCase()}
-                ${isEditingMode ? `<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 20px;">✏️</div>` : ''}
+            <div class="profile-card" data-idx="${idx}" style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+              <div class="avatar-container ${p.isKids ? 'rainbow-avatar' : ''}">
+                <div class="avatar-box">
+                  ${p.avatar ? `<img src="${p.avatar}" style="width: 100%; height: 100%; object-fit: cover;">` : p.name.charAt(0).toUpperCase()}
+                  ${isEditingMode ? `<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-size: 20px;">✏️</div>` : ''}
+                </div>
               </div>
               <span style="margin-top: 10px; font-weight: 500;">${p.name}</span>
             </div>
           `).join('')}
 
           <div id="btnAddProfile" style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
-            <div style="width: 110px; height: 110px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 2px dashed var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">+</div>
+            <div class="avatar-box btn-add-box">
+              +
+            </div>
             <span style="margin-top: 10px; color: var(--text-muted);">Añadir</span>
           </div>
         </div>
@@ -115,6 +119,7 @@ export function renderProfilesScreen(container, onAuthChange) {
       </div>
     `;
 
+    // Selección / Edición de Perfil
     container.querySelectorAll('.profile-card').forEach(card => {
       card.onclick = () => {
         const idx = card.dataset.idx;
@@ -134,13 +139,13 @@ export function renderProfilesScreen(container, onAuthChange) {
       };
     });
 
+    // Abrir Modal de Creación
     document.getElementById('btnAddProfile').onclick = () => {
-      const name = prompt("Nombre del perfil:");
-      if (!name) return;
-      const isKids = confirm("¿Es un perfil infantil (Kids)?");
-      profiles.push({ name, isKids, avatar: '' });
-      localStorage.setItem(`lumera_profiles_${user.uid}`, JSON.stringify(profiles));
-      render();
+      mostrarModalNuevoPerfil((nuevoPerfil) => {
+        profiles.push(nuevoPerfil);
+        localStorage.setItem(`lumera_profiles_${user.uid}`, JSON.stringify(profiles));
+        render();
+      });
     };
 
     if (isAdmin) {
@@ -154,6 +159,47 @@ export function renderProfilesScreen(container, onAuthChange) {
   };
 
   render();
+}
+
+// Modal HTML personalizado para la creación de perfiles
+function mostrarModalNuevoPerfil(onGuardar) {
+  const modal = document.getElementById('authModal');
+  const modalBody = document.getElementById('authModalBody');
+
+  modalBody.innerHTML = `
+    <h3 style="margin-bottom: 15px;">Crear Perfil</h3>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <div>
+        <label style="font-size: 12px; color: var(--text-muted);">Nombre del perfil</label>
+        <input type="text" id="newProfileName" placeholder="Ej. Juan" maxlength="12" style="width: 100%; padding: 10px; margin-top: 5px; background: #1a1c23; border: 1px solid var(--glass-border); border-radius: 6px; color: #fff;">
+      </div>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px;">
+        <input type="checkbox" id="newProfileKids" style="width: 18px; height: 18px;">
+        ¿Es un perfil infantil (Kids)?
+      </label>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button id="btnSaveProfile" style="flex: 1; padding: 10px; background: var(--accent-color); border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Guardar</button>
+        <button id="btnCancelProfile" style="flex: 1; padding: 10px; background: transparent; border: 1px solid var(--glass-border); border-radius: 6px; color: #fff; cursor: pointer;">Cancelar</button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+
+  document.getElementById('btnSaveProfile').onclick = () => {
+    const name = document.getElementById('newProfileName').value.trim();
+    if (!name) {
+      alert("Ingresa un nombre para el perfil.");
+      return;
+    }
+    const isKids = document.getElementById('newProfileKids').checked;
+    modal.classList.add('hidden');
+    onGuardar({ name, isKids, avatar: '' });
+  };
+
+  document.getElementById('btnCancelProfile').onclick = () => {
+    modal.classList.add('hidden');
+  };
 }
 
 export function getActiveProfile() {
