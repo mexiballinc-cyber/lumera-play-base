@@ -1,6 +1,6 @@
 // admin.js - Panel de Administración Lumera 3.0 (4 Categorías + 14 Tracks)
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } 
-  from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const LANG_KEYS = ['es', 'en', 'fr', 'it', 'de', 'ja', 'pt'];
 const LANG_LABELS = { es: 'Español', en: 'Inglés', fr: 'Francés', it: 'Italiano', de: 'Alemán', ja: 'Japonés', pt: 'Portugués' };
