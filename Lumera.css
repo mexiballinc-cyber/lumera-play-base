@@ -1,0 +1,120 @@
+/* Variables y base */
+:root {
+  --bg-main: #0f0f12;
+  --bg-card: #1a1a24;
+  --accent-red: #e50914;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Modo Kids: Borde Arcoíris Neón Animado */
+.kids-mode {
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, #ff007f, #7928ca, #00dfd8, #ff007f) 1;
+  animation: rainbow-border 6s linear infinite;
+}
+
+@keyframes rainbow-border {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-item {
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: var(--text-primary);
+}
+
+/* Hero Banner */
+.hero-container {
+  height: 70vh;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 60px;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--bg-main) 5%, transparent 60%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+}
+
+.btn-play {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 28px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+/* Filas de Contenido */
+.row-container {
+  padding: 20px 40px;
+}
+
+.cards-scroll {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.media-card {
+  min-width: 180px;
+  height: 270px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.media-card:hover {
+  transform: scale(1.05);
+}
